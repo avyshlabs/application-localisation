@@ -16,7 +16,7 @@ const sequelize = new Sequelize(process.env.MYSQL_ADDON_DB, process.env.MYSQL_AD
 sequelize
 .authenticate()
 .then(() => {
-console.log('Connection has been established successfully.');
+console.log('Connected to CleverCloud --MySql successfully!');
 })
 .catch(err => {
 console.error('Unable to connect to the database:', err);
