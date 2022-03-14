@@ -11,6 +11,10 @@ const Pages = require('./models/Pages');
 const PageLabels = require('./models/PageLabels');
 const AllLabels = require('./models/AllLabels');
 
+
+//Routers
+const userRouter = require('./controllers/userController');
+
 //ASSOCIATIONS
 Users.hasOne(UserLanguage);
 UserLanguage.belongsTo(Language);
@@ -45,11 +49,16 @@ AllLabels.hasMany(PageLabels);
 
 const app = express();
 
+app.use(express.json())
+app.use(express.urlencoded({extended:true}))
+
 //DEFAULT ROUTE
 app.get('/', (req, res)=> {
     res.statusCode = 200;
     res.json("Server running up");
 });
+
+app.use('/user',userRouter)
 
 app.listen(process.env.PORT, ()=> {
     console.log(`Server running at http://${process.env.HOSTNAME}:${process.env.PORT}`)
