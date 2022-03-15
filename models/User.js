@@ -1,7 +1,9 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../DAO/database');
 
-const Users = sequelize.define("Users", {
+const UserLanguage = require('./UserLanguage')
+
+var User = sequelize.define("Users", {
     id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
@@ -28,4 +30,11 @@ const Users = sequelize.define("Users", {
     }
 });
 
-module.exports = Users;
+// User.associate = models => {
+//     User.hasOne(UserLanguage, {
+//         onDelete: "cascade",
+//         onUpdate: "cascade"
+//     });
+// }
+
+module.exports = User;

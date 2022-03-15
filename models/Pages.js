@@ -1,17 +1,16 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../DAO/database');
 
-const Pages = sequelize.define("Pages", {
+const Page = sequelize.define("Page", {
     id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         allowNull: false,
         primaryKey: true
     },
-    pageName: {
-        type: Sequelize.STRING,
-        allowNull: false
+    name: {
+        type: Sequelize.STRING
     }
 });
 
-module.exports = Pages;
+module.exports = Page;
