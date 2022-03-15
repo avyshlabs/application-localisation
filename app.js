@@ -1,24 +1,23 @@
-require('dotenv').config();
+require("dotenv").config();
 
-const express = require('express');
-
-const Sequelize = require('sequelize');
-const sequelize = require('./DAO/database');
-const Users = require('./models/Users');
-const UserLanguage = require('./models/UserLanguage');
-const Language = require('./models/Language');
-const Pages = require('./models/Pages');
-const PageLabels = require('./models/PageLabels');
-const AllLabels = require('./models/AllLabels');
+const express = require("express");
+const path = require("path");
+const Sequelize = require("sequelize");
+const sequelize = require("./DAO/database");
+const Users = require("./models/Users");
+const UserLanguage = require("./models/UserLanguage");
+const Language = require("./models/Language");
+const Pages = require("./models/Pages");
+const PageLabels = require("./models/PageLabels");
+const AllLabels = require("./models/AllLabels");
 
 //ASSOCIATIONS
 Users.hasOne(UserLanguage);
 UserLanguage.belongsTo(Language);
 Language.hasOne(UserLanguage);
 Pages.hasMany(PageLabels);
-PageLabels.belongsTo(AllLabels)
+PageLabels.belongsTo(AllLabels);
 AllLabels.hasMany(PageLabels);
-
 
 // sequelize
 // .sync({force: true})
@@ -41,16 +40,29 @@ AllLabels.hasMany(PageLabels);
 //     console.log(err);
 // })
 
-
-
 const app = express();
 
-//DEFAULT ROUTE
-app.get('/', (req, res)=> {
-    res.statusCode = 200;
-    res.json("Server running up");
-});
+//Static Files
+app.use(express.static(__dirname + "/public"));
 
-app.listen(process.env.PORT, ()=> {
-    console.log(`Server running at http://${process.env.HOSTNAME}:${process.env.PORT}`)
+//DEFAULT ROUTE
+// app.get("/login", (req, res) => {
+//   res.statusCode = 200;
+//   // res.render("login");
+//   res.sendFile("login.html", { root: `${__dirname}/public/html` });
+// });
+// app.get("/signup", (req, res) => {
+//   res.statusCode = 200;
+//   // res.render("signup");
+//   res.sendFile("signup.html", { root: `${__dirname}/public/html` });
+// });
+// app.get("/dashboard", (req, res) => {
+//   res.statusCode = 200;
+//   res.sendFile("dashboard.html", { root: `${__dirname}/public/html` });
+// });
+
+app.listen(process.env.PORT, () => {
+  console.log(
+    `Server running at http://${process.env.HOSTNAME}:${process.env.PORT}`
+  );
 });
