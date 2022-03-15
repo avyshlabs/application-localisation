@@ -10,7 +10,7 @@ exports.saveUser = async (userDetails) => {
       password: userDetails.password,
     });
     if (user.Success) return { Success: true, User: user.user };
-    else throw new Error("cannot add user --- userService");
+    else return { Success: false, Error: "cannot add users --- userService" };
   } catch (err) {
     console.log(err);
     return { Success: false, Error: err };
@@ -36,6 +36,20 @@ exports.getUserById = async (userId) => {
       return { Success: true, user: user.user };
     } else
       return { Success: false, Error: "cannot get userById --- userService" };
+  } catch (err) {
+    console.log(err);
+    return { Success: false, Error: err };
+  }
+};
+
+exports.getUserByUsername = async (username) => {
+  try {
+    const user = await userDAO.getUserByUsername(username);
+    if (user.Success && user.user !== undefined) {
+      console.log(user);
+      return { Success: true, user: user.user };
+    } else
+      return { Success: false, Error: "cannot get userByusername --- userService" };
   } catch (err) {
     console.log(err);
     return { Success: false, Error: err };

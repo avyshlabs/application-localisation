@@ -52,26 +52,26 @@ PageLabel.belongsTo(Label, {
     }
 })
 
-sequelize
-  .sync({ force: true })
-  .then((result) => {
-    console.log(result);
-    return Language.create({ languageName: "en-us" });
-  })
-  .then((lang) => {
-    console.log(lang);
-    return Language.create({ languageName: "hi-in" });
-  })
-  .then((lang) => {
-    console.log(lang);
-    return Language.create({ languageName: "kn-in" });
-  })
-  .then((lang) => {
-    console.log(lang);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+// sequelize
+//   .sync({ force: true })
+//   .then((result) => {
+//     console.log(result);
+//     return Language.create({ languageName: "en-us" });
+//   })
+//   .then((lang) => {
+//     console.log(lang);
+//     return Language.create({ languageName: "hi-in" });
+//   })
+//   .then((lang) => {
+//     console.log(lang);
+//     return Language.create({ languageName: "kn-in" });
+//   })
+//   .then((lang) => {
+//     console.log(lang);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
 
 // sequelize
 // .sync()

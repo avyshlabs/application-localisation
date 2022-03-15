@@ -1,27 +1,19 @@
 const userModel = require("../models/User");
 const sequelize = require("./database");
-const UserLangauge = require('../models/UserLanguage')
+const userLanguageService = require("../services/userLanguageService");
 
 exports.saveUser = async (userDetails) => {
   try {
     const user = await userModel.create(userDetails);
+    const userLanguage = await userLanguageService.saveUserLanguage({
+      userId: user.id,
+      languageId: 1,
+    });
+    if (userLanguage.Success) console.log("user language added successfully");
+    else console.log("error in adding user language");
 
-    const userLanguage = await UserLangauge.create({UserId: user.id,LanguageId: 1});
-    // sequelize.sync({alter: true}).then(() => {
-    //   return UserLangauge.create({UserId: user.id});
-    // }).then(data => {
-    //   userLanguage = data;
-    //   return userModel.findOne({where: {id: user.id}})
-    // }).then(data => {
-    //   user1 = data;
-    //   user1.setUserLanguage(userLanguage);
-    // }).catch(err => {
-    //   console.log(err)
-    // })
-    
-    //const userLanguage = await user.setUserLanguage({UserId: user.id})
     console.log("user's auto-generated ID:", user.id);
-    console.log(`userLanguage: ${userLanguage}`)
+    //console.log(`userLanguage: ${userLanguage}`)
     return { Success: true, user: user };
   } catch (err) {
     console.log(err);
@@ -46,6 +38,21 @@ exports.getUser = async (userId) => {
     const user = await userModel.findAll({
       where: {
         id: parseInt(userId),
+      },
+    });
+    console.log(user);
+    return { Success: true, user: user[0] };
+  } catch (err) {
+    console.log(err);
+    return { Success: false, Error: err };
+  }
+};
+
+exports.getUserByUsername = async (username) => {
+  try {
+    const user = await userModel.findAll({
+      where: {
+        username: username,
       },
     });
     console.log(user);
