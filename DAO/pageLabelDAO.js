@@ -1,29 +1,32 @@
 const PageLabels = require('../models/PageLabels');
+const Page = require('../models/Pages');
+const Label = require('../models/AllLabels');
 
-exports.createPageLabel = async(page, label, pageName)=> {
+exports.createPageLabel = async(details)=> {
     try{
-        console.log("enter page label dao");
         let pageLabel = await PageLabels.create({
-            pageName: pageName,
-            PageId: page,
-            AllLabelId: label
+            name: details.name,
+            PageId: details.page,
+            AllLabelId: details.label
         }); 
-        console.log("PageLabel: ", pageLabel);
         return {Success: true, PageLabel: pageLabel};
     }catch(err){
+        console.log(err);
         return {Success: false, Error: err};
     }
 }
 
-exports.getPage = async(pageLabelId)=> {
+exports.getPageLabel = async(name)=> {
     try{
-        let page = PageLabels.findAll({
+        let pageLabel = await PageLabels.findAll({
             where: {
-                id: pageLabelId
-            }
+                name: name
+            },
+            include: [Page, Label]
         });
-        return {Success: true, Page: page}
+        return {Success: true, Pagelabel: pageLabel}
     }catch(err){
+        console.log(err);
         return {Success: false, Error: err};
     }
 }

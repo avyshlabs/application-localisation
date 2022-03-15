@@ -4,6 +4,8 @@ const express = require('express');
 const morgan = require('morgan');
 const Sequelize = require('sequelize');
 const sequelize = require('./DAO/database');
+
+//MODELS
 const Users = require('./models/User');
 const UserLanguage = require('./models/UserLanguage');
 const Language = require('./models/Language');
@@ -11,8 +13,13 @@ const Page = require('./models/Pages')
 const PageLabel = require('./models/PageLabels')
 const Label = require('./models/AllLabels')
 
-//Routers
+//ROUTERS
 const userRouter = require("./controllers/userController");
+const PageController = require('./controllers/pageController');
+const LabelController = require('./controllers/LabelController');
+const PageLabelController = require('./controllers/PageLabel');
+
+
 
 //ASSOCIATIONS
 Users.hasOne(UserLanguage, { onDelete: "cascade", onUpdate: "cascade" });      //set, get, create
@@ -28,17 +35,6 @@ UserLanguage.belongsTo(Language, {
     }
 });
 
-// Pages.hasMany(PageLabels);
-// PageLabels.belongsTo(AllLabels)
-// AllLabels.hasMany(PageLabels);
-
-
-
-const app = express();
-app.use(morgan('dev'));
-app.use(express.json());
-
-//ASSOCIATONS
 Page.hasMany(PageLabel);
 PageLabel.belongsTo(Page, {
     foreignKey: {
@@ -51,6 +47,12 @@ PageLabel.belongsTo(Label, {
         allowNull: false
     }
 })
+
+
+const app = express();
+app.use(morgan('dev'));
+app.use(express.json());
+
 
 // sequelize
 //   .sync({ force: true })
@@ -80,7 +82,7 @@ PageLabel.belongsTo(Label, {
 // })
 // .catch(err=> {
 //     console.log(err);
-// })
+// });
 
 app.post('/createD', (req, res)=> {
     let details = req.body;
@@ -131,7 +133,11 @@ app.get("/", (req, res) => {
   res.json("Server running up");
 });
 
+//ROUTES
 app.use("/user", userRouter);
+app.use('/page', PageController);
+app.use('/label', LabelController);
+app.use('/pagelabel', PageLabelController);
 
 app.listen(process.env.PORT, () => {
   console.log(
