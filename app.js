@@ -1,65 +1,74 @@
-require('dotenv').config();
+require("dotenv").config();
 
-const express = require('express');
+const express = require("express");
 
-const Sequelize = require('sequelize');
-const sequelize = require('./DAO/database');
-const Users = require('./models/Users');
-const UserLanguage = require('./models/UserLanguage');
-const Language = require('./models/Language');
-const Pages = require('./models/Pages');
-const PageLabels = require('./models/PageLabels');
-const AllLabels = require('./models/AllLabels');
+const Sequelize = require("sequelize");
+const sequelize = require("./DAO/database");
+const Users = require("./models/User");
+const UserLanguage = require("./models/UserLanguage");
+const Language = require("./models/Language");
 
+//const Pages = require("./models/Pages");
+//const PageLabels = require("./models/PageLabels");
+//const AllLabels = require("./models/AllLabels");
 
 //Routers
-const userRouter = require('./controllers/userController');
+const userRouter = require("./controllers/userController");
 
 //ASSOCIATIONS
-Users.hasOne(UserLanguage);
-UserLanguage.belongsTo(Language);
-Language.hasOne(UserLanguage);
-Pages.hasMany(PageLabels);
-PageLabels.belongsTo(AllLabels)
-AllLabels.hasMany(PageLabels);
+// Users.hasOne(UserLanguage, { onDelete: "cascade", onUpdate: "cascade" });      //set, get, create
+// Language.hasMany(UserLanguage, { onDelete: "cascade", onUpdate: "cascade" });
+// UserLanguage.belongsTo(Users,{
+//     foreignKey: {
+//         allowNull : false
+//     }
+// });
+// UserLanguage.belongsTo(Language, {
+//     foreignKey: {
+//         allowNull: false
+//     }
+// });
 
+// Pages.hasMany(PageLabels);
+// PageLabels.belongsTo(AllLabels)
+// AllLabels.hasMany(PageLabels);
 
 // sequelize
-// .sync({force: true})
-// .then(result=> {
+//   .sync({ force: true })
+//   .then((result) => {
 //     console.log(result);
-//     return Language.create({languageName: "en-us"});
-// })
-// .then(lang=> {
+//     return Language.create({ languageName: "en-us" });
+//   })
+//   .then((lang) => {
 //     console.log(lang);
-//     return Language.create({languageName: "hi-in"});
-// })
-// .then(lang=> {
+//     return Language.create({ languageName: "hi-in" });
+//   })
+//   .then((lang) => {
 //     console.log(lang);
-//     return Language.create({languageName: "kn-in"});
-// })
-// .then(lang=> {
+//     return Language.create({ languageName: "kn-in" });
+//   })
+//   .then((lang) => {
 //     console.log(lang);
-// })
-// .catch(err=> {
+//   })
+//   .catch((err) => {
 //     console.log(err);
-// })
-
-
+//   });
 
 const app = express();
 
-app.use(express.json())
-app.use(express.urlencoded({extended:true}))
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 //DEFAULT ROUTE
-app.get('/', (req, res)=> {
-    res.statusCode = 200;
-    res.json("Server running up");
+app.get("/", (req, res) => {
+  res.statusCode = 200;
+  res.json("Server running up");
 });
 
-app.use('/user',userRouter)
+app.use("/user", userRouter);
 
-app.listen(process.env.PORT, ()=> {
-    console.log(`Server running at http://${process.env.HOSTNAME}:${process.env.PORT}`)
+app.listen(process.env.PORT, () => {
+  console.log(
+    `Server running at http://${process.env.HOSTNAME}:${process.env.PORT}`
+  );
 });

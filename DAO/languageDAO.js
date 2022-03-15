@@ -1,9 +1,9 @@
 const sequelize = require('./database');
 const Language = require('../models/Language');
 
-exports.createLangauage = async(language)=> {
+exports.saveLangauage = async(languageDetails)=> {
     try{
-        let language = await Language.create({languageName: language});
+        let language = await Language.create(languageDetails);
         return {Success: true, Language: language};
     }
     catch(err){

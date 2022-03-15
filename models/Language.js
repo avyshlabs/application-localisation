@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../DAO/database');
 
-const Language = sequelize.define("Language", {
+var Language = sequelize.define("Language", {
     id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
@@ -12,5 +12,12 @@ const Language = sequelize.define("Language", {
         type: Sequelize.STRING,
     }
 });
+
+// Language.associate = models => {
+//     Language.hasMany(models.UserLanguage, {
+//         onDelete: "cascade",
+//         onUpdate: "cascade"
+//     });
+// }
 
 module.exports = Language;

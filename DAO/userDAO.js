@@ -1,9 +1,27 @@
-const userModel = require("../models/Users");
+const userModel = require("../models/User");
+const sequelize = require("./database");
+const UserLangauge = require('../models/UserLanguage')
 
 exports.saveUser = async (userDetails) => {
   try {
     const user = await userModel.create(userDetails);
+
+    const userLanguage = await UserLangauge.create({UserId: user.id,LanguageId: 1});
+    // sequelize.sync({alter: true}).then(() => {
+    //   return UserLangauge.create({UserId: user.id});
+    // }).then(data => {
+    //   userLanguage = data;
+    //   return userModel.findOne({where: {id: user.id}})
+    // }).then(data => {
+    //   user1 = data;
+    //   user1.setUserLanguage(userLanguage);
+    // }).catch(err => {
+    //   console.log(err)
+    // })
+    
+    //const userLanguage = await user.setUserLanguage({UserId: user.id})
     console.log("user's auto-generated ID:", user.id);
+    console.log(`userLanguage: ${userLanguage}`)
     return { Success: true, user: user };
   } catch (err) {
     console.log(err);
