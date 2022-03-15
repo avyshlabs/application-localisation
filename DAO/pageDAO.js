@@ -2,7 +2,7 @@ const Pages = require('../models/Pages');
 
 exports.createPage = async(pageName)=> {
     try{
-        let page = await Pages.create({pageName: pageName});
+        let page = await Pages.create({name: pageName});
         return {Success: true, Page: page};
     }catch(err){
         return {Success: false, Error: err};
@@ -11,9 +11,9 @@ exports.createPage = async(pageName)=> {
 
 exports.getPage = async(pageName)=> {
     try{
-        let page = Pages.findAll({
+        let page = await Pages.findAll({
             where: {
-                pageName: pageName
+                name: pageName
             }
         });
         return {Success: true, Page: page}
