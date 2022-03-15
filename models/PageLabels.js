@@ -2,13 +2,17 @@ const Sequelize = require('sequelize');
 const sequelize = require('../DAO/database');
 const AllLabels = require('./AllLabels');
 
-const PageLabels = sequelize.define("PageLabels", {
+const PageLabel = sequelize.define("PageLabel", {
     id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         allowNull: false,
         primaryKey: true
     },
+    name: {
+        type: Sequelize.STRING,
+        allowNull: false
+    }
 });
 
-module.exports = PageLabels;
+module.exports = PageLabel;

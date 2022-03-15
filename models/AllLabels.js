@@ -8,17 +8,17 @@ const AllLabels = sequelize.define("AllLabels", {
         allowNull: false,
         primaryKey: true
     },
-    "en-us": {
+    en: {
         type: Sequelize.STRING,
-        allowNull: false
+        default: ''
     },
-    "hi-in": {
+    hi: {
         type: Sequelize.STRING,
-        allowNull: false
+        default: ''
     },
-    "kn-in": {
+    kn: {
         type: Sequelize.STRING,
-        allowNull: false
+        default: ''
     }
 });
 
