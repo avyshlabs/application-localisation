@@ -4,6 +4,17 @@ const express = require('express');
 const morgan = require('morgan');
 const Sequelize = require('sequelize');
 const sequelize = require('./DAO/database');
+const Users = require('./models/Users');
+const UserLanguage = require('./models/UserLanguage');
+const Language = require('./models/Language');
+
+//Routers
+const userRouter = require('./controllers/userController');
+
+//ASSOCIATIONS
+Users.hasOne(UserLanguage);
+UserLanguage.belongsTo(Language);
+Language.hasOne(UserLanguage);
 
 
 const Page = require('./models/Pages');
@@ -78,10 +89,16 @@ app.get('/getA', (req, res)=> {
 })
 
 
+app.use(express.json())
+app.use(express.urlencoded({extended:true}))
+
+//DEFAULT ROUTE
 app.get('/', (req, res)=> {
     res.statusCode = 200;
     res.json("Server running up");
 });
+
+app.use('/user',userRouter)
 
 app.listen(process.env.PORT, ()=> {
     console.log(`Server running at http://${process.env.HOSTNAME}:${process.env.PORT}`)
