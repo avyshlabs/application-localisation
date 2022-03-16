@@ -1,4 +1,4 @@
-fetch("http://dummy.restapiexample.com/api/v1/employees").then((res) => {
+fetch("localhost://3000/locale/getTranslations?page_id=3").then((res) => {
   res.json().then((data) => {
     console.log(data.data);
     if (data.data.length > 0) {
