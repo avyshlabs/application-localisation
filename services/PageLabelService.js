@@ -1,9 +1,9 @@
 const PageLabel = require('../DAO/pageLabelDAO');
 
 
-exports.getPageLabel = async(name)=> {
+exports.getPageLabel = async(id)=> {
     try{
-        let pageLabel = await PageLabel.getPageLabel(name);
+        let pageLabel = await PageLabel.getPageLabel(id);
         return pageLabel;
     }catch(err){
         console.log(err);

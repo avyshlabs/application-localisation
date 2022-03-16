@@ -32,7 +32,7 @@ router
         throw new Error("cannot add user -- userController");
       }
     } catch (err) {
-      res.status = 500;
+      res.statusCode = 500;
       res.json(err);
     }
   });
@@ -48,7 +48,7 @@ router.get("/getUsers", async (req, res) => {
       throw new Error("cannot get users -- userController");
     }
   } catch (err) {
-    res.status = 500;
+    res.statusCode = 500;
     res.json(err);
   }
 });
@@ -61,11 +61,11 @@ router.get("/getUser", async (req, res) => {
       res.contentType("text/html");
       res.json(result);
     } else {
-      res.status = 500;
+      res.statusCode = 500;
       res.json(result);
     }
   } catch (err) {
-    res.status = 500;
+    res.statusCode = 500;
     res.json(err);
   }
 });
@@ -83,11 +83,11 @@ router
         res.contentType("text/html");
         res.json(result);
       } else {
-        res.status = 500;
+        res.statusCode = 500;
         res.json(result);
       }
     } catch (err) {
-      res.status = 500;
+      res.statusCode = 500;
       res.json(err);
     }
   });
@@ -100,11 +100,11 @@ router
         res.contentType("text/html");
         res.json(result);
       } else {
-        res.status = 500;
+        res.statusCode = 500;
         res.json(result);
       }
     } catch (err) {
-      res.status = 500;
+      res.statusCode = 500;
       res.json(err);
     }
   });
@@ -112,6 +112,23 @@ router
   router.get("/changeLanguage", async (req, res) => {
     try {
       const result = await userLanguageService.updateUserLanguage(req.query.userId, req.query.languageId)
+      if (result.Success) {
+        res.statusCode = 200;
+        res.contentType("text/html");
+        res.json(result);
+      } else {
+        res.statusCode = 500;
+        res.json(result);
+      }
+    } catch (err) {
+      res.statusCode = 500;
+      res.json(err);
+    }
+  });
+
+  router.get("/getLanguage", async (req, res) => {
+    try {
+      const result = await userLanguageService.getUserLanguage(req.query.userId);
       if (result.Success) {
         res.statusCode = 200;
         res.contentType("text/html");

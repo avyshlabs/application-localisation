@@ -7,8 +7,8 @@ router.
 route('/')
 .get(async(req, res)=> {
     try{
-        let name = req.query.name;
-        let pageLabel = await PageLabelService.getPageLabel(name);
+        let id = req.query.id;
+        let pageLabel = await PageLabelService.getPageLabel(id);
         if(pageLabel.Success)
             res.status(200).json(pageLabel);
         else

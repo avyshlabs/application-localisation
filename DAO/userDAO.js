@@ -1,13 +1,17 @@
-const userModel = require("../models/User");
-const sequelize = require("./database");
+// const userModel = require("../models/User");
+// const sequelize = require("./database");
 const userLanguageService = require("../services/userLanguageService");
+
+const sequelize = require('./database');
+const initModels = require('../models/init-models');
+const models = initModels(sequelize);
 
 exports.saveUser = async (userDetails) => {
   try {
-    const user = await userModel.create(userDetails);
+    const user = await models.user.create(userDetails);
     const userLanguage = await userLanguageService.saveUserLanguage({
-      userId: user.id,
-      languageId: 1,
+      User_id: user.User_id,
+      Language_id: 1,
     });
     if (userLanguage.Success) console.log("user language added successfully");
     else console.log("error in adding user language");
@@ -23,8 +27,8 @@ exports.saveUser = async (userDetails) => {
 
 exports.getUsers = async () => {
   try {
-    const users = await userModel.findAll();
-    console.log(users.every((user) => user instanceof userModel)); // true
+    const users = await models.user.findAll();
+    console.log(users.every((user) => user instanceof models.user)); // true
     console.log("All users:", JSON.stringify(users, null, 2));
     return { Success: true, users: users };
   } catch (err) {
@@ -35,9 +39,9 @@ exports.getUsers = async () => {
 
 exports.getUser = async (userId) => {
   try {
-    const user = await userModel.findAll({
+    const user = await models.user.findAll({
       where: {
-        id: parseInt(userId),
+        User_id: parseInt(userId),
       },
     });
     console.log(user);
@@ -50,9 +54,9 @@ exports.getUser = async (userId) => {
 
 exports.getUserByUsername = async (username) => {
   try {
-    const user = await userModel.findAll({
+    const user = await models.user.findAll({
       where: {
-        username: username,
+        Username: username,
       },
     });
     console.log(user);
@@ -66,9 +70,9 @@ exports.getUserByUsername = async (username) => {
 exports.updateUser = async (userId, userDetails) => {
   try {
     console.log(userDetails);
-    const user = await userModel.update(userDetails, {
+    const user = await models.user.update(userDetails, {
       where: {
-        id: parseInt(userId),
+        User_id: parseInt(userId),
       },
     });
     return { Success: true, user: user };
@@ -80,9 +84,9 @@ exports.updateUser = async (userId, userDetails) => {
 
 exports.deleteUser = async (userId) => {
   try {
-    const user = await userModel.destroy({
+    const user = await models.user.destroy({
       where: {
-        id: userId,
+        User_id: userId,
       },
     });
     return { Success: true, user: user };

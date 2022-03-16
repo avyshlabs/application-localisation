@@ -3,11 +3,13 @@ const userDAO = require("../DAO/userDAO");
 exports.saveUser = async (userDetails) => {
   try {
     const user = await userDAO.saveUser({
-      username: userDetails.username,
-      email: userDetails.email,
-      firstname: userDetails.firstname,
-      lastname: userDetails.lastname,
-      password: userDetails.password,
+      Username: userDetails.username,
+      Email: userDetails.email,
+      First_name: userDetails.firstname,
+      Last_name: userDetails.lastname,
+      Password: userDetails.password,
+      Created_date: new Date(),
+      Updated_date: new Date()
     });
     if (user.Success) return { Success: true, User: user.user };
     else return { Success: false, Error: "cannot add users --- userService" };
@@ -59,11 +61,12 @@ exports.getUserByUsername = async (username) => {
 exports.updateUser = async (userId, userDetails) => {
   try {
     const user = await userDAO.updateUser(userId, {
-      username: userDetails.username,
-      email: userDetails.email,
-      firstname: userDetails.firstname,
-      lastname: userDetails.lastname,
-      password: userDetails.password,
+      Username: userDetails.username,
+      Email: userDetails.email,
+      First_name: userDetails.firstname,
+      Last_name: userDetails.lastname,
+      Password: userDetails.password,
+      Updated_date: new Date()
     });
 
     if (user.Success && user.user !== undefined) {
