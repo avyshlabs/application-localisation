@@ -10,15 +10,16 @@ const sequelize = require("./DAO/database");
 
 
 //ROUTERS
-// const userRouter = require("./controllers/userController");
-const PageController = require("./controllers/pageController");
-const LabelController = require("./controllers/LabelController");
-// const PageLabelController = require("./controllers/PageLabel");
+const userRouter = require("./controllers/userController");
+//const PageController = require("./controllers/pageController");
+//const LabelController = require("./controllers/LabelController");
+//const PageLabelController = require("./controllers/PageLabel");
+const LocaleController = require('./controllers/localeController')
 
 //ASSOCIATIONS DEFINED IN ./MODELS/INIT-MODELS
 
 sequelize
-.sync({force: true})
+.sync()
 .then(result=> {
     console.log(result)
 })
@@ -28,7 +29,6 @@ sequelize
 
 const app = express();
 app.use(morgan("dev"));
-app.use(express.json());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -57,10 +57,11 @@ app.get("/", (req, res) => {
 });
 
 //ROUTES
-// app.use("/user", userRouter);
-app.use("/page", PageController);
-app.use("/label", LabelController);
-// app.use("/pagelabel", PageLabelController);
+app.use("/user", userRouter);
+//app.use("/page", PageController);
+//app.use("/label", LabelController);
+//app.use("/pagelabel", PageLabelController);
+app.use("/locale",LocaleController);
 
 app.listen(process.env.PORT, () => {
   console.log(
