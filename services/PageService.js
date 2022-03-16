@@ -10,11 +10,12 @@ exports.getPage = async(pageName)=> {
     }
 }
 
-exports.createPage = async(name)=> {
+exports.createPage = async(details)=> {
     try{
-        let page = await Page.createPage(name);
+        let page = await Page.createPage(details);
         return page;
     }catch(err){
+        console.log(err);
         return {Success: false, Error: err};
     }
 }

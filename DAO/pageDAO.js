@@ -1,19 +1,29 @@
-const Pages = require('../models/Pages');
+// const Pages = require('../models/Pages');
 
-exports.createPage = async(pageName)=> {
+const sequelize = require('./database');
+const initModels = require('../models/init-models');
+const models = initModels(sequelize);
+
+exports.createPage = async(details)=> {
     try{
-        let page = await Pages.create({name: pageName});
+        let date = new Date();
+        let page = await models.page.create({
+            Page_name: details.name,
+            Created_date: date,
+            Updated_date: date
+        });
         return {Success: true, Page: page};
     }catch(err){
+        console.log(err);
         return {Success: false, Error: err};
     }
 }
 
 exports.getPage = async(pageName)=> {
     try{
-        let page = await Pages.findAll({
+        let page = await models.page.findAll({
             where: {
-                name: pageName
+                Page_name: pageName
             }
         });
         return {Success: true, Page: page}

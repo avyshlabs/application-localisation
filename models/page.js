@@ -1,13 +1,13 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('language', {
-    Language_id: {
+  return sequelize.define('page', {
+    Page_id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    Language_name: {
+    Page_name: {
       type: DataTypes.STRING(255),
       allowNull: false
     },
@@ -21,7 +21,7 @@ module.exports = function(sequelize, DataTypes) {
     }
   }, {
     sequelize,
-    tableName: 'language',
+    tableName: 'page',
     timestamps: false,
     indexes: [
       {
@@ -29,7 +29,7 @@ module.exports = function(sequelize, DataTypes) {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "Language_id" },
+          { name: "Page_id" },
         ]
       },
     ]

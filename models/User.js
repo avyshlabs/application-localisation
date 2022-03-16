@@ -1,40 +1,53 @@
 const Sequelize = require('sequelize');
-const sequelize = require('../DAO/database');
-
-const UserLanguage = require('./UserLanguage')
-
-var User = sequelize.define("Users", {
-    id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
-        allowNull: false,
-        primaryKey: true
+module.exports = function(sequelize, DataTypes) {
+  return sequelize.define('user', {
+    User_id: {
+      autoIncrement: true,
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true
     },
-    username: {
-        type: Sequelize.STRING,
-        allowNull: false
+    Username: {
+      type: DataTypes.STRING(255),
+      allowNull: false
     },
-    email: {
-        type: Sequelize.STRING,
-        allowNull: false
+    Email: {
+      type: DataTypes.STRING(255),
+      allowNull: false
     },
-    firstname: {
-        type: Sequelize.STRING,
+    First_name: {
+      type: DataTypes.STRING(255),
+      allowNull: true
     },
-    lastname: {
-        type: Sequelize.STRING,
+    Last_name: {
+      type: DataTypes.STRING(255),
+      allowNull: true
     },
-    password: {
-        type: Sequelize.STRING,
-        allowNull: false
+    Password: {
+      type: DataTypes.STRING(255),
+      allowNull: false
+    },
+    Created_date: {
+      type: DataTypes.DATE,
+      allowNull: false
+    },
+    Updated_date: {
+      type: DataTypes.DATE,
+      allowNull: false
     }
-});
-
-// User.associate = models => {
-//     User.hasOne(UserLanguage, {
-//         onDelete: "cascade",
-//         onUpdate: "cascade"
-//     });
-// }
-
-module.exports = User;
+  }, {
+    sequelize,
+    tableName: 'user',
+    timestamps: false,
+    indexes: [
+      {
+        name: "PRIMARY",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "User_id" },
+        ]
+      },
+    ]
+  });
+};

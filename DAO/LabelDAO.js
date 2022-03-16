@@ -1,11 +1,16 @@
-const Label = require('../models/AllLabels');
+const sequelize = require('./database');
+const initModels = require('../models/init-models');
+const models = initModels(sequelize);
 
 exports.createLabel = async(content)=> {
     try{
-        let label = await Label.create({
-           en: content.en,
-           hi: content.hi,
-           kn: content.kn
+        let date = new Date();
+        let label = await models.label.create({
+           Label_name: content.label_name,
+           Label_value: content.label_value,
+           Language_id: content.language_id,
+           Created_date: date,
+           Updated_date: date
         });
         return {Success: true, Content: label};
     }catch(err){
@@ -15,9 +20,9 @@ exports.createLabel = async(content)=> {
 
 exports.getLabel = async(id)=> {
     try{
-        let label = await Label.findAll({
+        let label = await models.label.findAll({
             where: {
-                id: id,
+                Label_id: id,
             }
         });
         // console.log(label[languageCode]);

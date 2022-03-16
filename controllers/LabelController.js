@@ -20,7 +20,7 @@ route('/')
 })
 .post(async(req, res)=> {
     try{
-        let details = req.body.content;
+        let details = req.body;
         let label = await LabelService.createLabel(details);
         if(label.Success)
             res.status(200).json(label);

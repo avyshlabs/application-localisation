@@ -21,7 +21,7 @@ route('/')
 .post(async(req, res)=> {
     try{
         let details = req.body;
-        let page = await PageService.createPage(details.name);
+        let page = await PageService.createPage(details);
         if(page.Success)
             res.status(200).json(page);
         else
