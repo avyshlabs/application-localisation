@@ -28,7 +28,7 @@
       type="text/javascript"
       src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.js"
     ></script>
-
+    <script src="../js/signup.js"></script>
     <title>Sign Up</title>
   </head>
   <body>
@@ -54,12 +54,16 @@
             <!-- Left links -->
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#"
+                <a
+                  class="nav-link active"
+                  id="userDatabase"
+                  aria-current="page"
+                  href="#"
                   >User Database</a
                 >
               </li>
               <li class="nav-item">
-                <a class="nav-link" id="login" href="/login">Log in</a>
+                <a class="nav-link" id="login" href="/user/login">Log in</a>
               </li>
               <!-- Navbar dropdown -->
               <li class="nav-item dropdown">
@@ -103,7 +107,10 @@
               <div class="card-body p-md-5">
                 <div class="row justify-content-center">
                   <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-                    <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">
+                    <p
+                      id="signUp"
+                      class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4"
+                    >
                       Sign up
                     </p>
 
@@ -117,13 +124,13 @@
                             class="form-control"
                           />
                           <label
-                            id="firstname"
+                            id="firstName"
                             class="form-label"
                             for="form3Example1c"
                             >First Name</label
                           >
                         </div>
-                        <div id="lastname" class="form-outline flex-fill mb-0">
+                        <div class="form-outline flex-fill mb-0">
                           <input
                             type="text"
                             id="form3Example1c"
@@ -165,7 +172,7 @@
                           />
                           <label
                             class="form-label"
-                            id="username"
+                            id="userName"
                             for="form3Example4c"
                             >Username</label
                           >

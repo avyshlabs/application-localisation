@@ -11,10 +11,10 @@ const sequelize = require("./DAO/database");
 
 //ROUTERS
 const userRouter = require("./controllers/userController");
-//const PageController = require("./controllers/pageController");
-//const LabelController = require("./controllers/LabelController");
-//const PageLabelController = require("./controllers/PageLabel");
 const LocaleController = require('./controllers/localeController')
+const PageController = require("./controllers/pageController");
+const LabelController = require("./controllers/LabelController");
+const PageLabelController = require("./controllers/PageLabel");
 
 //ASSOCIATIONS DEFINED IN ./MODELS/INIT-MODELS
 
@@ -58,10 +58,10 @@ app.get("/", (req, res) => {
 
 //ROUTES
 app.use("/user", userRouter);
-//app.use("/page", PageController);
-//app.use("/label", LabelController);
-//app.use("/pagelabel", PageLabelController);
 app.use("/locale",LocaleController);
+app.use("/page", PageController);
+app.use("/label", LabelController);
+app.use("/pagelabel", PageLabelController);
 
 app.listen(process.env.PORT, () => {
   console.log(

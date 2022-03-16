@@ -13,7 +13,10 @@ fetch("http://dummy.restapiexample.com/api/v1/employees").then((res) => {
         temp += "<td>" + itemData.firstName + "</td>";
         temp += "<td>" + itemData.lastName + "</td></tr>";
       });
-      document.getElementById("data").innerHTML = temp;
+      //   document.getElementById("data").innerHTML = temp;
+      document.querySelector("#userDatabase").innerHTML =
+        data.context.userDatabase;
+      document.querySelector("#logout").innerHTML = data.context.logout;
       document.querySelector("#id").innerHTML = data.context.id;
       document.querySelector("#userName").innerHTML = data.context.userName;
       document.querySelector("#email").innerHTML = data.context.email;

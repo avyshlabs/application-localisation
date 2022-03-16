@@ -1,13 +1,15 @@
-const PageLabels = require('../models/PageLabels');
-const Page = require('../models/Pages');
-const Label = require('../models/AllLabels');
+const sequelize = require('./database');
+const initModels = require('../models/init-models');
+const models = initModels(sequelize);
 
 exports.createPageLabel = async(details)=> {
     try{
-        let pageLabel = await PageLabels.create({
-            name: details.name,
-            PageId: details.page,
-            AllLabelId: details.label
+        let date = new Date();
+        let pageLabel = await models.page_map.create({
+            Page_id: details.page,
+            Label_id: details.label,
+            Created_date: date,
+            Updated_date: date
         }); 
         return {Success: true, PageLabel: pageLabel};
     }catch(err){
@@ -16,13 +18,16 @@ exports.createPageLabel = async(details)=> {
     }
 }
 
-exports.getPageLabel = async(name)=> {
+exports.getPageLabel = async(id)=> {
     try{
-        let pageLabel = await PageLabels.findAll({
+        let pageLabel = await models.page_map.findAll({
             where: {
-                name: name
+                Page_map_id: id
             },
-            include: [Page, Label]
+            include: [
+                {model: models.label, as: 'Label'},
+                {model: models.page, as: 'Page'}
+            ]
         });
         return {Success: true, Pagelabel: pageLabel}
     }catch(err){
