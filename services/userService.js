@@ -3,10 +3,10 @@ const userDAO = require("../DAO/userDAO");
 exports.saveUser = async (userDetails) => {
   try {
     const user = await userDAO.saveUser({
-      Username: userDetails.username,
+      Username: userDetails.userName,
       Email: userDetails.email,
-      First_name: userDetails.firstname,
-      Last_name: userDetails.lastname,
+      First_name: userDetails.firstName,
+      Last_name: userDetails.lastName,
       Password: userDetails.password,
       Created_date: new Date(),
       Updated_date: new Date()
