@@ -18,7 +18,7 @@ const LabelController = require("./controllers/LabelController");
 //ASSOCIATIONS DEFINED IN ./MODELS/INIT-MODELS
 
 sequelize
-.sync()
+.sync({force: true})
 .then(result=> {
     console.log(result)
 })
