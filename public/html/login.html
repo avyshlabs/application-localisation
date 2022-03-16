@@ -29,10 +29,11 @@
       type="text/javascript"
       src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.js"
     ></script>
-
+    <script src="../js/login.js"></script>
     <title>Localisation</title>
   </head>
   <body>
+    <!-- Navbar -->
     <div id="navbar">
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <!-- Container wrapper -->
@@ -55,12 +56,16 @@
             <!-- Left links -->
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#"
+                <a
+                  class="nav-link active"
+                  id="userDatabase"
+                  aria-current="page"
+                  href="#"
                   >User Database</a
                 >
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/signup">Sign Up</a>
+                <a class="nav-link" href="/user/signup">Sign Up</a>
               </li>
               <!-- Navbar dropdown -->
               <li class="nav-item dropdown">
@@ -107,10 +112,10 @@
             />
           </div>
           <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
-            <form method="POST" action="/dashboard">
+            <form method="POST" action="/user/login">
               <!-- Email input -->
               <div class="form-outline mb-4">
-                <label id="username" class="form-label" for="form1Example13"
+                <label id="userName" class="form-label" for="form1Example13"
                   >Username</label
                 >
                 <input
