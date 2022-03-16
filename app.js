@@ -8,23 +8,23 @@ const sequelize = require("./DAO/database");
 //SCAFFOLD SEQUELIZE-AUTO AFTER INSTALLING SEQUELIZE-AUTO
 //sequelize-auto -o "./models" -d <DATABASE NAME> -h <HOSTNAME> -u <USERNAME> -p <PORT> -x <PASSWORD> -e <DIALECT>
 
-
 //ROUTERS
 // const userRouter = require("./controllers/userController");
 const PageController = require("./controllers/pageController");
 const LabelController = require("./controllers/LabelController");
+// const DashboardController = require("./controllers/dashboardController");
 // const PageLabelController = require("./controllers/PageLabel");
 
 //ASSOCIATIONS DEFINED IN ./MODELS/INIT-MODELS
 
 sequelize
-.sync({force: true})
-.then(result=> {
-    console.log(result)
-})
-.catch(err=> {
+  .sync()
+  .then((result) => {
+    console.log(result);
+  })
+  .catch((err) => {
     console.log(err);
-});
+  });
 
 const app = express();
 app.use(morgan("dev"));
@@ -59,6 +59,7 @@ app.get("/", (req, res) => {
 //ROUTES
 // app.use("/user", userRouter);
 app.use("/page", PageController);
+// app.use("/user", DashboardController);
 app.use("/label", LabelController);
 // app.use("/pagelabel", PageLabelController);
 

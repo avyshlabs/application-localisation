@@ -1,4 +1,4 @@
-fetch("URL").then((res) => {
+fetch("localhost://3000/locale/getTranslations?page_id=1").then((res) => {
   res.json().then((data) => {
     document.querySelector("#userDatabase").innerHTML =
       data.context.userDatabase;
