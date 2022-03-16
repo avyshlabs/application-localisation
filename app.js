@@ -13,12 +13,12 @@ const sequelize = require("./DAO/database");
 // const userRouter = require("./controllers/userController");
 const PageController = require("./controllers/pageController");
 const LabelController = require("./controllers/LabelController");
-// const PageLabelController = require("./controllers/PageLabel");
+const PageLabelController = require("./controllers/PageLabel");
 
 //ASSOCIATIONS DEFINED IN ./MODELS/INIT-MODELS
 
 sequelize
-.sync({force: true})
+.sync()
 .then(result=> {
     console.log(result)
 })
@@ -60,7 +60,7 @@ app.get("/", (req, res) => {
 // app.use("/user", userRouter);
 app.use("/page", PageController);
 app.use("/label", LabelController);
-// app.use("/pagelabel", PageLabelController);
+app.use("/pagelabel", PageLabelController);
 
 app.listen(process.env.PORT, () => {
   console.log(
