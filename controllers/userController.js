@@ -240,7 +240,7 @@ router.get("/dashboard", async (req, res) => {
 router.get("/logout", (req, res, next) => {
   try {
     res.clearCookie("user");
-    res.clearCookie("language")
+    res.clearCookie("language");
     res.statusCode = 200;
     res.sendFile("login.html", { root: `${__dirname}/../public/html` });
   } catch (err) {
@@ -249,6 +249,5 @@ router.get("/logout", (req, res, next) => {
     res.json({ Success: false, Error: err });
   }
 });
-
 
 module.exports = router;
