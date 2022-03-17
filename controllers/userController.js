@@ -11,29 +11,75 @@ router
   .route("/login")
   .get(async (req, res) => {
     if (req.query.lang_id !== undefined) {
-      let result = await userLanguageService.updateUserLanguage(1, req.query.lang_id);
-      if(result.Success) {
-        console.log('language changed successfully')
-      }
+      res.cookie("language", req.query.lang_id, {
+        httpOnly: true,
+        expire: new Date() + 9999,
+      });
+      // let result = await userLanguageService.updateUserLanguage(
+      //   1,
+      //   req.query.lang_id
+      // );
+      // if (result.Success) {
+      //   console.log("language changed successfully");
+      // }
     }
     res.statusCode = 200;
     res.sendFile("login.html", { root: `${__dirname}/../public/html` });
     //res.send("welcome to login Page");
   })
   .post(async (req, res) => {
-    res.redirect("/user/dashboard");
-    // res.statusCode = 200;
-    // res.sendFile("dashboard.html", { root: `${__dirname}/../public/html` });
+    console.log("reached here --------");
+    const result = await userService.getUsers();
+    let flag = false;
+    let userId;
+    console.log(
+      `------------------------------------------------------------------------>>>>>>>>>>>>${req.body.userName}`
+    );
+    if (result.Success) {
+      result.users.map((user) => {
+        if (user.Username === req.body.userName) {
+          flag = true;
+          userId = user.User_id;
+          res.cookie("user", user.User_id, {
+            httpOnly: true,
+            expire: new Date() + 9999,
+          });
+        }
+      });
+    } else {
+      throw new Error("cannot get users -- userController");
+    }
+    if (flag) {
+      const userLangObj = await userLanguageService.getUserLanguage(userId);
+
+      res.cookie("language", userLangObj.userLanguage.languageId, {
+        httpOnly: true,
+        expire: new Date() + 9999,
+      });
+      res.statusCode = 200;
+      res.sendFile("dashboard.html", { root: `${__dirname}/../public/html` });
+    } else {
+      res.statusCode = 200;
+      res.sendFile("login.html", { root: `${__dirname}/../public/html` });
+    }
+    //res.redirect("/user/dashboard");
   });
 
 router
   .route("/signup")
   .get(async (req, res) => {
     if (req.query.lang_id !== undefined) {
-      let result = await userLanguageService.updateUserLanguage(1, req.query.lang_id);
-      if(result.Success) {
-        console.log('language changed successfully')
-      }
+      res.cookie("language", req.query.lang_id, {
+        httpOnly: true,
+        expire: new Date() + 9999,
+      });
+      // let result = await userLanguageService.updateUserLanguage(
+      //   1,
+      //   req.query.lang_id
+      // );
+      // if (result.Success) {
+      //   console.log("language changed successfully");
+      // }
     }
     res.statusCode = 200;
     res.sendFile("signup.html", { root: `${__dirname}/../public/html` });
@@ -168,10 +214,20 @@ router.get("/getLanguage", async (req, res) => {
 router.get("/dashboard", async (req, res) => {
   try {
     if (req.query.lang_id !== undefined) {
-      let result =await userLanguageService.updateUserLanguage(1, req.query.lang_id);
-      if(result.Success) {
-        console.log('language changed successfully')
+      if (req.cookies.user !== undefined) {
+        let userId = req.cookies.user;
+        let result = await userLanguageService.updateUserLanguage(
+          userId,
+          req.query.lang_id
+        );
+        if (result.Success) {
+          console.log("language changed successfully");
+        }
       }
+      res.cookie("language", req.query.lang_id, {
+        httpOnly: true,
+        expire: new Date() + 9999,
+      });
     }
     res.statusCode = 200;
     res.sendFile("dashboard.html", { root: `${__dirname}/../public/html` });
@@ -180,5 +236,19 @@ router.get("/dashboard", async (req, res) => {
     res.json(err);
   }
 });
+
+router.get("/logout", (req, res, next) => {
+  try {
+    res.clearCookie("user");
+    res.clearCookie("language")
+    res.statusCode = 200;
+    res.sendFile("login.html", { root: `${__dirname}/../public/html` });
+  } catch (err) {
+    res.statusCode = 500;
+    res.setHeader("Content-Type", "application/json");
+    res.json({ Success: false, Error: err });
+  }
+});
+
 
 module.exports = router;
