@@ -20,6 +20,12 @@
       href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
       rel="stylesheet"
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap"
+      rel="stylesheet"
+    />
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.css"
       rel="stylesheet"
@@ -29,6 +35,11 @@
       src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.js"
     ></script>
     <script src="../js/signup.js"></script>
+    <style>
+      body {
+        font-family: "Noto Sans", sans-serif;
+      }
+    </style>
     <title>Sign Up</title>
   </head>
   <body>
@@ -58,7 +69,7 @@
                   class="nav-link active"
                   id="userDatabase"
                   aria-current="page"
-                  href="/user/dashboard"
+                  href="#"
                   >User Database</a
                 >
               </li>
@@ -120,7 +131,11 @@
                       Sign up
                     </p>
 
-                    <form action="/user/signup" method="POST" class="mx-1 mx-md-4">
+                    <form
+                      action="/user/signup"
+                      method="POST"
+                      class="mx-1 mx-md-4"
+                    >
                       <div class="d-flex flex-row align-items-center mb-4">
                         <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                         <div class="form-outline flex-fill mb-0">
@@ -128,6 +143,7 @@
                             type="text"
                             id="form3Example1c"
                             class="form-control"
+                            name="firstName"
                           />
                           <label
                             id="firstName"
@@ -141,6 +157,7 @@
                             type="text"
                             id="form3Example1c"
                             class="form-control"
+                            name="firstName"
                           />
                           <label
                             class="form-label"
@@ -158,6 +175,7 @@
                             type="email"
                             id="form3Example3c"
                             class="form-control"
+                            name="email"
                           />
                           <label
                             class="form-label"
@@ -175,6 +193,7 @@
                             type="text"
                             id="form3Example4c"
                             class="form-control"
+                            name="userName"
                           />
                           <label
                             class="form-label"
@@ -192,6 +211,7 @@
                             type="password"
                             id="form3Example4cd"
                             class="form-control"
+                            name="password"
                           />
                           <label
                             class="form-label"
@@ -219,7 +239,7 @@
                         class="d-flex justify-content-center mx-4 mb-3 mb-lg-4"
                       >
                         <button
-                          type="button"
+                          type="submit"
                           id="register"
                           class="btn btn-primary btn-lg"
                         >

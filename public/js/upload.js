@@ -154,14 +154,18 @@ openBtn.addEventListener("click", () => {
 });
 
 //-------------------TRANSLATIONS---------------
-// fetch("URL").then((res) => {
-//   res.json().then((data) => {
-//     document.querySelector("#uploadFile").innerHTML = data.context.uploadFile;
-//     document.querySelector("#instruction").innerHTML = data.context.instruction;
-//     document.querySelector("#download").innerHTML = data.context.download;
-//     document.querySelector("#uploadExcelFile").innerHTML =
-//       data.context.uploadExcelFile;
-//     document.querySelector("#validation").innerHTML = data.context.validation;
-//     document.querySelector("#submit").innerHTML = data.context.submit;
-//   });
-// });
+fetch("/locale/getTranslations?page_id=4").then((res) => {
+  res.json().then((data) => {
+    document.querySelector("#uploadFile").innerHTML =
+      data.PageLabels.uploadFile;
+    document.querySelector("#logout").innerHTML = data.PageLabels.logout;
+    document.querySelector("#instruction").innerHTML =
+      data.PageLabels.instruction;
+    document.querySelector("#download").innerHTML = data.PageLabels.download;
+    document.querySelector("#uploadExcelFile").innerHTML =
+      data.PageLabels.uploadExcelFile;
+    document.querySelector("#validation").innerHTML =
+      data.PageLabels.validation;
+    document.querySelector("#submit").innerHTML = data.PageLabels.submit;
+  });
+});

@@ -78,17 +78,17 @@
               <li class="nav-item">
                 <a
                   class="nav-link active"
-                  id="userDatabase"
+                  id="uploadFile"
                   aria-current="page"
                   href="/excel/uploadFile"
                   >Upload File</a
                 >
               </li>
-              <!-- <li class="nav-item">
-                <a class="nav-link" id="preview" href="/excel/preview"
-                  >Preview</a
+              <li class="nav-item">
+                <a id="logout" class="nav-link" id="logout" href="/user/logout"
+                  >Logout</a
                 >
-              </li> -->
+              </li>
               <!-- Navbar dropdown -->
               <li class="nav-item dropdown">
                 <a
@@ -104,14 +104,20 @@
                 <!-- Dropdown menu -->
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                   <li>
-                    <a class="dropdown-item" href="#">English</a>
+                    <a class="dropdown-item" href="/user/preview?lang_id=1"
+                      >English</a
+                    >
                   </li>
                   <li>
-                    <a class="dropdown-item" href="#">ಕನ್ನಡ</a>
+                    <a class="dropdown-item" href="/user/preview?lang_id=2"
+                      >ಕನ್ನಡ</a
+                    >
                   </li>
                   <li><hr class="dropdown-divider" /></li>
                   <li>
-                    <a class="dropdown-item" href="#">हिन्दी</a>
+                    <a class="dropdown-item" href="/user/preview?lang_id=3"
+                      >हिन्दी</a
+                    >
                   </li>
                 </ul>
               </li>
@@ -124,7 +130,9 @@
       </nav>
     </div>
     <div class="container">
-      <h1 class="message">File has been uploaded successfully !</h1>
+      <h1 class="message">
+        <span id="message">File has been uploaded successfully</span>!
+      </h1>
     </div>
     <!-- <div class="btn-group">
       <button onclick="showLanguage()" id="language-btn" class="active">
@@ -192,5 +200,5 @@
       </div>
     </div> -->
   </body>
-  <script src="../javascript/preview.js"></script>
+  <script src="../js/preview.js"></script>
 </html>

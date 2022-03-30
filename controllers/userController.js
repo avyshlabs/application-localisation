@@ -57,7 +57,7 @@ router
         expire: new Date() + 9999,
       });
       res.statusCode = 200;
-      res.sendFile("dashboard.html", { root: `${__dirname}/../public/html` });
+      res.sendFile("upload.html", { root: `${__dirname}/../public/html` });
     } else {
       res.statusCode = 200;
       res.sendFile("login.html", { root: `${__dirname}/../public/html` });
@@ -211,7 +211,7 @@ router.get("/getLanguage", async (req, res) => {
   }
 });
 
-router.get("/dashboard", async (req, res) => {
+router.get("/uploadFile", async (req, res) => {
   try {
     if (req.query.lang_id !== undefined) {
       if (req.cookies.user !== undefined) {
@@ -230,11 +230,43 @@ router.get("/dashboard", async (req, res) => {
       });
     }
     res.statusCode = 200;
-    res.sendFile("dashboard.html", { root: `${__dirname}/../public/html` });
+    res.sendFile("upload.html", { root: `${__dirname}/../public/html` });
   } catch (err) {
     res.statusCode = 500;
     res.json(err);
   }
+});
+
+router.route("/preview").get(async (req, res) => {
+  try {
+    if (req.query.lang_id !== undefined) {
+      if (req.cookies.user !== undefined) {
+        let userId = req.cookies.user;
+        let result = await userLanguageService.updateUserLanguage(
+          userId,
+          req.query.lang_id
+        );
+        if (result.Success) {
+          console.log("language changed successfully");
+        }
+      }
+      res.cookie("language", req.query.lang_id, {
+        httpOnly: true,
+        expire: new Date() + 9999,
+      });
+    }
+    res.statusCode = 200;
+    res.sendFile("preview.html", { root: `${__dirname}/../public/html` });
+  } catch (err) {
+    res.statusCode = 500;
+    res.json(err);
+  }
+
+  // fs.unlink(req.query.path, (err) => {
+  //   if (err) {
+  //     console.log(err);
+  //   }
+  // });
 });
 
 router.get("/logout", (req, res, next) => {

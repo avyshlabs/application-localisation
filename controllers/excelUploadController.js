@@ -17,7 +17,6 @@ router.route("/preview").get(async (req, res) => {
   //     console.log(err);
   //   }
   // });
-
 });
 
 router
@@ -49,7 +48,7 @@ router
       }
       //console.log(req.file);
       // console.log(files.excelFile.filepath);
-      console.log(files)
+      console.log(files);
 
       const workbook = xlsx.readFile(files.excelFile.filepath);
 
@@ -68,7 +67,7 @@ router
         }
       });
       //res.sendFile("preview.html", { root: `${__dirname}/../public/html` });
-      res.redirect(`preview`)
+      res.redirect(`/user/preview`);
 
       //res.json({ fields, files });
     });
