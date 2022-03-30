@@ -57,9 +57,7 @@ let detectLanguage = async (req) =>{
   else {
     languageId = 1;
   }
-
   return languageId;
-
 }
 
 module.exports = router;
