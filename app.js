@@ -15,17 +15,18 @@ const LocaleController = require("./controllers/localeController");
 const PageController = require("./controllers/pageController");
 const LabelController = require("./controllers/LabelController");
 const PageLabelController = require("./controllers/PageLabel");
+const excelUploadController = require("./controllers/excelUploadController");
 
 //ASSOCIATIONS DEFINED IN ./MODELS/INIT-MODELS
 
-sequelize
-  .sync()
-  .then((result) => {
-    console.log(result);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+// sequelize
+//   .sync()
+//   .then((result) => {
+//     console.log(result);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
 
 const app = express();
 app.use(morgan("dev"));
@@ -64,9 +65,18 @@ app.use("/page", PageController);
 // app.use("/user", DashboardController);
 app.use("/label", LabelController);
 app.use("/pagelabel", PageLabelController);
+app.use("/excel", excelUploadController);
 
-app.listen(process.env.PORT, () => {
-  console.log(
-    `Server running at http://${process.env.HOSTNAME}:${process.env.PORT}`
-  );
+// app.listen(process.env.PORT, () => {
+//   console.log(
+//     `Server running at http://${process.env.HOSTNAME}:${process.env.PORT}`
+//   );
+// });
+
+sequelize.sync().then((req) => {
+  app.listen(process.env.PORT, () => {
+    console.log(
+      `server listening in http://${process.env.HOSTNAME}:${process.env.PORT}`
+    );
+  });
 });

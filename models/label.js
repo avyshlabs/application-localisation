@@ -30,6 +30,11 @@ module.exports = function(sequelize, DataTypes) {
     Updated_date: {
       type: DataTypes.DATE,
       allowNull: false
+    },
+    Status: {
+      type: DataTypes.STRING(255),
+      defaultValue: "active",
+      allowNull: false
     }
   }, {
     sequelize,
