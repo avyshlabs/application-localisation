@@ -4,7 +4,7 @@ const express = require("express");
 const morgan = require("morgan");
 const Sequelize = require("sequelize");
 const sequelize = require("./DAO/database");
-const CookieParser = require('cookie-parser')
+const CookieParser = require("cookie-parser");
 
 //SCAFFOLD SEQUELIZE-AUTO AFTER INSTALLING SEQUELIZE-AUTO
 //sequelize-auto -o "./models" -d <DATABASE NAME> -h <HOSTNAME> -u <USERNAME> -p <PORT> -x <PASSWORD> -e <DIALECT>
@@ -32,7 +32,7 @@ const app = express();
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(CookieParser())
+app.use(CookieParser());
 
 //Static Files
 app.use(express.static(__dirname + "/public"));

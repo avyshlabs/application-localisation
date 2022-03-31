@@ -154,18 +154,49 @@ openBtn.addEventListener("click", () => {
 });
 
 //-------------------TRANSLATIONS---------------
+// fetch("/locale/getTranslations?page_id=4").then((res) => {
+//   res.json().then((data) => {
+//     document.querySelector("#uploadFile").innerHTML =
+//       data.PageLabels.uploadFile;
+//     document.querySelector("#logout").innerHTML = data.PageLabels.logout;
+//     document.querySelector("#instruction").innerHTML =
+//       data.PageLabels.instruction;
+//     document.querySelector("#download").innerHTML = data.PageLabels.download;
+//     document.querySelector("#uploadExcelFile").innerHTML =
+//       data.PageLabels.uploadExcelFile;
+//     document.querySelector("#validation").innerHTML =
+//       data.PageLabels.validation;
+//     document.querySelector("#submit").innerHTML = data.PageLabels.submit;
+//   });
+// });
+
+let uploadFile = document.querySelector("#uploadFile");
+let logout = document.querySelector("#logout");
+let instruction = document.querySelector("#instruction");
+let uploadExcelFile = document.querySelector("#uploadExcelFile");
+let validation = document.querySelector("#validation");
+let submit = document.querySelector("#submit");
+
 fetch("/locale/getTranslations?page_id=4").then((res) => {
   res.json().then((data) => {
-    document.querySelector("#uploadFile").innerHTML =
-      data.PageLabels.uploadFile;
-    document.querySelector("#logout").innerHTML = data.PageLabels.logout;
-    document.querySelector("#instruction").innerHTML =
-      data.PageLabels.instruction;
-    document.querySelector("#download").innerHTML = data.PageLabels.download;
-    document.querySelector("#uploadExcelFile").innerHTML =
-      data.PageLabels.uploadExcelFile;
-    document.querySelector("#validation").innerHTML =
-      data.PageLabels.validation;
-    document.querySelector("#submit").innerHTML = data.PageLabels.submit;
+    let translations = data.PageLabels;
+    let labels = [
+      uploadFile,
+      instruction,
+      download,
+      uploadExcelFile,
+      validation,
+      submit,
+      logout,
+    ];
+
+    let translationsArr = Object.values(translations);
+    console.log(translationsArr);
+
+    for (let i = 0; i < labels.length; i++) {
+      if (translationsArr[i] !== undefined) {
+        labels[i].innerHTML = translationsArr[i];
+      }
+    }
   });
 });

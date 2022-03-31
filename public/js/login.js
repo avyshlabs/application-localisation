@@ -15,3 +15,28 @@ fetch("http://localhost:3000/locale/getTranslations?page_id=1").then((res) => {
     // }
   });
 });
+
+// let userDatabase = document.querySelector("userDatabase");
+// let signUp = document.querySelector("#signup");
+// let userName = document.querySelector("#userName");
+// let password = document.querySelector("#password");
+// let submit = document.querySelector("#submit");
+// let signIn = document.querySelector("#signIn");
+
+// let labels = [userDatabase, signUp, userName, password, signIn];
+// fetch("/locale/getTranslations?page_id=1").then((res) => {
+//   res.json().then((data) => {
+//     let translations = data.PageLabels;
+//     // console.log(translations);
+
+//     let translationsArr = Object.values(translations);
+//     console.log(translationsArr);
+
+//     for (let i = 0; i < labels.length; i++) {
+//       if (translationsArr[i] !== undefined) {
+//         console.log(labels[i]);
+//         labels[i].innerHTML = translationsArr[i];
+//       }
+//     }
+//   });
+// });
