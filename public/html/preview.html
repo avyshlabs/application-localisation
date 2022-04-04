@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+      integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
+    />
+    <link rel="stylesheet" href="../css/preview.css" />
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.js"
+    ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <title>Preview Excel</title>
+  </head>
+  <body>
+    <div id="navbar">
+      <nav class="navbar navbar-expand-lg">
+        <!-- Container wrapper -->
+        <div class="container-fluid">
+          <!-- Toggle button -->
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-mdb-toggle="collapse"
+            data-mdb-target="#navbarLeftAlignExample"
+            aria-controls="navbarLeftAlignExample"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <i class="fas fa-bars"></i>
+          </button>
+
+          <!-- Collapsible wrapper -->
+          <div class="collapse navbar-collapse" id="navbarLeftAlignExample">
+            <!-- Left links -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a
+                  class="nav-link active"
+                  id="uploadFile"
+                  aria-current="page"
+                  href="/excel/uploadFile"
+                  >Upload File</a
+                >
+              </li>
+              <li class="nav-item">
+                <a id="logout" class="nav-link" id="logout" href="/user/logout"
+                  >Logout</a
+                >
+              </li>
+              <!-- Navbar dropdown -->
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="navbarDropdown"
+                  role="button"
+                  data-mdb-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Translation
+                </a>
+                <!-- Dropdown menu -->
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li>
+                    <a class="dropdown-item" href="/user/preview?lang_id=1"
+                      >English</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="/user/preview?lang_id=2"
+                      >ಕನ್ನಡ</a
+                    >
+                  </li>
+                  <li><hr class="dropdown-divider" /></li>
+                  <li>
+                    <a class="dropdown-item" href="/user/preview?lang_id=3"
+                      >हिन्दी</a
+                    >
+                  </li>
+                </ul>
+              </li>
+            </ul>
+            <!-- Left links -->
+          </div>
+          <!-- Collapsible wrapper -->
+        </div>
+        <!-- Container wrapper -->
+      </nav>
+    </div>
+    <div class="container">
+      <h1 class="message">
+        <span id="message">File has been uploaded successfully</span>!
+      </h1>
+    </div>
+    <!-- <div class="btn-group">
+      <button onclick="showLanguage()" id="language-btn" class="active">
+        Language
+      </button>
+      <button onclick="showPage()" id="page-btn">Page</button>
+      <button onclick="showLabel()" id="label-btn">Label</button>
+      <button onclick="showPageMap()" id="page-map-btn">Page-map</button>
+    </div>
+    <div class="table-div">
+      <div class="container">
+        <table class="table language-table">
+          <thead>
+            <tr>
+              <th id="name">Language_id</th>
+              <th>Language_name</th>
+              <th>Created_date</th>
+              <th>Deleted_date</th>
+            </tr>
+          </thead>
+          <tbody id="data"></tbody>
+        </table>
+      </div>
+      <div class="container">
+        <table class="table page-table">
+          <thead>
+            <tr>
+              <th id="name">Page_id</th>
+              <th>Page_name</th>
+              <th>Created_date</th>
+              <th>Deleted_date</th>
+            </tr>
+          </thead>
+          <tbody id="data"></tbody>
+        </table>
+      </div>
+      <div class="container">
+        <table class="table label-table">
+          <thead>
+            <tr>
+              <th id="name">Label_id</th>
+              <th>Label_name</th>
+              <th>Label_value</th>
+              <th>Language_id</th>
+              <th>Created_date</th>
+              <th>Updated_date</th>
+            </tr>
+          </thead>
+          <tbody id="data"></tbody>
+        </table>
+      </div>
+      <div class="container">
+        <table class="table page-map-table">
+          <thead>
+            <tr>
+              <th id="name">Page_map_id</th>
+              <th>Page_id</th>
+              <th>Label_id</th>
+              <th>Created_date</th>
+              <th>Updated_date</th>
+            </tr>
+          </thead>
+          <tbody id="data"></tbody>
+        </table>
+      </div>
+    </div> -->
+  </body>
+  <script src="../js/preview.js"></script>
+</html>
