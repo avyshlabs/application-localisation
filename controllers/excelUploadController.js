@@ -184,7 +184,9 @@ router.get("/download-template", async (req, res) => {
 router.get("/download-addLabels", async (req, res) => {
   try {
     // let result = await excelUploadService.returnTemplate();
-    let result = await excelUploadService.exportTemplate();
+    let pageId = req.query.pageId;
+
+    let result = await excelUploadService.exportTemplate(pageId);
 
     let workbook = new excel.Workbook();
     await workbook.xlsx.readFile(`${__dirname}/../uploads/addLabels.xlsx`);
@@ -205,11 +207,14 @@ router.get("/download-addLabels", async (req, res) => {
   }
 });
 
-router.get("/download-updateLabels/:pageId", async (req, res) => {
+router.get("/download-updateLabels", async (req, res) => {
   try {
     // let result = await excelUploadService.returnTemplate();
-    let result = await excelUploadService.updateTemplate(req.params.pageId);
-
+    
+    let pageId = req.query.pageId;
+    
+    let result = await excelUploadService.updateTemplate(pageId);
+     
     let workbook = new excel.Workbook();
     await workbook.xlsx.readFile(`${__dirname}/../uploads/updateLabels.xlsx`);
     res.setHeader(
@@ -241,6 +246,32 @@ router.route("/dashboard").get(async (req, res) => {
   // }
   // res.send(worksheets);
   res.sendFile("dashboard.html", { root: `${__dirname}/../public/html` });
+});
+
+
+router.get("/download-afterLanguage", async (req, res) => {
+  try {
+    // let result = await excelUploadService.returnTemplate();
+        
+    let result = await excelUploadService.afterLanguage();
+     
+    let workbook = new excel.Workbook();
+    await workbook.xlsx.readFile(`${__dirname}/../uploads/afterLanguage.xlsx`);
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheet.sheet"
+    );
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=" + "Template-extraLabels.xlsx"
+    );
+    return workbook.xlsx.write(res).then(() => {
+      res.status(200).end();
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json("Error");
+  }
 });
 
 module.exports = router;

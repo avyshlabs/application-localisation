@@ -404,13 +404,43 @@ exports.updateTemplate = async (pageId) => {
 
     //GET EXISTING DATA FROM DATABASE
     let languages = await languageService.getAll();
-    let labels = await pageLabelService.getLabels(pageId);
-
-    //retrieve labels according to pageId
+    let labels, label, result2;
 
     //RETRIEVE THE SPECIFIC DATA
     let language = languages.Language;
-    let label = labels.Pagelabels;
+    
+    let langArr = language.map((lang)=> {
+      return lang.Language_id + " " + lang.Language_name;
+    });
+
+    if(pageId != undefined){
+      labels = await pageLabelService.getLabels(pageId);
+      label = labels.Pagelabels;
+      result2 = label.map((object) => {
+        return [
+          object.Label.Label_id,
+          object.Label.Label_name,
+          object.Label.Label_value,
+          langArr[object.Label.Language_id - 1],
+          object.Label.Status,
+        ];
+      });
+    }
+    else{
+      labels = await labelService.getAll();
+      label = labels.Label;
+      result2 = label.map((object) => {
+        return [
+          object.Label_id,
+          object.Label_name,
+          object.Label_value,
+          langArr[object.Language_id - 1],
+          object.Status,
+        ];
+      });
+    }
+
+    console.log(label);
 
     //CREATE ARRAYS OF ARRAY OF DATA
 
@@ -425,16 +455,6 @@ exports.updateTemplate = async (pageId) => {
         object.Language_id,
         object.Language_name,
         langCodes[c++],
-      ];
-    });
-
-    let result2 = label.map((object) => {
-      return [
-        object.Label.Label_id,
-        object.Label.Label_name,
-        object.Label.Label_value,
-        object.Label.Language_id,
-        object.Label.Status,
       ];
     });
 
@@ -481,7 +501,7 @@ exports.updateTemplate = async (pageId) => {
   }
 };
 
-exports.exportTemplate = async()=> {
+exports.exportTemplate = async(pageId)=> {
   try{
     let workbook = new excel.Workbook();
     await workbook.xlsx.readFile(`${__dirname}/../uploads/addLabels.xlsx`);
@@ -525,6 +545,7 @@ exports.exportTemplate = async()=> {
 
     //DELETE ROWS FROM EXISTING TEMPLATE
     this.deleteRows(languageSheet);
+    this.deleteRows(labelSheet);
 
     const alphabets = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "K", "L"];
 
@@ -533,6 +554,28 @@ exports.exportTemplate = async()=> {
         let attribute = alphabets[j] + i;
         languageSheet.getCell(attribute).value = result1[k][j];
       }
+    }
+
+    if(pageId != undefined){
+      let labels = await pageLabelService.getAllDistinct(pageId);
+      let label = labels.Label;
+      console.log("=------------------------> Label");
+      console.log(label);
+
+      let result2 = label.map((object) => {
+        console.log(object.Label.Label_name);
+        return [
+          object.Label.Label_name,
+        ];
+      });
+  
+  
+      for (let i = 2, k = 0; k < result2.length; i++, k++) {
+        for (let j = 0; j < result2[0].length; j++) {
+          let attribute = alphabets[j] + i;
+          labelSheet.getCell(attribute).value = result2[k][j];
+        }
+      } 
     }
 
     return workbook.xlsx.writeFile(`${__dirname}/../uploads/addLabels.xlsx`);
@@ -586,3 +629,51 @@ exports.addLabelFromExcel = async (worksheets,Page_id) => {
     console.log(err);
   }
 };
+
+
+exports.afterLanguage = async()=> {
+  try{
+    let workbook = new excel.Workbook();
+    await workbook.xlsx.readFile(`${__dirname}/../uploads/afterLanguage.xlsx`);
+
+    let labelSheet = workbook.getWorksheet("Label");
+
+    //SET COLUMN WIDTH, HEADERS AND KEYS
+    labelSheet.columns = [
+      { header: "Label_name", key: "Label_name", width: 28 },
+      { header: "Label_value", key: "Label_value", width: 28 },
+    ];
+
+
+    //DELETE ROWS FROM EXISTING TEMPLATE
+    this.deleteRows(labelSheet);
+
+    //GET ALL LABELS
+    let labels = await labelService.getAllDistinct(pageId);
+
+    //SPECIFIC DATA
+    let label  = labels.Label;
+
+    //ARRAY OF ARRAY OF DATA
+    let result1 = label.map((object) => {
+      return [
+        object.Label_name,
+      ];
+    });
+
+    const alphabets = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "K", "L"];
+
+    for (let i = 2, k = 0; k < result1.length; i++, k++) {
+      for (let j = 0; j < result1[0].length; j++) {
+        let attribute = alphabets[j] + i;
+        labelSheet.getCell(attribute).value = result1[k][j];
+      }
+    }
+
+    return workbook.xlsx.writeFile(`${__dirname}/../uploads/afterLanguage.xlsx`);
+
+  }catch(err){
+    console.log("Error in services: ", err);
+    return {Success: false, Error: err};
+  }
+}
