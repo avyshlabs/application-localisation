@@ -95,43 +95,12 @@
                   class="nav-link active"
                   id="uploadFile"
                   aria-current="page"
-                  href="/excel/uploadFile"
-                  >Upload File</a
+                  href="/user/dashboard"
+                  >Dashboard</a
                 >
               </li>
               <li class="nav-item">
                 <a class="nav-link" id="logout" href="/user/logout">Logout</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a
-                  class="nav-link dropdown-toggle"
-                  href="#"
-                  id="navbarDropdown"
-                  role="button"
-                  data-mdb-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Translation
-                </a>
-                <!-- Dropdown menu -->
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <li>
-                    <a class="dropdown-item" href="/user/uploadFile?lang_id=1"
-                      >English</a
-                    >
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="/user/uploadFile?lang_id=2"
-                      >ಕನ್ನಡ</a
-                    >
-                  </li>
-                  <li><hr class="dropdown-divider" /></li>
-                  <li>
-                    <a class="dropdown-item" href="/user/uploadFile?lang_id=3"
-                      >हिन्दी</a
-                    >
-                  </li>
-                </ul>
               </li>
             </ul>
             <!-- Left links -->
@@ -144,10 +113,7 @@
 
     <header>
       <h2 id="instruction">
-        <b>
-          Please download the template and make changes to the same file before
-          uploading it.
-        </b>
+        <b> Please download the template and add new labels. </b>
       </h2>
       <br />
       <div>
@@ -202,7 +168,26 @@
             <!-- <h2 class="heading"style="display: none;">Page-map Table</h2> -->
           </div>
         </div>
-
+        <div class="col-md-3 options">
+          <div class="container">
+            <h4 id="validation">
+              <b>Please select the page to add labels to.</b>
+            </h4>
+          </div>
+          <select
+            class="form-select form-select-lg mb-3"
+            name="page_id"
+            id="page"
+            aria-label=".form-select-lg example"
+            required
+          >
+            <option selected>Select Page</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </select>
+          <div class="invalid-feedback">Please select a valid page.</div>
+        </div>
         <button class="btn submit-btn" type="submit">
           <i class="submit-icon fa-solid fa-file-arrow-up"></i>
           <span id="submit"> Submit</span>

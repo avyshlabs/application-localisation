@@ -84,8 +84,8 @@ section {
 
 .card h2 {
   text-align: center;
-  font-size: larger;
-  padding: 0 0 10px 0;
+  font-size: 25px;
+  padding: 10px 0 10px 0;
 }
 
 .submit-btn {
@@ -131,4 +131,9 @@ section {
 
 .modal-body {
   padding: 15px 20px;
+}
+
+.options {
+  width: 50%;
+  margin: auto;
 }
