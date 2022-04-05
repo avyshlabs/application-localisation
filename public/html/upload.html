@@ -58,14 +58,14 @@
     ></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script
-    type="text/javascript"
-    src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"
-  ></script>
-  <style>
-    body {
-      font-family: "Noto Sans", sans-serif;
-    }
-  </style>
+      type="text/javascript"
+      src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"
+    ></script>
+    <style>
+      body {
+        font-family: "Noto Sans", sans-serif;
+      }
+    </style>
     <title>Upload file</title>
   </head>
   <body>
@@ -141,7 +141,7 @@
         <!-- Container wrapper -->
       </nav>
     </div>
-    
+
     <header>
       <h2 id="instruction">
         <b>
@@ -152,64 +152,71 @@
       <br />
       <div>
         <form method="get" action="/excel/download-template">
-          <button class="btn"><i class="fa fa-download"></i> <span  id="download">download</span></button>
+          <button class="btn">
+            <i class="fa fa-download"></i> <span id="download">download</span>
+          </button>
         </form>
       </div>
     </header>
     <section>
-    <div class="card">
-      <form action="/excel/uploadFile" method="post" enctype="multipart/form-data">
-        <!-- <i class="fa fa-download fileicon" style="width: 100%"></i> -->
-        <h2 id="uploadExcelFile">
-          <b> Upload Excel File </b>
-        </h2>
-        <i class="fa-solid fa-file-lines fileicon" style="width: 100%"></i>
-        <label for="excelFile" class="custom-file-upload"> Select File</label>
-        <input
-          id="excelFile"
-          name="excelFile"
-          type="file"
-          style="display: none"
-          
-        />
+      <form
+        action="/excel/uploadFile"
+        method="post"
+        enctype="multipart/form-data"
+      >
+        <div class="card">
+          <!-- <i class="fa fa-download fileicon" style="width: 100%"></i> -->
+          <h2 id="uploadExcelFile">
+            <b> Upload Excel File </b>
+          </h2>
+          <i class="fa-solid fa-file-lines fileicon" style="width: 100%"></i>
+          <label for="excelFile" class="custom-file-upload"> Select File</label>
+          <input
+            id="excelFile"
+            name="excelFile"
+            type="file"
+            style="display: none"
+            required
+          />
+          <div class="invalid-feedback">Please provide a file.</div>
+          <div class="container">
+            <h4 id="validation">
+              <b
+                >Make sure to upload the same template file which is edited and
+                validated.</b
+              >
+            </h4>
+          </div>
+        </div>
         <div class="container">
-          <h4 id="validation">
-            <b
-              >Make sure to upload the same template file which is edited and
-              validated.</b
-            >
-          </h4>
+          <div id="excel_data" class="mt-5">
+            <!-- <h2 class="heading"style="display: none;">Language Table</h2> -->
+          </div>
+          <div id="excel_data1" class="mt-5">
+            <!-- <h2 class="heading"style="display: none;">Page Table</h2> -->
+          </div>
+          <div id="excel_data2" class="mt-5">
+            <!-- <h2 class="heading"style="display: none;">Label Table</h2> -->
+          </div>
+          <div id="excel_data3" class="mt-5">
+            <!-- <h2 class="heading"style="display: none;">Page-map Table</h2> -->
+          </div>
         </div>
-      </div>
-      <div class="container">
-        <div id="excel_data" class="mt-5">
-          <!-- <h2 class="heading"style="display: none;">Language Table</h2> -->
-        </div>
-        <div id="excel_data1" class="mt-5">
-          <!-- <h2 class="heading"style="display: none;">Page Table</h2> -->
 
+        <button class="btn submit-btn" type="submit">
+          <i class="submit-icon fa-solid fa-file-arrow-up"></i>
+          <span id="submit"> Submit</span>
+        </button>
+      </form>
+    </section>
+    <div class="modal-wrapper" id="modal">
+      <div class="modal">
+        <div class="modal-body">
+          <h4>Modal Body</h4>
+          <p>pls wait, thanks.</p>
         </div>
-        <div id="excel_data2" class="mt-5">
-          <!-- <h2 class="heading"style="display: none;">Label Table</h2> -->
-
-        </div>
-        <div id="excel_data3" class="mt-5">
-          <!-- <h2 class="heading"style="display: none;">Page-map Table</h2> -->
-
-        </div>
-      </div>
-      
-      <button class="btn submit-btn"type="submit" ><i class="submit-icon fa-solid fa-file-arrow-up"></i> <span id="submit"> Submit</span></button>
-    </form>
-  </section>
-  <div class="modal-wrapper" id="modal">
-    <div class="modal">
-      <div class="modal-body">
-        <h4>Modal Body</h4>
-        <p>pls wait, thanks.</p>
       </div>
     </div>
-  </div>
   </body>
-    <script src="../js/upload.js"></script>
+  <script src="../js/upload.js"></script>
 </html>

@@ -149,9 +149,9 @@ excelFile.addEventListener("change", (event) => {
 const openBtn = document.getElementById("submit");
 const modal = document.getElementById("modal");
 
-openBtn.addEventListener("click", () => {
-  modal.classList.add("open");
-});
+// openBtn.addEventListener("click", () => {
+//   modal.classList.add("open");
+// });
 
 //-------------------TRANSLATIONS---------------
 // fetch("/locale/getTranslations?page_id=4").then((res) => {

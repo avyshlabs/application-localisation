@@ -29,7 +29,7 @@
       type="text/javascript"
       src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.js"
     ></script>
-
+    <link rel="stylesheet" href="../css/dashboard.css" />
     <title>Dashboard</title>
   </head>
   <body>
@@ -107,30 +107,64 @@
         <!-- Container wrapper -->
       </nav>
     </div>
+
     <!-- Main Message -->
-    <h2 id="welcome">Welcome User</h2>
 
     <!-- Table  -->
-    <div class="container">
-      <table class="table">
-        <thead>
-          <tr>
-            <th id="id">Id</th>
-            <th id="userName">Username</th>
-            <th id="email">Email</th>
-            <th id="firstName">First Name</th>
-            <th id="lastName">Last Name</th>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>testuser</td>
-            <td>test@user.com</td>
-            <td>test</td>
-            <td>user</td>
-          </tr>
-        </thead>
-        <tbody id="data"></tbody>
-      </table>
+    <div class="full-container">
+      <header>
+        <h2>EXCEL UPLOAD OPTIONS:</h2>
+      </header>
+      <div class="hero">
+        <div class="cards">
+          <a class="card1" href="#">
+            <h3>Add New Language</h3>
+            <p class="small">Click to add a new language.</p>
+            <div class="go-corner" href="#">
+              <div class="go-arrow">→</div>
+            </div>
+          </a>
+          <a class="card1" href="#">
+            <h3>Add New Page</h3>
+            <p class="small">Click here to add a new page.</p>
+            <div class="go-corner" href="#">
+              <div class="go-arrow">→</div>
+            </div>
+          </a>
+          <a class="card1" href="#">
+            <h3>Add New Labels</h3>
+            <p class="small">Click here to add new labels.</p>
+            <div class="go-corner" href="#">
+              <div class="go-arrow">→</div>
+            </div>
+          </a>
+          <a class="card1" href="#">
+            <h3>Update Existing Labels</h3>
+            <p class="small">Click here to update existing labels.</p>
+            <div class="go-corner" href="#">
+              <div class="go-arrow">→</div>
+            </div>
+          </a>
+          <a class="card1" href="#">
+            <h3>Download Full Template</h3>
+            <p class="small">
+              Click here to download the excel file with all the rows populated.
+            </p>
+            <div class="go-corner" href="#">
+              <div class="go-arrow">→</div>
+            </div>
+          </a>
+          <a class="card1 danger-card" href="/user/uploadFile">
+            <h3>Complete Upload</h3>
+            <p class="small">
+              Click here to upload the excel file with manual entries.
+            </p>
+            <div class="go-corner" href="/user/uploadFile">
+              <div class="go-arrow">→</div>
+            </div>
+          </a>
+        </div>
+      </div>
     </div>
     <script src="../js/dashboard.js"></script>
   </body>
