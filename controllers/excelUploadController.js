@@ -159,9 +159,11 @@ router
 
 router.get("/download-template", async (req, res) => {
   try {
-    let result = await excelUploadService.returnTemplate();
+    // let result = await excelUploadService.returnTemplate();
+    let result = await excelUploadService.exportTemplate();
+
     let workbook = new excel.Workbook();
-    await workbook.xlsx.readFile("./Template.xlsx");
+    await workbook.xlsx.readFile(`${__dirname}/../uploads/addLabels.xlsx`);
     res.setHeader(
       "Content-Type",
       "application/vnd.openxmlformats-officedocument.spreadsheet.sheet"
