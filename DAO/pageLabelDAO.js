@@ -22,7 +22,7 @@ const models = initModels(sequelize);
 exports.createPageMap = async(pageId, labelsArr, transaction)=> {
   try{
     let pageMaps = [];
-    labelsArr.map((labelId)=> {
+    labelsArr.map(async (labelId)=> {
       let date = new Date();
       let pagemap = await models.page_map.create({
         Page_id: pageId,
