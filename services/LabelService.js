@@ -39,18 +39,31 @@ exports.getAll = async () => {
   }
 };
 
-exports.update = async (labelId, details,transaction) => {
+exports.update = async (labelId, details, transaction) => {
   try {
     let toUpdate = {
       Label_name: details.Label_name,
       Label_value: details.Label_value,
-      Language_id: details.Language_id,
+      Language_id: details.Language_id.substring(
+        0,
+        details.Language_id.indexOf(" ")
+      ),
       Status: details.Status,
       Updated_date: new Date(),
     };
-    let label = await Label.update(labelId, toUpdate,transaction);
+    let label = await Label.update(labelId, toUpdate, transaction);
     return label;
   } catch (err) {
+    return { Success: false, Error: err };
+  }
+};
+
+exports.getLabelByValue = async (labelValue) => {
+  try {
+    let label = await Label.getLabelByValue(labelValue);
+    return label;
+  } catch (err) {
+    console.log(err);
     return { Success: false, Error: err };
   }
 };
