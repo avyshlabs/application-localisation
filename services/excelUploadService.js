@@ -160,7 +160,7 @@ exports.addExcelToDatabase = async (worksheets) => {
 exports.returnTemplate = async () => {
   try {
     let workbook = new excel.Workbook();
-    await workbook.xlsx.readFile("./Template.xlsx");
+    await workbook.xlsx.readFile(`${__dirname}/../uploads/template.xlsx`);
 
     let languageSheet = workbook.getWorksheet("Language");
     let labelSheet = workbook.getWorksheet("Label");
