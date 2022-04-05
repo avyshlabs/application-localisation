@@ -392,7 +392,6 @@ exports.updateTemplate = async (pageId) => {
       { header: "Language_id", key: "Language_id", width: 20 },
       { header: "Language_name", key: "Language_name", width: 28 },
       { header: "Language_code", key: "Language_code", width: 28 },
-      { header: "Status", key: "Status", width: 20}
     ];
 
     labelSheet.columns = [
@@ -413,9 +412,6 @@ exports.updateTemplate = async (pageId) => {
     let language = languages.Language;
     let label = labels.Pagelabels;
 
-    console.log("-------------------------------------------------------------> Label");
-    console.log(label);
-
     //CREATE ARRAYS OF ARRAY OF DATA
 
     let langCodes = language.map((object)=> {
@@ -429,7 +425,6 @@ exports.updateTemplate = async (pageId) => {
         object.Language_id,
         object.Language_name,
         langCodes[c++],
-        object.Status,
       ];
     });
 

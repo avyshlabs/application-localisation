@@ -194,7 +194,7 @@ router.get("/download-addLabels", async (req, res) => {
     );
     res.setHeader(
       "Content-Disposition",
-      "attachment; filename=" + "Template-download.xlsx"
+      "attachment; filename=" + "Template-addLabels.xlsx"
     );
     return workbook.xlsx.write(res).then(() => {
       res.status(200).end();
@@ -218,7 +218,7 @@ router.get("/download-updateLabels/:pageId", async (req, res) => {
     );
     res.setHeader(
       "Content-Disposition",
-      "attachment; filename=" + "Template-download.xlsx"
+      "attachment; filename=" + "Template-updateLabels.xlsx"
     );
     return workbook.xlsx.write(res).then(() => {
       res.status(200).end();
