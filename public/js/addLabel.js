@@ -1,17 +1,11 @@
-var myParent = document.body;
-let options = document.querySelector(".options");
+let options = document.querySelector("#page");
 //Create array of options to be added
-var array = ["Volvo", "Saab", "Mercades", "Audi"];
-
-//Create and append select list
-var selectList = document.createElement("select");
-selectList.id = "mySelect";
-myParent.appendChild(selectList);
+let array = ["Login", "Dashboard", "Signup", "Preview"];
 
 //Create and append the options
-for (var i = 0; i < array.length; i++) {
-  var option = document.createElement("option");
-  option.value = array[i];
+for (let i = 0; i < array.length; i++) {
+  let option = document.createElement("option");
+  option.value = i;
   option.text = array[i];
-  selectList.appendChild(option);
+  options.appendChild(option);
 }

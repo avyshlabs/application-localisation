@@ -51,7 +51,7 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
     />
-    <link rel="stylesheet" href="../css/addLabel.css" />
+    <link rel="stylesheet" href="../css/updateLabel.css" />
     <script
       type="text/javascript"
       src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.js"
@@ -66,7 +66,7 @@
         font-family: "Noto Sans", sans-serif;
       }
     </style>
-    <title>Add Label</title>
+    <title>Update Label</title>
   </head>
   <body>
     <div id="navbar">
@@ -113,11 +113,22 @@
 
     <header>
       <h2 id="instruction">
-        <b> Please download the template and add new labels. </b>
+        <b> Please select the page to download respective template </b>
       </h2>
       <br />
       <div>
         <form method="get" action="/excel/download-template">
+          <div class="col-md-3 options">
+            <div class="container"></div>
+            <select
+              class="form-select form-select-lg mb-3"
+              name="page_id"
+              id="page"
+              aria-label=".form-select-lg example"
+              required
+            ></select>
+            <div class="invalid-feedback">Please select a valid page.</div>
+          </div>
           <button class="btn">
             <i class="fa fa-download"></i> <span id="download">download</span>
           </button>
@@ -168,26 +179,7 @@
             <!-- <h2 class="heading"style="display: none;">Page-map Table</h2> -->
           </div>
         </div>
-        <div class="col-md-3 options">
-          <div class="container">
-            <h4 id="validation">
-              <b>Please select the page to map newly added labels</b>
-            </h4>
-          </div>
-          <select
-            class="form-select form-select-lg mb-3"
-            name="page_id"
-            id="page"
-            aria-label=".form-select-lg example"
-            required
-          >
-            <!-- <option selected>Select Page</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option> -->
-          </select>
-          <div class="invalid-feedback">Please select a valid page.</div>
-        </div>
+
         <button class="btn submit-btn" type="submit">
           <i class="submit-icon fa-solid fa-file-arrow-up"></i>
           <span id="submit"> Submit</span>
