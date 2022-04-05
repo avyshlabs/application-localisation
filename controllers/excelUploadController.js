@@ -133,4 +133,18 @@ router.get("/download-template", async (req, res) => {
   }
 });
 
+router.route("/dashboard").get(async (req, res) => {
+  //C:\Users\HP\Desktop\Avysh\excel_import_export\controllers\Book1.xlsx
+  // const workbook = xlsx.readFile("C:/Users/HP/Desktop/Avysh/excel_import_export/controllers/Book1.xlsx");
+  // let worksheets = {};
+  // for (const sheetName of workbook.SheetNames) {
+  //   console.log(`---->${sheetName}`);
+  //   worksheets[sheetName] = xlsx.utils.sheet_to_json(
+  //     workbook.Sheets[sheetName]
+  //   );
+  // }
+  // res.send(worksheets);
+  res.sendFile("dashboard.html", { root: `${__dirname}/../public/html` });
+});
+
 module.exports = router;
