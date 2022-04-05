@@ -317,31 +317,36 @@ exports.returnTemplate = async () => {
   }
 };
 
-exports.addLabelFromExcel = async (worksheets,Page_id) => {
+exports.addLabelFromExcel = async (worksheets, Page_id) => {
   try {
-    console.log(`inside excelUploadService- addLabelFromEXcel Service, pageId = ${Page_id}`);
+    console.log(
+      `inside excelUploadService- addLabelFromEXcel Service, pageId = ${Page_id}`
+    );
     if (worksheets.Label === undefined) {
       throw new Error("all tables must be there in the excel file");
     }
 
     return sequelize
       .transaction(async (t) => {
-        let LabelIdArray = []
+        let LabelIdArray = [];
         for (const labelObj of worksheets.Label) {
-            let saveResult = await labelService.createLabel(
-              {
-                label_name: labelObj.Label_name,
-                label_value: labelObj.Label_value,
-                //language_id: labelObj.Language_id, str.substring(0, str.indexOf(' '))
-                language_id: labelObj.Language_id.substring(0, labelObj.Language_id.indexOf(' '))
-              },
-              t
-            );
-            if (!saveResult.Success) throw new Error(); 
-            LabelIdArray.push(saveResult.Content.Label_id)
+          let saveResult = await labelService.createLabel(
+            {
+              label_name: labelObj.Label_name,
+              label_value: labelObj.Label_value,
+              //language_id: labelObj.Language_id, str.substring(0, str.indexOf(' '))
+              language_id: labelObj.Language_id.substring(
+                0,
+                labelObj.Language_id.indexOf(" ")
+              ),
+            },
+            t
+          );
+          if (!saveResult.Success) throw new Error();
+          let pageLabelSaveResult = await pageLabelService.createPageLabel({page:Page_id, label: saveResult.Content.Label_id},t)
+          if(!pageLabelSaveResult.Success) throw new Error();
+          
         }
-        
-        return { LabelIdArray, Page_id }
       })
       .then(async (result) => {
         console.log(`----------------------------->adding labels committed`);
