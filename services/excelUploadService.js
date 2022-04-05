@@ -316,3 +316,65 @@ exports.returnTemplate = async () => {
     return { Success: false, Error: err };
   }
 };
+
+exports.exportTemplate = async()=> {
+  try{
+    let workbook = new excel.Workbook();
+    await workbook.xlsx.readFile(`${__dirname}/../uploads/addLabels.xlsx`);
+
+    let languageSheet = workbook.getWorksheet("Language");
+    let labelSheet = workbook.getWorksheet("Label");
+
+    //SET COLUMN WIDTH, HEADERS AND KEYS
+    languageSheet.columns = [
+      { header: "Language_id", key: "Language_id", width: 18 },
+      { header: "Language_name", key: "Language_name", width: 20 },
+      { header: "Language_code", key: "Language_code", width: 28 },
+    ];
+
+    labelSheet.columns = [
+      { header: "Label_name", key: "Label_name", width: 28 },
+      { header: "Label_value", key: "Label_value", width: 28 },
+      { header: "Language_id", key: "Language_id", width: 28 },
+    ];
+
+    //GET EXISTING DATA FROM DATABASE
+    let languages = await languageService.getAll();
+
+    //RETRIEVE THE SPECIFIC DATA
+    let language = languages.Language;
+
+    //CREATE ARRAYS OF ARRAY OF DATA
+    let langCodes = language.map((object)=> {
+      let str =  object.Language_id + " " + object.Language_name;
+      return String(str);
+    });
+
+    let c = 0;
+    let result1 = language.map((object) => {
+      return [
+        object.Language_id,
+        object.Language_name,
+        langCodes[c++]
+      ];
+    });
+
+    //DELETE ROWS FROM EXISTING TEMPLATE
+    this.deleteRows(languageSheet);
+
+    const alphabets = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "K", "L"];
+
+    for (let i = 2, k = 0; k < result1.length; i++, k++) {
+      for (let j = 0; j < result1[0].length; j++) {
+        let attribute = alphabets[j] + i;
+        languageSheet.getCell(attribute).value = result1[k][j];
+      }
+    }
+
+    return workbook.xlsx.writeFile(`${__dirname}/../uploads/addLabels.xlsx`);
+
+  }catch(err){
+    console.log("Error in services: ", err);
+    return {Success: false, Error: err};
+  }
+}
