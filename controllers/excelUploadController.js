@@ -73,11 +73,11 @@ router
     });
   });
 
-  router
+router
   .route("/addLabels")
   .get(async (req, res) => {
-    res.send('add labels through excel')
-    //res.sendFile("upload.html", { root: `${__dirname}/../public/html` });
+    // res.send('add labels through excel')
+    res.sendFile("addLabel.html", { root: `${__dirname}/../public/html` });
   })
   .post(async (req, res) => {
     const form = formidable({
@@ -105,19 +105,18 @@ router
         );
       }
 
-      await excelUploadService.addLabelFromExcel(worksheets,req.query.pageId)
+      await excelUploadService.addLabelFromExcel(worksheets, req.query.pageId);
       fs.unlink(files.excelFile.filepath, (err) => {
         if (err) {
           console.log(err);
         }
       });
       //res.sendFile("preview.html", { root: `${__dirname}/../public/html` });
-      res.redirect(`/user/preview`);
+      res.redirect(`/user/dashboard`);
 
       //res.json({ fields, files });
     });
   });
-  
 
 // router.get('/download', async (req,res) => {
 //   try {
