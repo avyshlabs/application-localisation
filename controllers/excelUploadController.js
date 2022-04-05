@@ -158,6 +158,30 @@ router
 
 router.get("/download-template", async (req, res) => {
   try {
+    let result = await excelUploadService.returnTemplate();
+    // let result = await excelUploadService.exportTemplate();
+
+    let workbook = new excel.Workbook();
+    await workbook.xlsx.readFile(`${__dirname}/../uploads/template.xlsx`);
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheet.sheet"
+    );
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=" + "Template-download.xlsx"
+    );
+    return workbook.xlsx.write(res).then(() => {
+      res.status(200).end();
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json("Error");
+  }
+});
+
+router.get("/download-addLabels", async (req, res) => {
+  try {
     // let result = await excelUploadService.returnTemplate();
     let result = await excelUploadService.exportTemplate();
 
@@ -169,7 +193,31 @@ router.get("/download-template", async (req, res) => {
     );
     res.setHeader(
       "Content-Disposition",
-      "attachment; filename=" + "Template-download.xlsx"
+      "attachment; filename=" + "Template-addLabels.xlsx"
+    );
+    return workbook.xlsx.write(res).then(() => {
+      res.status(200).end();
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json("Error");
+  }
+});
+
+router.get("/download-updateLabels/:pageId", async (req, res) => {
+  try {
+    // let result = await excelUploadService.returnTemplate();
+    let result = await excelUploadService.updateTemplate(req.params.pageId);
+
+    let workbook = new excel.Workbook();
+    await workbook.xlsx.readFile(`${__dirname}/../uploads/updateLabels.xlsx`);
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheet.sheet"
+    );
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=" + "Template-updateLabels.xlsx"
     );
     return workbook.xlsx.write(res).then(() => {
       res.status(200).end();
