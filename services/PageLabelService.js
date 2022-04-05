@@ -1,3 +1,4 @@
+const { transaction } = require("../DAO/database");
 const PageLabel = require("../DAO/pageLabelDAO");
 
 exports.getPageLabel = async (id) => {
@@ -19,6 +20,17 @@ exports.getPageLabel = async (id) => {
 //         return {Success: false, Error: err};
 //     }
 // }
+
+
+exports.createPageMap = async(pageId, LabelsArr, transaction)=> {
+  try{
+    let pageMap = await PageLabel.createPageMap(pageId, LabelsArr, transaction);
+    return pageMap;
+  }catch(err){
+    console.log(err);
+    return {Success: false, Error: err};
+  }
+}
 
 exports.createPageLabel = async (details, transaction) => {
   try {
