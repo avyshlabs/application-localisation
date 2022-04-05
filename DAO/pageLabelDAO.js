@@ -19,27 +19,6 @@ const models = initModels(sequelize);
 // };
 
 
-exports.createPageMap = async(pageId, labelsArr, transaction)=> {
-  try{
-    let pageMaps = [];
-    labelsArr.map(async (labelId)=> {
-      let date = new Date();
-      let pagemap = await models.page_map.create({
-        Page_id: pageId,
-        Label_id: labelId,
-        Created_date: date,
-        Updated_date: date
-      },
-      {transaction: transaction});
-      pageMaps.push(pagemap);
-    });
-    return {Success: true, PageMap: pageMaps};
-  }catch(err){
-    console.log(err);
-    return {Success: false, Error: err};
-  }
-}
-
 exports.createPageLabel = async (details, transaction) => {
   try {
     let date = new Date();
@@ -167,13 +146,17 @@ exports.getPageLabelById = async (id) => {
     return { Success: false, Error: err };
   }
 };
-exports.update = async (pagemapId, details,transaction) => {
+exports.update = async (pagemapId, details, transaction) => {
   try {
-    let pagemap = await models.page_map.update(details, {
-      where: {
-        Page_map_id: pagemapId,
+    let pagemap = await models.page_map.update(
+      details,
+      {
+        where: {
+          Page_map_id: pagemapId,
+        },
       },
-    },{transaction:transaction});
+      { transaction: transaction }
+    );
     return { Success: true, Pagemap: pagemap };
   } catch (err) {
     console.log("DAO pagemap error: ", err);

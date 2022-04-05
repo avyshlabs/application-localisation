@@ -1,7 +1,7 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-const PageService = require('../services/PageService');
+const PageService = require("../services/PageService");
 
 // router.
 // route('/')
@@ -62,17 +62,20 @@ router
   .post(async (req, res) => {
     try {
       let details = req.body.Page_name;
-      let result = await PageService.saveOnePage(details)
+      let result = await PageService.saveOnePage(details);
       if (result.Success) {
-        res.redirect(`/user/uploadFile`); 
+        res.redirect(`/user/uploadFile`);
         //res.status(200).json(result);
-      }
-      else res.status(500).json(result);
+      } else res.status(500).json(result);
     } catch (err) {
       console.log(err);
       res.status(500).json(err);
     }
   });
 
-module.exports = router;
+router.get("/getPages", async (req, res) => {
+  const result = await PageService.getPages();
+  res.json(result);
+});
 
+module.exports = router;

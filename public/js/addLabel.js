@@ -1,5 +1,9 @@
 let options = document.querySelector("#page");
-//Create array of options to be added
+fetch("/locale/getTranslations?page_id=4").then((res) => {
+  res.json.then((data) => {
+    let pages = data.page_name;
+  });
+});
 let array = ["Login", "Dashboard", "Signup", "Preview"];
 
 //Create and append the options
