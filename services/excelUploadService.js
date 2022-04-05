@@ -182,7 +182,7 @@ exports.returnTemplate = async () => {
       { header: "Language_id", key: "Language_id", width: 28 },
       { header: "Created_date", key: "Created_date", width: 28 },
       { header: "Updated_date", key: "Updated_date", width: 28 },
-      { header: "Status", key: "Status", width: 20}
+      { header: "Status", key: "Status", width: 20 },
     ];
 
     pageSheet.columns = [
@@ -190,7 +190,7 @@ exports.returnTemplate = async () => {
       { header: "Page_name", key: "Page_name", width: 20 },
       { header: "Created_date", key: "Created_date", width: 28 },
       { header: "Updated_date", key: "Updated_date", width: 28 },
-      { header: "Status", key: "Status", width: 20}
+      { header: "Status", key: "Status", width: 20 },
     ];
 
     pagemapSheet.columns = [
@@ -199,7 +199,7 @@ exports.returnTemplate = async () => {
       { header: "Label_id", key: "Label_id", width: 18 },
       { header: "Created_date", key: "Created_date", width: 28 },
       { header: "Updated_date", key: "Updated_date", width: 28 },
-      { header: "Status", key: "Status", width: 20}
+      { header: "Status", key: "Status", width: 20 },
     ];
 
     //GET EXISTING DATA FROM DATABASE
@@ -221,7 +221,7 @@ exports.returnTemplate = async () => {
         object.Language_name,
         object.Created_date,
         object.Updated_date,
-        object.Status
+        object.Status,
       ];
     });
 
@@ -231,7 +231,7 @@ exports.returnTemplate = async () => {
         object.Page_name,
         object.Created_date,
         object.Updated_date,
-        object.Status
+        object.Status,
       ];
     });
 
@@ -243,7 +243,7 @@ exports.returnTemplate = async () => {
         object.Language_id,
         object.Created_date,
         object.Updated_date,
-        object.Status
+        object.Status,
       ];
     });
 
@@ -254,7 +254,7 @@ exports.returnTemplate = async () => {
         object.Label_id,
         object.Created_date,
         object.Updated_date,
-        object.Status
+        object.Status,
       ];
     });
 
@@ -378,3 +378,40 @@ exports.exportTemplate = async()=> {
     return {Success: false, Error: err};
   }
 }
+exports.addLabelFromExcel = async (worksheets,Page_id) => {
+  try {
+    console.log(`inside excelUploadService- addLabelFromEXcel Service, pageId = ${Page_id}`);
+    if (worksheets.Label === undefined) {
+      throw new Error("all tables must be there in the excel file");
+    }
+
+    return sequelize
+      .transaction(async (t) => {
+        let LabelIdArray = []
+        for (const labelObj of worksheets.Label) {
+            let saveResult = await labelService.createLabel(
+              {
+                label_name: labelObj.Label_name,
+                label_value: labelObj.Label_value,
+                //language_id: labelObj.Language_id, str.substring(0, str.indexOf(' '))
+                language_id: labelObj.Language_id.substring(0, labelObj.Language_id.indexOf(' '))
+              },
+              t
+            );
+            if (!saveResult.Success) throw new Error(); 
+            LabelIdArray.push(saveResult.Content.Label_id)
+        }
+        
+        return { LabelIdArray, Page_id }
+      })
+      .then(async (result) => {
+        console.log(`----------------------------->adding labels committed`);
+      })
+      .catch(function (err) {
+        console.log("------------------------------>adding labels Rolled back");
+        console.log(err);
+      });
+  } catch (err) {
+    console.log(err);
+  }
+};
