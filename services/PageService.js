@@ -9,6 +9,15 @@ exports.getPage = async (pageName) => {
   }
 };
 
+exports.getPages = async () => {
+  try {
+    let pages = await Page.getPages();
+    return pages;
+  } catch (err) {
+    return { Success: false, Error: err };
+  }
+};
+
 // exports.createPage = async(details)=> {
 //     try{
 //         let page = await Page.createPage(details);
@@ -47,14 +56,14 @@ exports.getPageById = async (id) => {
     return { Success: false, Error: err };
   }
 };
-exports.update = async (pageId, details,transaction) => {
+exports.update = async (pageId, details, transaction) => {
   try {
     let toUpdate = {
       Page_name: details.Page_name,
       Status: details.Status,
       Updated_date: new Date(),
     };
-    let page = await Page.update(pageId, toUpdate,transaction);
+    let page = await Page.update(pageId, toUpdate, transaction);
     return page;
   } catch (err) {
     return { Success: false, Error: err };
@@ -71,8 +80,7 @@ exports.saveOnePage = async (pageName) => {
           },
           t
         );
-        if (result.Success)
-          return { Success: true, result: result.Page };
+        if (result.Success) return { Success: true, result: result.Page };
         else throw new Error();
       })
       .then((result) => {

@@ -35,6 +35,15 @@ exports.getPage = async (pageName) => {
   }
 };
 
+exports.getPages = async () => {
+  try {
+    let pages = await models.page.findAll({
+      attributes: ["Page_name", "Page_id"],
+    });
+    return { pages };
+  } catch (err) {}
+};
+
 exports.getAll = async () => {
   try {
     let page = await models.page.findAll();
@@ -59,13 +68,17 @@ exports.getPageById = async (id) => {
     console.log(err);
   }
 };
-exports.update = async (pageId, details,transaction) => {
+exports.update = async (pageId, details, transaction) => {
   try {
-    let page = await models.page.update(details, {
-      where: {
-        Page_id: pageId,
+    let page = await models.page.update(
+      details,
+      {
+        where: {
+          Page_id: pageId,
+        },
       },
-    },{transaction: transaction});
+      { transaction: transaction }
+    );
     return { Success: true, Page: page };
   } catch (err) {
     console.log("DAO page error: ", err);
