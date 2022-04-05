@@ -18,6 +18,34 @@ const languageDAO = require("../DAO/languageDAO");
 //   }
 // };
 
+exports.saveOneLangauage = async (languageName) => {
+  try {
+    return sequelize
+      .transaction(async (t) => {
+        let language = await languageDAO.saveLangauage(
+          {
+            Language_name: languageName,
+            Created_date: new Date(),
+            Updated_date: new Date(),
+          },
+          t
+        );
+        if (language.Success)
+          return { Success: true, language: language.Language };
+        else
+         throw new Error()
+      })
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        return { Success: false, Error: err };
+      });
+  } catch (err) {
+    return { Success: false, Error: err };
+  }
+};
+
 exports.saveLangauage = async (languageName, transaction) => {
   try {
     let language = await languageDAO.saveLangauage(

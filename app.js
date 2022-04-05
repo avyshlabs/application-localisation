@@ -16,6 +16,7 @@ const PageController = require("./controllers/pageController");
 const LabelController = require("./controllers/LabelController");
 const PageLabelController = require("./controllers/PageLabel");
 const excelUploadController = require("./controllers/excelUploadController");
+const languageConotroller = require('./controllers/languageController')
 
 //ASSOCIATIONS DEFINED IN ./MODELS/INIT-MODELS
 
@@ -66,6 +67,7 @@ app.use("/page", PageController);
 app.use("/label", LabelController);
 app.use("/pagelabel", PageLabelController);
 app.use("/excel", excelUploadController);
+app.use('/language',languageConotroller)
 
 // app.listen(process.env.PORT, () => {
 //   console.log(

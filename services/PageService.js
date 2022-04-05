@@ -60,3 +60,28 @@ exports.update = async (pageId, details,transaction) => {
     return { Success: false, Error: err };
   }
 };
+
+exports.saveOnePage = async (pageName) => {
+  try {
+    return sequelize
+      .transaction(async (t) => {
+        let result = await Page.createPage(
+          {
+            name: pageName,
+          },
+          t
+        );
+        if (result.Success)
+          return { Success: true, result: result.Page };
+        else throw new Error();
+      })
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        return { Success: false, Error: err };
+      });
+  } catch (err) {
+    return { Success: false, Error: err };
+  }
+};
