@@ -374,9 +374,6 @@ exports.exportTemplate = async () => {
   }
 };
 
-<<<<<<< HEAD
-exports.addLabelFromExcel = async (worksheets, Page_id) => {
-=======
 exports.updateTemplate = async (pageId) => {
   try {
     let workbook = new excel.Workbook();
@@ -543,7 +540,6 @@ exports.exportTemplate = async()=> {
 
 
 exports.addLabelFromExcel = async (worksheets,Page_id) => {
->>>>>>> 017d0511368c06223128cc8f57f969d1088296bb
   try {
     console.log(
       `inside excelUploadService- addLabelFromEXcel Service, pageId = ${Page_id}`
