@@ -195,4 +195,46 @@ router.route("/dashboard").get(async (req, res) => {
   res.sendFile("dashboard.html", { root: `${__dirname}/../public/html` });
 });
 
+router
+  .route("/updateLabels")
+  .get(async (req, res) => {
+    res.send('update labels through excel')
+    //res.sendFile("upload.html", { root: `${__dirname}/../public/html` });
+  })
+  .post(async (req, res) => {
+    const form = formidable({
+      multiples: false,
+      uploadDir: `${__dirname}/../uploads`,
+      keepExtensions: true,
+    });
+
+    form.parse(req, async (err, fields, files) => {
+      if (err) {
+        next(err);
+        return;
+      }
+     
+      const workbook = xlsx.readFile(files.excelFile.filepath);
+
+      let worksheets = {};
+      for (const sheetName of workbook.SheetNames) {
+        console.log(`---->${sheetName}`);
+        worksheets[sheetName] = xlsx.utils.sheet_to_json(
+          workbook.Sheets[sheetName]
+        );
+      }
+
+      await excelUploadService.updateLabelFromExcel(worksheets)
+      fs.unlink(files.excelFile.filepath, (err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
+      //res.sendFile("preview.html", { root: `${__dirname}/../public/html` });
+      res.redirect(`/user/preview`);
+
+      //res.json({ fields, files });
+    });
+  });
+
 module.exports = router;

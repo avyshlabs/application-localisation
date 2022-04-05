@@ -317,8 +317,8 @@ exports.returnTemplate = async () => {
   }
 };
 
-exports.exportTemplate = async()=> {
-  try{
+exports.exportTemplate = async () => {
+  try {
     let workbook = new excel.Workbook();
     await workbook.xlsx.readFile(`${__dirname}/../uploads/addLabels.xlsx`);
 
@@ -345,18 +345,14 @@ exports.exportTemplate = async()=> {
     let language = languages.Language;
 
     //CREATE ARRAYS OF ARRAY OF DATA
-    let langCodes = language.map((object)=> {
-      let str =  object.Language_id + " " + object.Language_name;
+    let langCodes = language.map((object) => {
+      let str = object.Language_id + " " + object.Language_name;
       return String(str);
     });
 
     let c = 0;
     let result1 = language.map((object) => {
-      return [
-        object.Language_id,
-        object.Language_name,
-        langCodes[c++]
-      ];
+      return [object.Language_id, object.Language_name, langCodes[c++]];
     });
 
     //DELETE ROWS FROM EXISTING TEMPLATE
@@ -372,14 +368,13 @@ exports.exportTemplate = async()=> {
     }
 
     return workbook.xlsx.writeFile(`${__dirname}/../uploads/addLabels.xlsx`);
-
-  }catch(err){
+  } catch (err) {
     console.log("Error in services: ", err);
-    return {Success: false, Error: err};
+    return { Success: false, Error: err };
   }
-}
+};
 
-exports.addLabelFromExcel = async (worksheets,Page_id) => {
+exports.addLabelFromExcel = async (worksheets, Page_id) => {
   try {
     console.log(
       `inside excelUploadService- addLabelFromEXcel Service, pageId = ${Page_id}`
@@ -390,24 +385,33 @@ exports.addLabelFromExcel = async (worksheets,Page_id) => {
 
     return sequelize
       .transaction(async (t) => {
-        let LabelIdArray = [];
         for (const labelObj of worksheets.Label) {
-          let saveResult = await labelService.createLabel(
-            {
-              label_name: labelObj.Label_name,
-              label_value: labelObj.Label_value,
-              //language_id: labelObj.Language_id, str.substring(0, str.indexOf(' '))
-              language_id: labelObj.Language_id.substring(
-                0,
-                labelObj.Language_id.indexOf(" ")
-              ),
-            },
-            t
-          );
-          if (!saveResult.Success) throw new Error();
-          let pageLabelSaveResult = await pageLabelService.createPageLabel({page:Page_id, label: saveResult.Content.Label_id},t)
-          if(!pageLabelSaveResult.Success) throw new Error();
-          
+          let result = await labelService.getLabelByValue(labelObj.Label_value);
+          if (result.Success) {
+            let pageLabelSaveResult = await pageLabelService.createPageLabel(
+              { page: Page_id, label: result.Label.Label_id },
+              t
+            );
+            if (!pageLabelSaveResult.Success) throw new Error();
+          } else {
+            let saveResult = await labelService.createLabel(
+              {
+                label_name: labelObj.Label_name,
+                label_value: labelObj.Label_value,
+                language_id: labelObj.Language_id.substring(
+                  0,
+                  labelObj.Language_id.indexOf(" ")
+                ),
+              },
+              t
+            );
+            if (!saveResult.Success) throw new Error();
+            let pageLabelSaveResult = await pageLabelService.createPageLabel(
+              { page: Page_id, label: saveResult.Content.Label_id },
+              t
+            );
+            if (!pageLabelSaveResult.Success) throw new Error();
+          }
         }
       })
       .then(async (result) => {
@@ -415,6 +419,40 @@ exports.addLabelFromExcel = async (worksheets,Page_id) => {
       })
       .catch(function (err) {
         console.log("------------------------------>adding labels Rolled back");
+        console.log(err);
+      });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+exports.updateLabelFromExcel = async (worksheets) => {
+  try {
+    if (worksheets.Label === undefined) {
+      throw new Error("Label sheet is not present in the excel file");
+    }
+
+    return sequelize
+      .transaction(async (t) => {
+        for (const labelObj of worksheets.Label) {
+          let result = await labelService.getLabelById(labelObj.Label_id);
+          if (result.Success) {
+            let updateResult = await labelService.update(
+              labelObj.Label_id,
+              labelObj,
+              t
+            );
+            if (!updateResult.Success) throw new Error();
+          } else {
+            throw new Error('Wrong label id detected')
+          }
+        }
+      })
+      .then(async (result) => {
+        console.log(`----------------------------->update labels committed`);
+      })
+      .catch(function (err) {
+        console.log("------------------------------>update labels Rolled back");
         console.log(err);
       });
   } catch (err) {
