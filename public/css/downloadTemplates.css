@@ -10,18 +10,18 @@ body {
   color: black;
 }
 
-header {
+header,
+.header-class {
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  height: 25vh;
+  height: 30vh;
   flex-direction: column;
 }
 header h2 {
-  margin: 5px;
-  font-size: 40px;
-  font-weight: bold;
+  margin: 10px;
+  font-size: larger;
 }
 
 .btn {
@@ -37,7 +37,7 @@ header h2 {
   background-color: RoyalBlue;
 }
 section {
-  height: 80vh;
+  height: 70vh;
 }
 .card {
   /* height: 60vh; */
@@ -97,10 +97,6 @@ section {
   justify-content: center;
   align-items: center;
 }
-
-/* section {
-  margin-top: 50px;
-} */
 
 .submit-icon {
   padding-right: 5px;
