@@ -56,7 +56,7 @@ exports.getPageLabel = async (id) => {
   }
 };
 
-exports.getLabels = async (pageId) => {
+exports.getLabels = async () => {
   try {
     let pageLabels = await models.page_map.findAll({
       where: {
@@ -67,7 +67,14 @@ exports.getLabels = async (pageId) => {
           model: models.label,
           as: "Label",
           attributes: ["Label_id", "Label_name", "Label_value", "Language_id", "Status"],
-        },
+          include: [
+            {
+              model: models.language,
+              as: "Language",
+              attributes: ["Language_id", "Language_name"]
+            }
+          ]
+        }
       ],
     });
     pageLabels = JSON.stringify(pageLabels);
@@ -163,3 +170,29 @@ exports.update = async (pagemapId, details, transaction) => {
     return { Success: false, Error: err };
   }
 };
+
+
+exports.getAllDistinct= async(pageId)=> {
+  try{
+    let result = await models.page_map.findAll({
+      where: {
+        Page_id: pageId
+      },
+      include: [
+        {
+          model: models.label,
+          as: "Label",
+          attributes: ["Label_name"]
+        }
+      ],
+      group: ["Label_name"]
+    });
+    result = JSON.stringify(result);
+    result = JSON.parse(result);
+    console.log(result);
+    return {Success: true, Label: result};
+  }catch(err){
+    console.log(err);
+    return {Success : false, Error: err};
+  }
+}

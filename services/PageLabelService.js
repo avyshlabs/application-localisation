@@ -94,3 +94,13 @@ exports.getLabels = async(pageId)=> {
     return {Success: false, Error: err};
   }
 }
+
+exports.getAllDistinct = async(pageId)=> {
+  try{
+    let result = await PageLabel.getAllDistinct(pageId);
+    return result;
+  }catch(err){
+    console.log(err);
+    return {Success: false, Error: err};
+  }
+}
