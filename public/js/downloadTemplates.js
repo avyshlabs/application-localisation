@@ -18,11 +18,12 @@ downloadBtn.addEventListener("click", (e) => {
   e.preventDefault();
   let option = options[options.selectedIndex].value;
   console.log(option);
-  let url = `/excel/download-addLabels/${option}`;
+  let url = `/excel/download-afterLanguage?pageId=${option}`;
   axios
     .get(url)
     .then((response) => {
       console.log(response);
+      console.log(url);
     })
     .catch((error) => console.error(error));
 });

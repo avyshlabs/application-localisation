@@ -61,6 +61,8 @@
       type="text/javascript"
       src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"
     ></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
     <style>
       body {
         font-family: "Noto Sans", sans-serif;
@@ -95,7 +97,7 @@
                   class="nav-link active"
                   id="uploadFile"
                   aria-current="page"
-                  href="/user/dashboard"
+                  href="/excel/dashboard"
                   >Dashboard</a
                 >
               </li>
@@ -118,7 +120,7 @@
       <br />
       <div>
         <form method="get" action="/excel/download-updateLabels">
-          <div class="col-md-3 options">
+          <!-- <div class="col-md-3 options">
             <div class="container"></div>
             <select
               class="form-select form-select-lg mb-3"
@@ -128,8 +130,8 @@
               required
             ></select>
             <div class="invalid-feedback">Please select a valid page.</div>
-          </div>
-          <button class="btn">
+          </div> -->
+          <button class="btn" id="download-btn">
             <i class="fa fa-download"></i> <span id="download">download</span>
           </button>
         </form>

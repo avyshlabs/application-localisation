@@ -15,12 +15,13 @@ header {
   justify-content: center;
   align-items: center;
   text-align: center;
-  height: 30vh;
+  height: 25vh;
   flex-direction: column;
 }
 header h2 {
-  margin: 10px;
-  font-size: larger;
+  margin: 5px;
+  font-size: 40px;
+  font-weight: bold;
 }
 
 .btn {
@@ -36,7 +37,7 @@ header h2 {
   background-color: RoyalBlue;
 }
 section {
-  height: 70vh;
+  height: 80vh;
 }
 .card {
   /* height: 60vh; */
@@ -96,6 +97,10 @@ section {
   justify-content: center;
   align-items: center;
 }
+
+/* section {
+  margin-top: 50px;
+} */
 
 .submit-icon {
   padding-right: 5px;

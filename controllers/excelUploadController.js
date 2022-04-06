@@ -275,8 +275,8 @@ router.get("/download-afterLanguage", async (req, res) => {
 router
   .route("/updateLabels")
   .get(async (req, res) => {
-    res.send("update labels through excel");
-    //res.sendFile("upload.html", { root: `${__dirname}/../public/html` });
+    // res.send("update labels through excel");
+    res.sendFile("updateLabel.html", { root: `${__dirname}/../public/html` });
   })
   .post(async (req, res) => {
     const form = formidable({
