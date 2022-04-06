@@ -33,7 +33,7 @@ router
       let details = req.body.Language_name;
       let result = await languageService.saveOneLangauage(details);
       if (result.Success) {
-        res.redirect(`/user/uploadFile`);
+        res.redirect(`/excel/dashboard`);
         //res.status(200).json(result);
       } else res.status(500).json(result);
     } catch (err) {

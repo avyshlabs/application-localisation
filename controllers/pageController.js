@@ -64,7 +64,7 @@ router
       let details = req.body.Page_name;
       let result = await PageService.saveOnePage(details);
       if (result.Success) {
-        res.redirect(`/user/uploadFile`);
+        res.redirect(`/excel/dashboard`);
         //res.status(200).json(result);
       } else res.status(500).json(result);
     } catch (err) {
