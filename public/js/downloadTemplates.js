@@ -13,17 +13,17 @@ fetch("/page/getPages").then((res) => {
     }
   });
 });
-
 downloadBtn.addEventListener("click", (e) => {
-  e.preventDefault();
   let option = options[options.selectedIndex].value;
   console.log(option);
-  let url = `/excel/download-afterLanguage?pageId=${option}`;
-  axios
-    .get(url)
-    .then((response) => {
-      console.log(response);
-      console.log(url);
-    })
-    .catch((error) => console.error(error));
+  let url = `/excel/download-addLabels?pageId=${option}`;
+  console.log(url);
+  document.formAction.action = url;
+  //   return axios
+  //     .get(url)
+  //     .then((response) => {
+  //       console.log(response);
+  //       console.log(url);
+  //     })
+  //     .catch((error) => console.error(error));
 });
