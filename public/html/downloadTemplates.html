@@ -51,7 +51,7 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
     />
-    <link rel="stylesheet" href="../css/updateLabel.css" />
+    <link rel="stylesheet" href="../css/downloadTemplates.css" />
     <script
       type="text/javascript"
       src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.js"
@@ -61,12 +61,13 @@
       type="text/javascript"
       src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"
     ></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <style>
       body {
         font-family: "Noto Sans", sans-serif;
       }
     </style>
-    <title>Update Label</title>
+    <title>Add Label</title>
   </head>
   <body>
     <div id="navbar">
@@ -95,7 +96,7 @@
                   class="nav-link active"
                   id="uploadFile"
                   aria-current="page"
-                  href="/user/dashboard"
+                  href="/excel/dashboard"
                   >Dashboard</a
                 >
               </li>
@@ -113,31 +114,43 @@
 
     <header>
       <h2 id="instruction">
-        <b> Please select the page to download respective template </b>
+        <b> Please download this template to add new labels. </b>
       </h2>
       <br />
       <div>
-        <form method="get" action="/excel/download-updateLabels">
-          <div class="col-md-3 options">
-            <div class="container"></div>
-            <select
-              class="form-select form-select-lg mb-3"
-              name="page_id"
-              id="page"
-              aria-label=".form-select-lg example"
-              required
-            ></select>
-            <div class="invalid-feedback">Please select a valid page.</div>
-          </div>
+        <form method="get" action="/excel/download-addLabels">
           <button class="btn">
             <i class="fa fa-download"></i> <span id="download">download</span>
           </button>
         </form>
       </div>
     </header>
+    <div class="header-class">
+      <h2 id="instruction">
+        <b>
+          After adding a new language, please select a page to download a
+          template and add labels.
+        </b>
+      </h2>
+      <br />
+      <div>
+        <form method="get" action="#">
+          <select
+            class="form-select form-select-lg mb-3"
+            name="page_id"
+            id="page"
+            aria-label=".form-select-lg example "
+            required
+          ></select>
+          <button class="btn" id="download-btn">
+            <i class="fa fa-download"></i> <span id="download">download</span>
+          </button>
+        </form>
+      </div>
+    </div>
     <section>
       <form
-        action="/label/addLabel"
+        action="/excel/addLabels"
         method="post"
         enctype="multipart/form-data"
       >
@@ -153,7 +166,6 @@
             name="excelFile"
             type="file"
             style="display: none"
-            required
           />
           <div class="invalid-feedback">Please provide a file.</div>
           <div class="container">
@@ -179,7 +191,26 @@
             <!-- <h2 class="heading"style="display: none;">Page-map Table</h2> -->
           </div>
         </div>
-
+        <div class="col-md-3 options">
+          <div class="container">
+            <h4 id="validation">
+              <b>Please select the page to map newly added labels</b>
+            </h4>
+          </div>
+          <select
+            class="form-select form-select-lg mb-3"
+            name="page_id"
+            id="page"
+            aria-label=".form-select-lg example "
+            required
+          >
+            <!-- <option selected>Select Page</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option> -->
+          </select>
+          <div class="invalid-feedback">Please select a valid page.</div>
+        </div>
         <button class="btn submit-btn" type="submit">
           <i class="submit-icon fa-solid fa-file-arrow-up"></i>
           <span id="submit"> Submit</span>
@@ -195,5 +226,5 @@
       </div>
     </div>
   </body>
-  <script src="../js/updateLabel.js"></script>
+  <script src="../js/downloadTemplates.js"></script>
 </html>
