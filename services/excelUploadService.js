@@ -699,7 +699,7 @@ exports.updateLabelFromExcel = async (worksheets) => {
             );
             if (!updateResult.Success) throw new Error();
           } else {
-            throw new Error('Wrong label id detected')
+            //throw new Error('Wrong label id detected')
           }
         }
       })

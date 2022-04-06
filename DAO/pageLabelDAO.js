@@ -116,6 +116,7 @@ exports.getPageLabels = async (pageId, langId) => {
           as: "Label",
           where: {
             Language_id: langId,
+            //TODO : If label inactive add a constraint here
           },
           attributes: ["Label_name", "Label_value"],
         },

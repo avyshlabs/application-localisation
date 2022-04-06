@@ -184,7 +184,9 @@ router.get("/download-template", async (req, res) => {
 router.get("/download-addLabels", async (req, res) => {
   try {
     // let result = await excelUploadService.returnTemplate();
-    let pageId = req.query.pageId;
+    let pageId = req.query.page_id;
+    console.log('reached here',pageId)
+    console.log(req.query.page_id)
 
     let result = await excelUploadService.exportTemplate(pageId);
 
@@ -308,7 +310,7 @@ router
         }
       });
       //res.sendFile("preview.html", { root: `${__dirname}/../public/html` });
-      res.redirect(`/user/preview`);
+      res.redirect(`/excel/dashboard`);
 
       //res.json({ fields, files });
     });
