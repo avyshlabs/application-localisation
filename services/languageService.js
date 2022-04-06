@@ -1,4 +1,5 @@
 const languageDAO = require("../DAO/languageDAO");
+const sequelize = require('../DAO/database')
 
 // exports.saveLangauage = async (languageName) => {
 //   try {
@@ -32,8 +33,8 @@ exports.saveOneLangauage = async (languageName) => {
         );
         if (language.Success)
           return { Success: true, language: language.Language };
-        else
-         throw new Error()
+        else 
+          throw new Error()
       })
       .then((result) => {
         return result;
