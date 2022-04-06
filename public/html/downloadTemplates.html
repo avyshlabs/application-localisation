@@ -51,7 +51,7 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
     />
-    <link rel="stylesheet" href="../css/upload.css" />
+    <link rel="stylesheet" href="../css/downloadTemplates.css" />
     <script
       type="text/javascript"
       src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.js"
@@ -61,12 +61,13 @@
       type="text/javascript"
       src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"
     ></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <style>
       body {
         font-family: "Noto Sans", sans-serif;
       }
     </style>
-    <title>Upload file</title>
+    <title>Add Label</title>
   </head>
   <body>
     <div id="navbar">
@@ -95,8 +96,8 @@
                   class="nav-link active"
                   id="uploadFile"
                   aria-current="page"
-                  href="/excel/uploadFile"
-                  >Upload File</a
+                  href="/excel/dashboard"
+                  >Dashboard</a
                 >
               </li>
               <li class="nav-item">
@@ -113,79 +114,40 @@
 
     <header>
       <h2 id="instruction">
-        <b>
-          Please download the template and make changes to the same file before
-          uploading it.
-        </b>
+        <b> Please download this template to add new labels. </b>
       </h2>
       <br />
       <div>
-        <form method="get" action="/excel/download-template">
+        <form method="get" action="/excel/download-addLabels">
           <button class="btn">
             <i class="fa fa-download"></i> <span id="download">download</span>
           </button>
         </form>
       </div>
     </header>
-    <section>
-      <form
-        action="/excel/uploadFile"
-        method="post"
-        enctype="multipart/form-data"
-      >
-        <div class="card">
-          <!-- <i class="fa fa-download fileicon" style="width: 100%"></i> -->
-          <h2 id="uploadExcelFile">
-            <b> Upload Excel File </b>
-          </h2>
-          <i class="fa-solid fa-file-lines fileicon" style="width: 100%"></i>
-          <label for="excelFile" class="custom-file-upload"> Select File</label>
-          <input
-            id="excelFile"
-            name="excelFile"
-            type="file"
-            style="display: none"
+    <div class="header-class">
+      <h2 id="instruction">
+        <b>
+          After adding a new language, please select a page to download a
+          template and add labels.
+        </b>
+      </h2>
+      <br />
+      <div>
+        <form id="form" name="formAction" method="get">
+          <select
+            class="form-select form-select-lg mb-3"
+            name="page_id"
+            id="page"
+            aria-label=".form-select-lg example "
             required
-          />
-          <div class="invalid-feedback">Please provide a file.</div>
-          <div class="container">
-            <h4 id="validation">
-              <b
-                >Make sure to upload the same template file which is edited and
-                validated.</b
-              >
-            </h4>
-          </div>
-        </div>
-        <div class="container">
-          <div id="excel_data" class="mt-5">
-            <!-- <h2 class="heading"style="display: none;">Language Table</h2> -->
-          </div>
-          <div id="excel_data1" class="mt-5">
-            <!-- <h2 class="heading"style="display: none;">Page Table</h2> -->
-          </div>
-          <div id="excel_data2" class="mt-5">
-            <!-- <h2 class="heading"style="display: none;">Label Table</h2> -->
-          </div>
-          <div id="excel_data3" class="mt-5">
-            <!-- <h2 class="heading"style="display: none;">Page-map Table</h2> -->
-          </div>
-        </div>
-
-        <button class="btn submit-btn" type="submit">
-          <i class="submit-icon fa-solid fa-file-arrow-up"></i>
-          <span id="submit"> Submit</span>
-        </button>
-      </form>
-    </section>
-    <div class="modal-wrapper" id="modal">
-      <div class="modal">
-        <div class="modal-body">
-          <h4>Modal Body</h4>
-          <p>pls wait, thanks.</p>
-        </div>
+          ></select>
+          <button class="btn" id="download-btn">
+            <i class="fa fa-download"></i> <span id="download">download</span>
+          </button>
+        </form>
       </div>
     </div>
   </body>
-  <script src="../js/upload.js"></script>
+  <script src="../js/downloadTemplates.js"></script>
 </html>

@@ -1,9 +1,19 @@
 const Page = require("../DAO/PageDAO");
+const sequelize = require('../DAO/database')
 
 exports.getPage = async (pageName) => {
   try {
     let page = await Page.getPage(pageName);
     return page;
+  } catch (err) {
+    return { Success: false, Error: err };
+  }
+};
+
+exports.getPages = async () => {
+  try {
+    let pages = await Page.getPages();
+    return pages;
   } catch (err) {
     return { Success: false, Error: err };
   }
@@ -47,15 +57,39 @@ exports.getPageById = async (id) => {
     return { Success: false, Error: err };
   }
 };
-exports.update = async (pageId, details,transaction) => {
+exports.update = async (pageId, details, transaction) => {
   try {
     let toUpdate = {
       Page_name: details.Page_name,
       Status: details.Status,
       Updated_date: new Date(),
     };
-    let page = await Page.update(pageId, toUpdate,transaction);
+    let page = await Page.update(pageId, toUpdate, transaction);
     return page;
+  } catch (err) {
+    return { Success: false, Error: err };
+  }
+};
+
+exports.saveOnePage = async (pageName) => {
+  try {
+    return sequelize
+      .transaction(async (t) => {
+        let result = await Page.createPage(
+          {
+            name: pageName,
+          },
+          t
+        );
+        if (result.Success) return { Success: true, result: result.Page };
+        else throw new Error();
+      })
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        return { Success: false, Error: err };
+      });
   } catch (err) {
     return { Success: false, Error: err };
   }

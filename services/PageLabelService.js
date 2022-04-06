@@ -83,3 +83,24 @@ exports.update = async (pagelabelId, details,transaction) => {
     return { Success: false, Error: err };
   }
 };
+
+
+exports.getLabels = async(pageId)=> {
+  try{
+    let labels = await PageLabel.getLabels(pageId);
+    return labels;
+  }catch(err){
+    console.log(err);
+    return {Success: false, Error: err};
+  }
+}
+
+exports.getAllDistinct = async(pageId)=> {
+  try{
+    let result = await PageLabel.getAllDistinct(pageId);
+    return result;
+  }catch(err){
+    console.log(err);
+    return {Success: false, Error: err};
+  }
+}

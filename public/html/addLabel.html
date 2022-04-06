@@ -51,7 +51,7 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
     />
-    <link rel="stylesheet" href="../css/upload.css" />
+    <link rel="stylesheet" href="../css/addLabel.css" />
     <script
       type="text/javascript"
       src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.js"
@@ -66,7 +66,7 @@
         font-family: "Noto Sans", sans-serif;
       }
     </style>
-    <title>Upload file</title>
+    <title>Add Label</title>
   </head>
   <body>
     <div id="navbar">
@@ -95,8 +95,8 @@
                   class="nav-link active"
                   id="uploadFile"
                   aria-current="page"
-                  href="/excel/uploadFile"
-                  >Upload File</a
+                  href="/excel/dashboard"
+                  >Dashboard</a
                 >
               </li>
               <li class="nav-item">
@@ -110,26 +110,12 @@
         <!-- Container wrapper -->
       </nav>
     </div>
-
     <header>
-      <h2 id="instruction">
-        <b>
-          Please download the template and make changes to the same file before
-          uploading it.
-        </b>
-      </h2>
-      <br />
-      <div>
-        <form method="get" action="/excel/download-template">
-          <button class="btn">
-            <i class="fa fa-download"></i> <span id="download">download</span>
-          </button>
-        </form>
-      </div>
+      <h2>ADD NEW LABELS</h2>
     </header>
     <section>
       <form
-        action="/excel/uploadFile"
+        action="/excel/addLabels"
         method="post"
         enctype="multipart/form-data"
       >
@@ -145,7 +131,6 @@
             name="excelFile"
             type="file"
             style="display: none"
-            required
           />
           <div class="invalid-feedback">Please provide a file.</div>
           <div class="container">
@@ -171,7 +156,21 @@
             <!-- <h2 class="heading"style="display: none;">Page-map Table</h2> -->
           </div>
         </div>
-
+        <div class="col-md-3 options">
+          <div class="container">
+            <h4 id="validation">
+              <b>Please select the page to map newly added labels</b>
+            </h4>
+          </div>
+          <select
+            class="form-select form-select-lg mb-3"
+            name="page_id"
+            id="page"
+            aria-label=".form-select-lg example "
+            required
+          ></select>
+          <div class="invalid-feedback">Please select a valid page.</div>
+        </div>
         <button class="btn submit-btn" type="submit">
           <i class="submit-icon fa-solid fa-file-arrow-up"></i>
           <span id="submit"> Submit</span>
@@ -187,5 +186,5 @@
       </div>
     </div>
   </body>
-  <script src="../js/upload.js"></script>
+  <script src="../js/addLabel.js"></script>
 </html>

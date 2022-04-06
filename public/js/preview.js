@@ -52,11 +52,11 @@
 // }
 
 //--------------TRANSLATIONS------------------
-fetch("/locale/getTranslations?page_id=5").then((res) => {
-  res.json().then((data) => {
-    document.querySelector("#uploadFile").innerHTML =
-      data.PageLabels.uploadFile;
-    document.querySelector("#logout").innerHTML = data.PageLabels.logout;
-    document.querySelector("#message").innerHTML = data.PageLabels.message;
-  });
-});
+// fetch("/locale/getTranslations?page_id=5").then((res) => {
+//   res.json().then((data) => {
+//     document.querySelector("#uploadFile").innerHTML =
+//       data.PageLabels.uploadFile;
+//     document.querySelector("#logout").innerHTML = data.PageLabels.logout;
+//     document.querySelector("#message").innerHTML = data.PageLabels.message;
+//   });
+// });

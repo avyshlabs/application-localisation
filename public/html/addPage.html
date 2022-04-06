@@ -95,8 +95,8 @@
                   class="nav-link active"
                   id="uploadFile"
                   aria-current="page"
-                  href="/excel/uploadFile"
-                  >Upload File</a
+                  href="/excel/dashboard"
+                  >Dashboard</a
                 >
               </li>
               <li class="nav-item">
@@ -113,79 +113,30 @@
 
     <header>
       <h2 id="instruction">
-        <b>
-          Please download the template and make changes to the same file before
-          uploading it.
-        </b>
+        <b> Fill in the form to add new Page </b>
       </h2>
       <br />
-      <div>
-        <form method="get" action="/excel/download-template">
-          <button class="btn">
-            <i class="fa fa-download"></i> <span id="download">download</span>
-          </button>
-        </form>
-      </div>
     </header>
     <section>
-      <form
-        action="/excel/uploadFile"
-        method="post"
-        enctype="multipart/form-data"
-      >
-        <div class="card">
-          <!-- <i class="fa fa-download fileicon" style="width: 100%"></i> -->
-          <h2 id="uploadExcelFile">
-            <b> Upload Excel File </b>
-          </h2>
-          <i class="fa-solid fa-file-lines fileicon" style="width: 100%"></i>
-          <label for="excelFile" class="custom-file-upload"> Select File</label>
+      <form action="/page/addPage" method="post">
+        <div class="mb-3 text-center">
+          <label for="Page_name" class="form-label" id="addPageLabel"
+            >New Page</label
+          >
+          <br />
           <input
-            id="excelFile"
-            name="excelFile"
-            type="file"
-            style="display: none"
-            required
+            type="text"
+            class="form-control-sm"
+            id="Page_name"
+            name="Page_name"
           />
-          <div class="invalid-feedback">Please provide a file.</div>
-          <div class="container">
-            <h4 id="validation">
-              <b
-                >Make sure to upload the same template file which is edited and
-                validated.</b
-              >
-            </h4>
-          </div>
         </div>
-        <div class="container">
-          <div id="excel_data" class="mt-5">
-            <!-- <h2 class="heading"style="display: none;">Language Table</h2> -->
-          </div>
-          <div id="excel_data1" class="mt-5">
-            <!-- <h2 class="heading"style="display: none;">Page Table</h2> -->
-          </div>
-          <div id="excel_data2" class="mt-5">
-            <!-- <h2 class="heading"style="display: none;">Label Table</h2> -->
-          </div>
-          <div id="excel_data3" class="mt-5">
-            <!-- <h2 class="heading"style="display: none;">Page-map Table</h2> -->
-          </div>
-        </div>
-
         <button class="btn submit-btn" type="submit">
           <i class="submit-icon fa-solid fa-file-arrow-up"></i>
           <span id="submit"> Submit</span>
         </button>
       </form>
     </section>
-    <div class="modal-wrapper" id="modal">
-      <div class="modal">
-        <div class="modal-body">
-          <h4>Modal Body</h4>
-          <p>pls wait, thanks.</p>
-        </div>
-      </div>
-    </div>
   </body>
-  <script src="../js/upload.js"></script>
+  <script src="../js/addPage.js"></script>
 </html>

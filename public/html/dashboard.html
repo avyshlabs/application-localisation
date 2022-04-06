@@ -29,7 +29,7 @@
       type="text/javascript"
       src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.js"
     ></script>
-
+    <link rel="stylesheet" href="../css/dashboard.css" />
     <title>Dashboard</title>
   </head>
   <body>
@@ -60,7 +60,7 @@
                   class="nav-link active"
                   id="userDatabase"
                   aria-current="page"
-                  href="#"
+                  href="/excel/dashboard"
                   >User Database</a
                 >
               </li>
@@ -82,19 +82,24 @@
                 <!-- Dropdown menu -->
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                   <li>
-                    <a class="dropdown-item" href="/user/dashboard?lang_id=1"
+                    <a class="dropdown-item" href="/excel/dashboard?lang_id=1"
                       >English</a
                     >
                   </li>
                   <li>
-                    <a class="dropdown-item" href="/user/dashboard?lang_id=2"
+                    <a class="dropdown-item" href="/excel/dashboard?lang_id=3"
                       >ಕನ್ನಡ</a
                     >
                   </li>
                   <li><hr class="dropdown-divider" /></li>
                   <li>
-                    <a class="dropdown-item" href="/user/dashboard?lang_id=3"
+                    <a class="dropdown-item" href="/excel/dashboard?lang_id=2"
                       >हिन्दी</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="/excel/dashboard?lang_id=4"
+                      >español</a
                     >
                   </li>
                 </ul>
@@ -108,29 +113,71 @@
       </nav>
     </div>
     <!-- Main Message -->
-    <h2 id="welcome">Welcome User</h2>
 
     <!-- Table  -->
-    <div class="container">
-      <table class="table">
-        <thead>
-          <tr>
-            <th id="id">Id</th>
-            <th id="userName">Username</th>
-            <th id="email">Email</th>
-            <th id="firstName">First Name</th>
-            <th id="lastName">Last Name</th>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>testuser</td>
-            <td>test@user.com</td>
-            <td>test</td>
-            <td>user</td>
-          </tr>
-        </thead>
-        <tbody id="data"></tbody>
-      </table>
+    <div class="full-container">
+      <header>
+        <h2><span id="message"> EXCEL UPLOAD OPTIONS:</span></h2>
+      </header>
+      <div class="hero">
+        <div class="cards">
+          <a class="card1" href="/language/addLanguage">
+            <h3><span id="newLanguage">Add New Language</span></h3>
+            <p class="small">Click to add a new language.</p>
+            <div class="go-corner" href="/language/addLanguage">
+              <div class="go-arrow">→</div>
+            </div>
+          </a>
+          <a class="card1" href="/page/addPage">
+            <h3><span id="newPage">Add New Page</span></h3>
+            <p class="small">Click here to add a new page.</p>
+            <div class="go-corner" href="/page/addPage">
+              <div class="go-arrow">→</div>
+            </div>
+          </a>
+          <a class="card1" href="/excel/addLabels">
+            <h3><span id="newLabel"> Add New Labels</span></h3>
+            <p class="small">Click here to add new labels.</p>
+            <div class="go-corner" href="/excel/addLabels">
+              <div class="go-arrow">→</div>
+            </div>
+          </a>
+          <a class="card1" href="/excel/updateLabels">
+            <h3><span id="updateLabel">Update Existing Labels </span></h3>
+            <p class="small">Click here to update existing labels.</p>
+            <div class="go-corner" href="/excel/updateLabels">
+              <div class="go-arrow">→</div>
+            </div>
+          </a>
+          <a class="card1" href="/excel/download-template">
+            <h3><span id="fullTemplate"> Download Full Template</span></h3>
+            <p class="small">
+              Click here to download the excel file with all the rows populated.
+            </p>
+            <div class="go-corner" href="/excel/download-template">
+              <div class="go-arrow">→</div>
+            </div>
+          </a>
+          <a class="card1" href="/excel/templates">
+            <h3><span id="downloadTemplates"> Download Templates</span></h3>
+            <p class="small">
+              Click here to download the templates based on language and page.
+            </p>
+            <div class="go-corner" href="/excel/templates">
+              <div class="go-arrow">→</div>
+            </div>
+          </a>
+          <a class="card1 danger-card" href="/user/uploadFile">
+            <h3><span id="completeUpload"> Complete Upload</span></h3>
+            <p class="small">
+              Click here to upload the excel file with manual entries.
+            </p>
+            <div class="go-corner" href="/user/uploadFile">
+              <div class="go-arrow">→</div>
+            </div>
+          </a>
+        </div>
+      </div>
     </div>
     <script src="../js/dashboard.js"></script>
   </body>

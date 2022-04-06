@@ -18,6 +18,7 @@ const models = initModels(sequelize);
 //   }
 // };
 
+
 exports.createPageLabel = async (details, transaction) => {
   try {
     let date = new Date();
@@ -55,6 +56,54 @@ exports.getPageLabel = async (id) => {
   }
 };
 
+exports.getLabels = async () => {
+  try {
+    let pageLabels = await models.page_map.findAll({
+      where: {
+        Page_id: pageId,
+      },
+      include: [
+        {
+          model: models.label,
+          as: "Label",
+          attributes: ["Label_id", "Label_name", "Label_value", "Language_id", "Status"],
+          include: [
+            {
+              model: models.language,
+              as: "Language",
+              attributes: ["Language_id", "Language_name"]
+            }
+          ]
+        }
+      ],
+    });
+    pageLabels = JSON.stringify(pageLabels);
+    pageLabels = JSON.parse(pageLabels);
+    return { Success: true, Pagelabels: pageLabels };
+  } catch (err) {
+    console.log(err);
+    return { Success: false, Error: err };
+  }
+};
+
+exports.getPageLabel = async (id) => {
+  try {
+    let pageLabel = await models.page_map.findAll({
+      where: {
+        Page_map_id: id,
+      },
+      include: [
+        { model: models.label, as: "Label" },
+        { model: models.page, as: "Page" },
+      ],
+    });
+    return { Success: true, Pagelabel: pageLabel };
+  } catch (err) {
+    console.log(err);
+    return { Success: false, Error: err };
+  }
+};
+
 exports.getPageLabels = async (pageId, langId) => {
   try {
     let pageLabels = await models.page_map.findAll({
@@ -67,12 +116,12 @@ exports.getPageLabels = async (pageId, langId) => {
           as: "Label",
           where: {
             Language_id: langId,
+            //TODO : If label inactive add a constraint here
           },
           attributes: ["Label_name", "Label_value"],
         },
       ],
     });
-    console.log(pageLabels);
     return { Success: true, Pagelabels: pageLabels };
   } catch (err) {
     console.log(err);
@@ -105,16 +154,46 @@ exports.getPageLabelById = async (id) => {
     return { Success: false, Error: err };
   }
 };
-exports.update = async (pagemapId, details,transaction) => {
+exports.update = async (pagemapId, details, transaction) => {
   try {
-    let pagemap = await models.page_map.update(details, {
-      where: {
-        Page_map_id: pagemapId,
+    let pagemap = await models.page_map.update(
+      details,
+      {
+        where: {
+          Page_map_id: pagemapId,
+        },
       },
-    },{transaction:transaction});
+      { transaction: transaction }
+    );
     return { Success: true, Pagemap: pagemap };
   } catch (err) {
     console.log("DAO pagemap error: ", err);
     return { Success: false, Error: err };
   }
 };
+
+
+exports.getAllDistinct= async(pageId)=> {
+  try{
+    let result = await models.page_map.findAll({
+      where: {
+        Page_id: pageId
+      },
+      include: [
+        {
+          model: models.label,
+          as: "Label",
+          attributes: ["Label_name"]
+        }
+      ],
+      group: ["Label_name"]
+    });
+    result = JSON.stringify(result);
+    result = JSON.parse(result);
+    console.log(result);
+    return {Success: true, Label: result};
+  }catch(err){
+    console.log(err);
+    return {Success : false, Error: err};
+  }
+}

@@ -57,7 +57,7 @@ router
         expire: new Date() + 9999,
       });
       res.statusCode = 200;
-      res.sendFile("upload.html", { root: `${__dirname}/../public/html` });
+      res.sendFile("dashboard.html", { root: `${__dirname}/../public/html` });
     } else {
       res.statusCode = 200;
       res.sendFile("login.html", { root: `${__dirname}/../public/html` });

@@ -149,9 +149,9 @@ excelFile.addEventListener("change", (event) => {
 const openBtn = document.getElementById("submit");
 const modal = document.getElementById("modal");
 
-openBtn.addEventListener("click", () => {
-  modal.classList.add("open");
-});
+// openBtn.addEventListener("click", () => {
+//   modal.classList.add("open");
+// });
 
 //-------------------TRANSLATIONS---------------
 // fetch("/locale/getTranslations?page_id=4").then((res) => {
@@ -170,33 +170,33 @@ openBtn.addEventListener("click", () => {
 //   });
 // });
 
-let uploadFile = document.querySelector("#uploadFile");
-let logout = document.querySelector("#logout");
-let instruction = document.querySelector("#instruction");
-let uploadExcelFile = document.querySelector("#uploadExcelFile");
-let validation = document.querySelector("#validation");
-let submit = document.querySelector("#submit");
+// let uploadFile = document.querySelector("#uploadFile");
+// let logout = document.querySelector("#logout");
+// let instruction = document.querySelector("#instruction");
+// let uploadExcelFile = document.querySelector("#uploadExcelFile");
+// let validation = document.querySelector("#validation");
+// let submit = document.querySelector("#submit");
 
-fetch("/locale/getTranslations?page_id=4").then((res) => {
-  res.json().then((data) => {
-    let translations = data.PageLabels;
-    let labels = [
-      uploadFile,
-      instruction,
-      download,
-      uploadExcelFile,
-      validation,
-      submit,
-      logout,
-    ];
+// fetch("/locale/getTranslations?page_id=4").then((res) => {
+//   res.json().then((data) => {
+//     let translations = data.PageLabels;
+//     let labels = [
+//       uploadFile,
+//       instruction,
+//       download,
+//       uploadExcelFile,
+//       validation,
+//       submit,
+//       logout,
+//     ];
 
-    let translationsArr = Object.values(translations);
-    console.log(translationsArr);
+//     let translationsArr = Object.values(translations);
+//     console.log(translationsArr);
 
-    for (let i = 0; i < labels.length; i++) {
-      if (translationsArr[i] !== undefined) {
-        labels[i].innerHTML = translationsArr[i];
-      }
-    }
-  });
-});
+//     for (let i = 0; i < labels.length; i++) {
+//       if (translationsArr[i] !== undefined) {
+//         labels[i].innerHTML = translationsArr[i];
+//       }
+//     }
+//   });
+// });

@@ -51,7 +51,7 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
     />
-    <link rel="stylesheet" href="../css/upload.css" />
+    <link rel="stylesheet" href="../css/updateLabel.css" />
     <script
       type="text/javascript"
       src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.js"
@@ -61,12 +61,14 @@
       type="text/javascript"
       src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"
     ></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
     <style>
       body {
         font-family: "Noto Sans", sans-serif;
       }
     </style>
-    <title>Upload file</title>
+    <title>Update Label</title>
   </head>
   <body>
     <div id="navbar">
@@ -95,8 +97,8 @@
                   class="nav-link active"
                   id="uploadFile"
                   aria-current="page"
-                  href="/excel/uploadFile"
-                  >Upload File</a
+                  href="/excel/dashboard"
+                  >Dashboard</a
                 >
               </li>
               <li class="nav-item">
@@ -113,15 +115,23 @@
 
     <header>
       <h2 id="instruction">
-        <b>
-          Please download the template and make changes to the same file before
-          uploading it.
-        </b>
+        <b> Please download the template to update labels. </b>
       </h2>
       <br />
       <div>
-        <form method="get" action="/excel/download-template">
-          <button class="btn">
+        <form method="get" action="/excel/download-updateLabels">
+          <!-- <div class="col-md-3 options">
+            <div class="container"></div>
+            <select
+              class="form-select form-select-lg mb-3"
+              name="page_id"
+              id="page"
+              aria-label=".form-select-lg example"
+              required
+            ></select>
+            <div class="invalid-feedback">Please select a valid page.</div>
+          </div> -->
+          <button class="btn" id="download-btn">
             <i class="fa fa-download"></i> <span id="download">download</span>
           </button>
         </form>
@@ -129,7 +139,7 @@
     </header>
     <section>
       <form
-        action="/excel/uploadFile"
+        action="/excel/updateLabels"
         method="post"
         enctype="multipart/form-data"
       >
@@ -187,5 +197,5 @@
       </div>
     </div>
   </body>
-  <script src="../js/upload.js"></script>
+  <script src="../js/updateLabel.js"></script>
 </html>
