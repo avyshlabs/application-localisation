@@ -7,6 +7,7 @@ const formidable = require("formidable");
 const excel = require("exceljs");
 
 const excelUploadService = require("../services/excelUploadService");
+const userLanguageService = require("../services/userLanguageService");
 
 const languageDAO = require("../DAO/languageDAO");
 
@@ -185,8 +186,8 @@ router.get("/download-addLabels", async (req, res) => {
   try {
     // let result = await excelUploadService.returnTemplate();
     let pageId = req.query.page_id;
-    console.log('reached here',pageId)
-    console.log(req.query.page_id)
+    console.log("reached here", pageId);
+    console.log(req.query.page_id);
 
     let result = await excelUploadService.exportTemplate(pageId);
 
@@ -247,6 +248,22 @@ router.route("/dashboard").get(async (req, res) => {
   //   );
   // }
   // res.send(worksheets);
+  if (req.query.lang_id !== undefined) {
+    if (req.cookies.user !== undefined) {
+      let userId = req.cookies.user;
+      let result = await userLanguageService.updateUserLanguage(
+        userId,
+        req.query.lang_id
+      );
+      if (result.Success) {
+        console.log("language changed successfully");
+      }
+    }
+    res.cookie("language", req.query.lang_id, {
+      httpOnly: true,
+      expire: new Date() + 9999,
+    });
+  }
   res.sendFile("dashboard.html", { root: `${__dirname}/../public/html` });
 });
 
