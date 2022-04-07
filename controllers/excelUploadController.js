@@ -9,8 +9,6 @@ const excel = require("exceljs");
 const excelUploadService = require("../services/excelUploadService");
 const userLanguageService = require("../services/userLanguageService");
 
-const languageDAO = require("../DAO/languageDAO");
-
 router.route("/preview").get(async (req, res) => {
   res.sendFile("preview.html", { root: `${__dirname}/../public/html` });
   // fs.unlink(req.query.path, (err) => {
@@ -23,16 +21,6 @@ router.route("/preview").get(async (req, res) => {
 router
   .route("/uploadFile")
   .get(async (req, res) => {
-    //C:\Users\HP\Desktop\Avysh\excel_import_export\controllers\Book1.xlsx
-    // const workbook = xlsx.readFile("C:/Users/HP/Desktop/Avysh/excel_import_export/controllers/Book1.xlsx");
-    // let worksheets = {};
-    // for (const sheetName of workbook.SheetNames) {
-    //   console.log(`---->${sheetName}`);
-    //   worksheets[sheetName] = xlsx.utils.sheet_to_json(
-    //     workbook.Sheets[sheetName]
-    //   );
-    // }
-    // res.send(worksheets);
     res.sendFile("upload.html", { root: `${__dirname}/../public/html` });
   })
   .post(async (req, res) => {
@@ -47,8 +35,6 @@ router
         next(err);
         return;
       }
-      //console.log(req.file);
-      // console.log(files.excelFile.filepath);
       console.log(files);
 
       const workbook = xlsx.readFile(files.excelFile.filepath);
@@ -69,13 +55,11 @@ router
       });
       //res.sendFile("preview.html", { root: `${__dirname}/../public/html` });
       res.redirect(`/user/preview`);
-
-      //res.json({ fields, files });
     });
   });
 
 router
-  .route("/addLabels")
+  .route("/addLabelsForPage")
   .get(async (req, res) => {
     // res.send('add labels through excel')
     res.sendFile("addLabel.html", { root: `${__dirname}/../public/html` });
@@ -367,4 +351,53 @@ router.get('/test', async(req, res)=> {
     // });
 })
 
+router
+  .route("/addLabelsForNewLanguage")
+  .get(async (req, res) => {
+    res.send('welcome to add new labels for new language page')
+    //res.sendFile("upload.html", { root: `${__dirname}/../public/html` });
+  })
+  .post(async (req, res) => {
+    const form = formidable({
+      multiples: false,
+      uploadDir: `${__dirname}/../uploads`,
+      keepExtensions: true,
+    });
+
+    form.parse(req, async (err, fields, files) => {
+      if (err) {
+        next(err);
+        return;
+      }
+      console.log(files);
+
+      const workbook = xlsx.readFile(files.excelFile.filepath);
+
+      let worksheets = {};
+      for (const sheetName of workbook.SheetNames) {
+        console.log(`---->${sheetName}`);
+        let pageId = sheetName.substring(0, sheetName.indexOf(" "));
+        console.log("sheetName = ",pageId)
+        worksheets[pageId] = xlsx.utils.sheet_to_json(
+          workbook.Sheets[sheetName]
+        );
+      }
+      await excelUploadService.addLabelsForNewLanguage(worksheets)
+      fs.unlink(files.excelFile.filepath, (err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
+      //res.sendFile("preview.html", { root: `${__dirname}/../public/html` });
+      //res.redirect(`/user/preview`);
+      res.json(worksheets)
+    });
+  });
+
+  router.get('/addLabels', async (req,res) => {
+    res.sendFile("addLabel.html", {
+      root: `${__dirname}/../public/html`,
+    });
+    
+  })
 module.exports = router;
