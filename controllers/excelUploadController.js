@@ -335,22 +335,27 @@ router.route("/templates").get(async (req, res) => {
   });
 });
 
-router.get('/test', async(req, res)=> {
-  let result = await excelUploadService.allPages();
-  let result2 = await excelUploadService.addData();
-  let workbook = new excel.Workbook();
-    await workbook.xlsx.readFile(`${__dirname}/../uploads/allPages.xlsx`);
-    res.setHeader(
-      "Content-Type",
-      "application/vnd.openxmlformats-officedocument.spreadsheet.sheet"
-    );
-    res.setHeader(
-      "Content-Disposition",
-      "attachment; filename=" + "Template-allPages.xlsx"
-    );
-    // return workbook.xlsx.write(res).then(() => {
-    //   res.status(200).end();
-    // });
+router.get('/download-labelsForNewLanguage', async(req, res)=> {
+  try{
+    await excelUploadService.allPages();
+    await excelUploadService.addData();
+    let workbook = new excel.Workbook();
+      await workbook.xlsx.readFile(`${__dirname}/../uploads/allPages.xlsx`);
+      res.setHeader(
+        "Content-Type",
+        "application/vnd.openxmlformats-officedocument.spreadsheet.sheet"
+      );
+      res.setHeader(
+        "Content-Disposition",
+        "attachment; filename=" + "Template-allPages.xlsx"
+      );
+      return workbook.xlsx.write(res).then(() => {
+        res.status(200).end();
+      });
+    }catch(err){
+      console.log(err);
+      return {Success: true, Error: err.message};
+    }
 })
 
 router
