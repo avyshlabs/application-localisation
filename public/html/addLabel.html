@@ -4,12 +4,6 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap"
-      rel="stylesheet"
-    />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -26,51 +20,20 @@
       href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
       rel="stylesheet"
     />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap"
-      rel="stylesheet"
-    />
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.css"
       rel="stylesheet"
     />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
-      integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
-    />
-    <link rel="stylesheet" href="../css/addLabel.css" />
     <script
       type="text/javascript"
       src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.js"
     ></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script
-      type="text/javascript"
-      src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"
-    ></script>
-    <style>
-      body {
-        font-family: "Noto Sans", sans-serif;
-      }
-    </style>
+    <link rel="stylesheet" href="../css/addLabel.css" />
     <title>Add Label</title>
   </head>
   <body>
     <div id="navbar">
-      <nav class="navbar navbar-expand-lg">
+      <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
         <!-- Container wrapper -->
         <div class="container-fluid">
           <!-- Toggle button -->
@@ -110,78 +73,36 @@
         <!-- Container wrapper -->
       </nav>
     </div>
-    <header>
-      <h2>ADD NEW LABELS</h2>
-    </header>
-    <section>
-      <form
-        action="/excel/addLabels"
-        method="post"
-        enctype="multipart/form-data"
-      >
-        <div class="card">
-          <!-- <i class="fa fa-download fileicon" style="width: 100%"></i> -->
-          <h2 id="uploadExcelFile">
-            <b> Upload Excel File </b>
-          </h2>
-          <i class="fa-solid fa-file-lines fileicon" style="width: 100%"></i>
-          <label for="excelFile" class="custom-file-upload"> Select File</label>
-          <input
-            id="excelFile"
-            name="excelFile"
-            type="file"
-            style="display: none"
-          />
-          <div class="invalid-feedback">Please provide a file.</div>
-          <div class="container">
-            <h4 id="validation">
-              <b
-                >Make sure to upload the same template file which is edited and
-                validated.</b
+    <div class="full-container">
+      <header>
+        <h2><span id="message"> ADD LABELS OPTIONS:</span></h2>
+      </header>
+      <div class="hero">
+        <div class="cards">
+          <a class="card1" href="/excel/addLabelsForPage">
+            <h3>
+              <span id="fullTemplate">Add labels after adding new page</span>
+            </h3>
+            <p class="small">
+              Click here to add new labels after adding new page.
+            </p>
+            <div class="go-corner" href="/excel/addLabelsForPage">
+              <div class="go-arrow">→</div>
+            </div>
+          </a>
+          <a class="card1" href="/excel/addLabelsForNewLanguage">
+            <h3>
+              <span id="downloadTemplates"
+                >Add labels after adding new language</span
               >
-            </h4>
-          </div>
-        </div>
-        <div class="container">
-          <div id="excel_data" class="mt-5">
-            <!-- <h2 class="heading"style="display: none;">Language Table</h2> -->
-          </div>
-          <div id="excel_data1" class="mt-5">
-            <!-- <h2 class="heading"style="display: none;">Page Table</h2> -->
-          </div>
-          <div id="excel_data2" class="mt-5">
-            <!-- <h2 class="heading"style="display: none;">Label Table</h2> -->
-          </div>
-          <div id="excel_data3" class="mt-5">
-            <!-- <h2 class="heading"style="display: none;">Page-map Table</h2> -->
-          </div>
-        </div>
-        <div class="col-md-3 options">
-          <div class="container">
-            <h4 id="validation">
-              <b>Please select the page to map newly added labels</b>
-            </h4>
-          </div>
-          <select
-            class="form-select form-select-lg mb-3"
-            name="page_id"
-            id="page"
-            aria-label=".form-select-lg example "
-            required
-          ></select>
-          <div class="invalid-feedback">Please select a valid page.</div>
-        </div>
-        <button class="btn submit-btn" type="submit">
-          <i class="submit-icon fa-solid fa-file-arrow-up"></i>
-          <span id="submit"> Submit</span>
-        </button>
-      </form>
-    </section>
-    <div class="modal-wrapper" id="modal">
-      <div class="modal">
-        <div class="modal-body">
-          <h4>Modal Body</h4>
-          <p>pls wait, thanks.</p>
+            </h3>
+            <p class="small">
+              Click here to add new labels after adding new language
+            </p>
+            <div class="go-corner" href="/excel/addLabelsForNewLanguage">
+              <div class="go-arrow">→</div>
+            </div>
+          </a>
         </div>
       </div>
     </div>

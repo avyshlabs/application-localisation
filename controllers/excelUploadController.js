@@ -62,7 +62,9 @@ router
   .route("/addLabelsForPage")
   .get(async (req, res) => {
     // res.send('add labels through excel')
-    res.sendFile("addLabel.html", { root: `${__dirname}/../public/html` });
+    res.sendFile("addLabelsForPage.html", {
+      root: `${__dirname}/../public/html`,
+    });
   })
   .post(async (req, res) => {
     const form = formidable({
@@ -336,8 +338,10 @@ router.route("/templates").get(async (req, res) => {
 router
   .route("/addLabelsForNewLanguage")
   .get(async (req, res) => {
-    res.send('welcome to add new labels for new language page')
-    //res.sendFile("upload.html", { root: `${__dirname}/../public/html` });
+    // res.send("welcome to add new labels for new language page");
+    res.sendFile("addLabelsForNewLanguage.html", {
+      root: `${__dirname}/../public/html`,
+    });
   })
   .post(async (req, res) => {
     const form = formidable({
@@ -359,12 +363,12 @@ router
       for (const sheetName of workbook.SheetNames) {
         console.log(`---->${sheetName}`);
         let pageId = sheetName.substring(0, sheetName.indexOf(" "));
-        console.log("sheetName = ",pageId)
+        console.log("sheetName = ", pageId);
         worksheets[pageId] = xlsx.utils.sheet_to_json(
           workbook.Sheets[sheetName]
         );
       }
-      await excelUploadService.addLabelsForNewLanguage(worksheets)
+      await excelUploadService.addLabelsForNewLanguage(worksheets);
       fs.unlink(files.excelFile.filepath, (err) => {
         if (err) {
           console.log(err);
@@ -372,14 +376,13 @@ router
       });
       //res.sendFile("preview.html", { root: `${__dirname}/../public/html` });
       //res.redirect(`/user/preview`);
-      res.json(worksheets)
+      res.json(worksheets);
     });
   });
 
-  router.get('/addLabels', async (req,res) => {
-    res.sendFile("addLabel.html", {
-      root: `${__dirname}/../public/html`,
-    });
-    
-  })
+router.get("/addLabels", async (req, res) => {
+  res.sendFile("addLabel.html", {
+    root: `${__dirname}/../public/html`,
+  });
+});
 module.exports = router;
