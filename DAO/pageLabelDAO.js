@@ -190,7 +190,6 @@ exports.getAllDistinct= async(pageId)=> {
     });
     result = JSON.stringify(result);
     result = JSON.parse(result);
-    console.log(result);
     return {Success: true, Label: result};
   }catch(err){
     console.log(err);
