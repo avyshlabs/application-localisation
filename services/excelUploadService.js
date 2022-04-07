@@ -403,12 +403,12 @@ exports.updateTemplate = async (pageId) => {
 
     //RETRIEVE THE SPECIFIC DATA
     let language = languages.Language;
-    
-    let langArr = language.map((lang)=> {
+
+    let langArr = language.map((lang) => {
       return lang.Language_id + " " + lang.Language_name;
     });
 
-    if(pageId != undefined){
+    if (pageId != undefined) {
       labels = await pageLabelService.getLabels(pageId);
       label = labels.Pagelabels;
       result2 = label.map((object) => {
@@ -420,8 +420,7 @@ exports.updateTemplate = async (pageId) => {
           object.Label.Status,
         ];
       });
-    }
-    else{
+    } else {
       labels = await labelService.getAll();
       label = labels.Label;
       result2 = label.map((object) => {
@@ -439,18 +438,14 @@ exports.updateTemplate = async (pageId) => {
 
     //CREATE ARRAYS OF ARRAY OF DATA
 
-    let langCodes = language.map((object)=> {
-      let str =  object.Language_id + " " + object.Language_name;
+    let langCodes = language.map((object) => {
+      let str = object.Language_id + " " + object.Language_name;
       return String(str);
     });
 
     let c = 0;
     let result1 = language.map((object) => {
-      return [
-        object.Language_id,
-        object.Language_name,
-        langCodes[c++],
-      ];
+      return [object.Language_id, object.Language_name, langCodes[c++]];
     });
 
     //DELETE ROWS FROM EXISTING TEMPLATE
@@ -496,8 +491,8 @@ exports.updateTemplate = async (pageId) => {
   }
 };
 
-exports.exportTemplate = async(pageId)=> {
-  try{
+exports.exportTemplate = async (pageId) => {
+  try {
     let workbook = new excel.Workbook();
     await workbook.xlsx.readFile(`${__dirname}/../uploads/addLabels.xlsx`);
 
@@ -524,18 +519,14 @@ exports.exportTemplate = async(pageId)=> {
     let language = languages.Language;
 
     //CREATE ARRAYS OF ARRAY OF DATA
-    let langCodes = language.map((object)=> {
-      let str =  object.Language_id + " " + object.Language_name;
+    let langCodes = language.map((object) => {
+      let str = object.Language_id + " " + object.Language_name;
       return String(str);
     });
 
     let c = 0;
     let result1 = language.map((object) => {
-      return [
-        object.Language_id,
-        object.Language_name,
-        langCodes[c++]
-      ];
+      return [object.Language_id, object.Language_name, langCodes[c++]];
     });
 
     //DELETE ROWS FROM EXISTING TEMPLATE
@@ -551,7 +542,7 @@ exports.exportTemplate = async(pageId)=> {
       }
     }
 
-    if(pageId != undefined){
+    if (pageId != undefined) {
       let labels = await pageLabelService.getAllDistinct(pageId);
       let label = labels.Label;
       console.log("=------------------------> Label");
@@ -559,30 +550,25 @@ exports.exportTemplate = async(pageId)=> {
 
       let result2 = label.map((object) => {
         console.log(object.Label.Label_name);
-        return [
-          object.Label.Label_name,
-        ];
+        return [object.Label.Label_name];
       });
-  
-  
+
       for (let i = 2, k = 0; k < result2.length; i++, k++) {
         for (let j = 0; j < result2[0].length; j++) {
           let attribute = alphabets[j] + i;
           labelSheet.getCell(attribute).value = result2[k][j];
         }
-      } 
+      }
     }
 
     return workbook.xlsx.writeFile(`${__dirname}/../uploads/addLabels.xlsx`);
-
-  }catch(err){
+  } catch (err) {
     console.log("Error in services: ", err);
-    return {Success: false, Error: err};
+    return { Success: false, Error: err };
   }
-}
+};
 
-
-exports.addLabelFromExcel = async (worksheets,Page_id) => {
+exports.addLabelFromExcel = async (worksheets, Page_id) => {
   try {
     console.log(
       `inside excelUploadService- addLabelFromEXcel Service, pageId = ${Page_id}`
@@ -634,9 +620,8 @@ exports.addLabelFromExcel = async (worksheets,Page_id) => {
   }
 };
 
-
-exports.afterLanguage = async()=> {
-  try{
+exports.afterLanguage = async () => {
+  try {
     let workbook = new excel.Workbook();
     await workbook.xlsx.readFile(`${__dirname}/../uploads/afterLanguage.xlsx`);
 
@@ -648,7 +633,6 @@ exports.afterLanguage = async()=> {
       { header: "Label_value", key: "Label_value", width: 28 },
     ];
 
-
     //DELETE ROWS FROM EXISTING TEMPLATE
     this.deleteRows(labelSheet);
 
@@ -656,13 +640,11 @@ exports.afterLanguage = async()=> {
     let labels = await labelService.getAllDistinct(pageId);
 
     //SPECIFIC DATA
-    let label  = labels.Label;
+    let label = labels.Label;
 
     //ARRAY OF ARRAY OF DATA
     let result1 = label.map((object) => {
-      return [
-        object.Label_name,
-      ];
+      return [object.Label_name];
     });
 
     const alphabets = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "K", "L"];
@@ -674,13 +656,14 @@ exports.afterLanguage = async()=> {
       }
     }
 
-    return workbook.xlsx.writeFile(`${__dirname}/../uploads/afterLanguage.xlsx`);
-
-  }catch(err){
+    return workbook.xlsx.writeFile(
+      `${__dirname}/../uploads/afterLanguage.xlsx`
+    );
+  } catch (err) {
     console.log("Error in services: ", err);
-    return {Success: false, Error: err};
+    return { Success: false, Error: err };
   }
-}
+};
 exports.updateLabelFromExcel = async (worksheets) => {
   try {
     if (worksheets.Label === undefined) {
@@ -710,6 +693,62 @@ exports.updateLabelFromExcel = async (worksheets) => {
         console.log("------------------------------>update labels Rolled back");
         console.log(err);
       });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+exports.addLabelsForNewLanguage = async (worksheets) => {
+  try {
+    console.log("inside excelUploadService- addLabelsForNewLanguage Service");
+
+    for (const property in worksheets) {                                                                                                                 
+      console.log("sheet Name",property)
+      return sequelize
+        .transaction(async (t) => {
+          for (const labelObj of worksheets[property]) {
+            let result = await labelService.getLabelByValue(
+              labelObj.Label_value
+            );
+            if (result.Success) {
+              let pageLabelSaveResult = await pageLabelService.createPageLabel(
+                { page: property, label: result.Label.Label_id },
+                t
+              );
+              if (!pageLabelSaveResult.Success) throw new Error();
+            } else {
+              let saveResult = await labelService.createLabel(
+                {
+                  label_name: labelObj.Label_name,
+                  label_value: labelObj.Label_value,
+                  language_id: labelObj.Language_id.substring(
+                    0,
+                    labelObj.Language_id.indexOf(" ")
+                  ),
+                },
+                t
+              );
+              if (!saveResult.Success) throw new Error();
+              let pageLabelSaveResult = await pageLabelService.createPageLabel(
+                { page: property, label: saveResult.Content.Label_id },
+                t
+              );
+              if (!pageLabelSaveResult.Success) throw new Error();
+            }
+          }
+        })
+        .then(async (result) => {
+          console.log(
+            `----------------------------->adding labels and page map for pageId = ${property} committed`
+          );
+        })
+        .catch(function (err) {
+          console.log(
+            `------------------------------>adding labels for pageId = ${property} Rolled back`
+          );
+          console.log(err);
+        });
+    }
   } catch (err) {
     console.log(err);
   }
