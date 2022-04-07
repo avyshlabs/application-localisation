@@ -718,13 +718,14 @@ exports.allPages = async()=> {
 
     //ARRAY OF SHEETS
     let sheets = allPages.map((page)=> {
+      workbook.getWorksheet(page).state = 'visible';
       return workbook.getWorksheet(page);
     });
 
     //ARRAY OF LANGUAGES FOR FORMULA
     let languages = await languageService.getAll();
     let language = languages.Language.map((object)=> {
-      return object.Language_id + "-" + object.Language_name;
+      return object.Language_id + " " + object.Language_name;
     });
 
 
@@ -752,7 +753,7 @@ exports.allPages = async()=> {
         });
         row.commit();
       });
-      
+
       //ADDING DATA VALIDATIONS
       for (let i=2; i<=500; i++){
         let cell = 'C' + i;
@@ -789,37 +790,38 @@ exports.addData = async()=> {
       return pageName;
     });
 
-    const alphabets = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "K", "L"];
-    
-    allPages.map(async (page, index)=> {
-      let pageId = pageNos[index];
+    let sheets = await allPages.map((page)=> {
+      return workbook.getWorksheet(page);
+    })
+
+
+    console.log(pageNos);
+    sheets.map((sheet)=> console.log(sheet.name));
+
+
+    //POPULATE THE EXCEL WITH EXISTING DISTINCT DATA FROM DATABASE
+    let row = 2;
+
+    for(let i=0; i<sheets.length; i++){
+      let pageId = pageNos[i];
       let labels = await pageLabelService.getAllDistinct(pageId);
       let label = labels.Label;
 
       let result = label.map((object)=> {
-        return [object.Label.Label_name];
+        return object.Label.Label_name;
       });
 
-      console.log("-----------------> Labels");
-      console.log(result);
-
-      console.log("-------------------> Page");
-      console.log(page);
-
-      let sheet =  workbook.getWorksheet(String(page));
-      console.log("----------------------> sheets");
-      console.log(sheet);
-
-      for(let i=2, k=0; k<result.length; i++, k++){
-        for(let j=0; j<result[0].length; j++){
-          let attribute = alphabets[j] + i;
-          console.log(result[k][j] + "  " + attribute);
-          sheet.getCell(attribute).value = result[k][j];
-        }
+      for(let j=0; j<result.length; j++){
+        let attribute = 'A' + row++;
+        sheets[i].getCell(attribute).value = result[j];
       }
-    });
+      console.log(sheets[i].name);
+      console.log(result);
+      row = 2;
+    }
 
-    return workbook.xlsx.writeFile(`${__dirname}/../uploads/allPages.xlsx`);
+    await workbook.xlsx.writeFile(`${__dirname}/../uploads/allPages.xlsx`);
+    return workbook;
 
   }catch(err){
     console.log(err);
