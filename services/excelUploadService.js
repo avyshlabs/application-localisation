@@ -698,6 +698,134 @@ exports.updateLabelFromExcel = async (worksheets) => {
   }
 };
 
+
+exports.allPages = async()=> {
+  try{
+    let workbook = new excel.Workbook();
+    let pages = await pageService.getAll();
+    
+    //ARRAY OF PAGE NUMBERS
+    let pageNos = pages.Page.map((object)=> {
+      return object.Page_id;
+    })
+
+    //ARRAY OF PAGENAMES FOR SHEETS
+    let allPages = pages.Page.map((page)=> {
+      let pageName = page.Page_id + " " + page.Page_name;
+      workbook.addWorksheet(pageName);
+      return pageName;
+    });
+
+    //ARRAY OF SHEETS
+    let sheets = allPages.map((page)=> {
+      return workbook.getWorksheet(page);
+    });
+
+    //ARRAY OF LANGUAGES FOR FORMULA
+    let languages = await languageService.getAll();
+    let language = languages.Language.map((object)=> {
+      return object.Language_id + "-" + object.Language_name;
+    });
+
+
+    //FORMULA SHOULD BE OF THE FORM
+    //[‘“One,Two,Three,Four”’]
+
+    let formula = "\"" + language.join(',') + "\"";
+
+    //SHEETS INITIAL SETUP INCLUDING STYLING, COLUMNS AND DATA VALIDATIONS
+    sheets.map((sheet)=> {
+      sheet.columns = [
+        { header: "Label_name", key: "Label_name", width: 28 , height: 25},
+        { header: "Label_value", key: "Label_value", width: 28, height: 25 },
+        { header: "Language_id", key: "Language_id", width: 28 , height: 25},
+      ];
+
+      sheet.eachRow((row, rowNumber)=> {
+        row.font = {size: 15, family: 4};
+        row.eachCell((col, colNumber)=>{
+          col.fill = {
+            type: 'pattern',
+            pattern:'solid',
+            fgColor:{argb:'#B0E0E6'},
+          };
+        });
+        row.commit();
+      });
+      
+      //ADDING DATA VALIDATIONS
+      for (let i=2; i<=500; i++){
+        let cell = 'C' + i;
+        sheet.getCell(cell).dataValidation = {
+          type: 'list',
+          allowBlank: true,
+          formulae: [formula]
+        }
+      }
+    });
+
+    return workbook.xlsx.writeFile(`${__dirname}/../uploads/allPages.xlsx`);
+  }catch(err){
+    console.log(err);
+    return {Success: false, Error: err.message};
+  }
+}
+
+exports.addData = async()=> {
+  try{
+    let workbook = new excel.Workbook();
+    await workbook.xlsx.readFile(`${__dirname}/../uploads/allPages.xlsx`);
+
+    let pages = await pageService.getAll();
+    
+    //ARRAY OF PAGE NUMBERS
+    let pageNos = pages.Page.map((object)=> {
+      return object.Page_id;
+    });
+
+    //ARRAY OF PAGENAMES FOR SHEETS
+    let allPages = pages.Page.map((page)=> {
+      let pageName = page.Page_id + " " + page.Page_name;
+      return pageName;
+    });
+
+    const alphabets = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "K", "L"];
+    
+    allPages.map(async (page, index)=> {
+      let pageId = pageNos[index];
+      let labels = await pageLabelService.getAllDistinct(pageId);
+      let label = labels.Label;
+
+      let result = label.map((object)=> {
+        return [object.Label.Label_name];
+      });
+
+      console.log("-----------------> Labels");
+      console.log(result);
+
+      console.log("-------------------> Page");
+      console.log(page);
+
+      let sheet =  workbook.getWorksheet(String(page));
+      console.log("----------------------> sheets");
+      console.log(sheet);
+
+      for(let i=2, k=0; k<result.length; i++, k++){
+        for(let j=0; j<result[0].length; j++){
+          let attribute = alphabets[j] + i;
+          console.log(result[k][j] + "  " + attribute);
+          sheet.getCell(attribute).value = result[k][j];
+        }
+      }
+    });
+
+    return workbook.xlsx.writeFile(`${__dirname}/../uploads/allPages.xlsx`);
+
+  }catch(err){
+    console.log(err);
+  }
+}
+
 exports.addLabelsForNewLanguage = async (worksheets) => {
   try {
     console.log("inside excelUploadService- addLabelsForNewLanguage Service");

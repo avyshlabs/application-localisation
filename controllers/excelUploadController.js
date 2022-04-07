@@ -335,6 +335,24 @@ router.route("/templates").get(async (req, res) => {
   });
 });
 
+router.get('/test', async(req, res)=> {
+  let result = await excelUploadService.allPages();
+  let result2 = await excelUploadService.addData();
+  let workbook = new excel.Workbook();
+    await workbook.xlsx.readFile(`${__dirname}/../uploads/allPages.xlsx`);
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheet.sheet"
+    );
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=" + "Template-allPages.xlsx"
+    );
+    // return workbook.xlsx.write(res).then(() => {
+    //   res.status(200).end();
+    // });
+})
+
 router
   .route("/addLabelsForNewLanguage")
   .get(async (req, res) => {
