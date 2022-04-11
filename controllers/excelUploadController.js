@@ -399,7 +399,7 @@ router
       });
       //res.sendFile("preview.html", { root: `${__dirname}/../public/html` });
       //res.redirect(`/user/preview`);
-      res.json(worksheets);
+      res.redirect('/excel/dashboard');
     });
   });
 
