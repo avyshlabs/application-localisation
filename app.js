@@ -7,7 +7,7 @@ const sequelize = require("./DAO/database");
 const CookieParser = require("cookie-parser");
 
 //SCAFFOLD SEQUELIZE-AUTO AFTER INSTALLING SEQUELIZE-AUTO
-//sequelize-auto -o "./models" -d <DATABASE NAME> -h <HOSTNAME> -u <USERNAME> -p <PORT> -x <PASSWORD> -e <DIALECT>
+// sequelize-auto -o "./models" -d <DATABASE NAME> -h <HOSTNAME> -u <USERNAME> -p <PORT> -x <PASSWORD> -e <DIALECT>
 
 //ROUTERS
 const userRouter = require("./controllers/userController");
@@ -16,18 +16,9 @@ const PageController = require("./controllers/pageController");
 const LabelController = require("./controllers/LabelController");
 const PageLabelController = require("./controllers/PageLabel");
 const excelUploadController = require("./controllers/excelUploadController");
-const languageConotroller = require('./controllers/languageController')
+const languageConotroller = require('./controllers/languageController');
 
 //ASSOCIATIONS DEFINED IN ./MODELS/INIT-MODELS
-
-// sequelize
-//   .sync()
-//   .then((result) => {
-//     console.log(result);
-//   })
-//   .catch((err) => {
-//     console.log(err);
-//   });
 
 const app = express();
 app.use(morgan("dev"));
@@ -75,7 +66,7 @@ app.use('/language',languageConotroller)
 //   );
 // });
 
-sequelize.sync().then((req) => {
+sequelize.sync({force: true}).then((req) => {
   app.listen(process.env.PORT, () => {
     console.log(
       `server listening in http://${process.env.HOSTNAME}:${process.env.PORT}`
