@@ -199,12 +199,11 @@ router.get("/download-updateLabels", async (req, res) => {
   try {
     // let result = await excelUploadService.returnTemplate();
 
-    let pageId = req.query.pageId;
 
-    let result = await excelUploadService.updateTemplate(pageId);
+    let result = await excelUploadService.updateTemplate();
 
     let workbook = new excel.Workbook();
-    await workbook.xlsx.readFile(`${__dirname}/../uploads/updateLabels.xlsx`);
+    await workbook.xlsx.readFile(`${__dirname}/../uploads/writeTemplate.xlsx`);
     res.setHeader(
       "Content-Type",
       "application/vnd.openxmlformats-officedocument.spreadsheet.sheet"
@@ -299,13 +298,12 @@ router
 
       let worksheets = {};
       for (const sheetName of workbook.SheetNames) {
-        console.log(`---->${sheetName}`);
         worksheets[sheetName] = xlsx.utils.sheet_to_json(
           workbook.Sheets[sheetName]
         );
       }
 
-      await excelUploadService.updateLabelFromExcel(worksheets);
+      let updateResult = await excelUploadService.updateLabelFromExcel(worksheets);
       fs.unlink(files.excelFile.filepath, (err) => {
         if (err) {
           console.log(err);

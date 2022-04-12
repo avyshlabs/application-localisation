@@ -377,120 +377,60 @@ exports.exportTemplate = async () => {
   }
 };
 
-exports.updateTemplate = async (pageId) => {
+exports.updateTemplate = async () => {
   try {
     let workbook = new excel.Workbook();
-    await workbook.xlsx.readFile(`${__dirname}/../uploads/updateLabels.xlsx`);
 
-    let languageSheet = workbook.getWorksheet("Language");
-    let labelSheet = workbook.getWorksheet("Label");
-
-    //SET COLUMN WIDTH, HEADERS AND KEYS
-    languageSheet.columns = [
-      { header: "Language_id", key: "Language_id", width: 20 },
-      { header: "Language_name", key: "Language_name", width: 28 },
-      { header: "Language_code", key: "Language_code", width: 28 },
-    ];
-
-    labelSheet.columns = [
-      { header: "Label_id", key: "Label_id", width: 18 },
+    let columns = [
+      { header: "Translation_id", key: "Translation_id", width: 20 },
       { header: "Label_name", key: "Label_name", width: 28 },
-      { header: "Label_value", key: "Label_value", width: 28 },
-      { header: "Language_id", key: "Language_id", width: 28 },
+      { header: "Translation_value", key: "Translation_value", width: 28 },
+      { header: "Language", key: "Language", width: 28 },
       { header: "Status", key: "Status", width: 20 },
     ];
 
+    workbook.addWorksheet("Update_Labels");
+    let sheet = workbook.getWorksheet("Update_Labels");
+    sheet.columns = columns;
+
     //GET EXISTING DATA FROM DATABASE
-    let languages = await languageService.getAll();
-    let labels, label, result2;
+    let translations = await translationService.getTranslations();
 
     //RETRIEVE THE SPECIFIC DATA
-    let language = languages.Language;
+    let translation = translations.Translation;
 
-    let langArr = language.map((lang) => {
-      return lang.Language_id + " " + lang.Language_name;
+    let array = translation.map((object) => {
+      let language = object.Language;
+      let language_string =
+        language.Language_code + " " + language.Language_name;
+      return [
+        object.Translation_id,
+        object.Label.Label_name,
+        object.Translation_value,
+        language_string,
+        object.Status,
+      ];
     });
 
-    if (pageId != undefined) {
-      labels = await pageLabelService.getLabels(pageId);
-      label = labels.Pagelabels;
-      result2 = label.map((object) => {
-        return [
-          object.Label.Label_id,
-          object.Label.Label_name,
-          object.Label.Label_value,
-          langArr[object.Label.Language_id - 1],
-          object.Label.Status,
-        ];
-      });
-    } else {
-      labels = await labelService.getAll();
-      label = labels.Label;
-      result2 = label.map((object) => {
-        return [
-          object.Label_id,
-          object.Label_name,
-          object.Label_value,
-          langArr[object.Language_id - 1],
-          object.Status,
-        ];
-      });
-    }
+    const alphabets = ["A", "B", "C", "D", "E", "F", "G", "H"];
+    let row = 2;
+    let column = 0;
 
-    console.log(label);
-
-    //CREATE ARRAYS OF ARRAY OF DATA
-
-    let langCodes = language.map((object) => {
-      let str = object.Language_id + " " + object.Language_name;
-      return String(str);
-    });
-
-    let c = 0;
-    let result1 = language.map((object) => {
-      return [object.Language_id, object.Language_name, langCodes[c++]];
-    });
-
-    //DELETE ROWS FROM EXISTING TEMPLATE
-    this.deleteRows(languageSheet);
-    this.deleteRows(labelSheet);
-
-    const alphabets = [
-      "A",
-      "B",
-      "C",
-      "D",
-      "E",
-      "F",
-      "G",
-      "H",
-      "I",
-      "J",
-      "K",
-      "L",
-      "M",
-      "N",
-      "O",
-    ];
-
-    for (let i = 2, k = 0; k < result1.length; i++, k++) {
-      for (let j = 0; j < result1[0].length; j++) {
-        let attribute = alphabets[j] + i;
-        languageSheet.getCell(attribute).value = result1[k][j];
+    //ADDING DATA INTO EXCEL WORKSHEET
+    for (let i = 0; i < array.length; i++) {
+      for (let j = 0; j < array[0].length; j++) {
+        let attribute = alphabets[j] + row;
+        sheet.getCell(attribute).value = array[i][j];
       }
+      row++;
     }
 
-    for (let i = 2, k = 0; k < result2.length; i++, k++) {
-      for (let j = 0; j < result2[0].length; j++) {
-        let attribute = alphabets[j] + i;
-        labelSheet.getCell(attribute).value = result2[k][j];
-      }
-    }
-
-    return workbook.xlsx.writeFile(`${__dirname}/../uploads/updateLabels.xlsx`);
+    return workbook.xlsx.writeFile(
+      `${__dirname}/../uploads/writeTemplate.xlsx`
+    );
   } catch (err) {
     console.log("Error in services: ", err);
-    return { Success: false, Error: err };
+    return { Success: false, Error: err.message };
   }
 };
 
@@ -738,24 +678,18 @@ exports.afterLanguage = async () => {
 };
 exports.updateLabelFromExcel = async (worksheets) => {
   try {
-    if (worksheets.Label === undefined) {
+    if (worksheets.Update_Labels === undefined) {
       throw new Error("Label sheet is not present in the excel file");
     }
 
     return sequelize
       .transaction(async (t) => {
-        for (const labelObj of worksheets.Label) {
-          let result = await labelService.getLabelById(labelObj.Label_id);
-          if (result.Success) {
-            let updateResult = await labelService.update(
-              labelObj.Label_id,
-              labelObj,
-              t
-            );
-            if (!updateResult.Success) throw new Error();
-          } else {
-            //throw new Error('Wrong label id detected')
-          }
+        for (const translationObj of worksheets.Update_Labels) {
+          let updateResult = await translationService.updateTranslation(
+            translationObj,
+            t
+          );
+          if (!updateResult.Success) throw new Error();
         }
       })
       .then(async (result) => {
@@ -1001,18 +935,18 @@ exports.onNewPage = async () => {
       columns.push(record);
     });
 
-    console.log("Columns: ", columns);
-
     //ADDING SHEET AND COLUMNS
     workbook.addWorksheet("Add_Labels");
     let sheet = workbook.getWorksheet("Add_Labels");
     sheet.columns = columns;
 
+    console.log("Columns: ", columns);
+
     return workbook.xlsx.writeFile(
       `${__dirname}/../uploads/writeTemplate.xlsx`
     );
   } catch (err) {
-    console.log("Error in onNewLanguaage service");
+    console.log("Error in on-new-page service", err.message);
     return { Success: false, Error: err.message };
   }
 };
