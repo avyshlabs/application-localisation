@@ -22,7 +22,6 @@ exports.saveTranslation = async (translationDetails, transaction) => {
   }
 };
 
-<<<<<<< HEAD
 exports.updateTranslation = async (translationId, translationDetails,transaction) => {
   try {
     console.log(translationDetails);
@@ -39,7 +38,6 @@ exports.updateTranslation = async (translationId, translationDetails,transaction
     return { Success: false, Error: err.message };
   }
 };
-=======
 exports.getTranslations = async()=> {
   try{
     let result = await models.translation.findAll({
@@ -63,4 +61,3 @@ exports.getTranslations = async()=> {
     return {Success: false, Error: err.message};
   }
 }
->>>>>>> ad0f30507e357f11cedda00dfb715fc74f865e7a
