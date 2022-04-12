@@ -114,16 +114,15 @@
 
     <!-- <header>
     </header> -->
-    <h2 id="instruction" style="text-align: center; padding: 30px;">
+    <h2 id="instruction" style="text-align: center; padding: 10px;">
     </h2>  
-    <div class="card" style="padding-bottom: 70px;" >
+    <!-- <div class="card" style="padding: 10  px;" >
       <h2 id="uploadExcelFile">
       </h2>
-      <h2 id="instruction" style="text-align: center; padding: 50px;">
+      <h2 id="instruction" style="text-align: center; padding: 10px;">
         <b> Please download this template to add new labels for new language </b>
       </h2>  
-      <i class="fa-solid fa-file-lines fileicon" style="width: 100%"></i>
-    </div>
+    </div> -->
     <div class="header-class">
       <h2 id="instruction">
         <b>
@@ -147,6 +146,47 @@
         </form>
       </div>
     </div>
+    <section>
+      <form
+        action="/excel/addLabelsForNewLanguage2"
+        method="post"
+        enctype="multipart/form-data"
+      >
+        <div class="card">
+          <!-- <i class="fa fa-download fileicon" style="width: 100%"></i> -->
+          <h2 id="uploadExcelFile">
+            <b> Upload Excel File </b>
+          </h2>
+          <i class="fa-solid fa-file-lines fileicon" style="width: 100%"></i>
+          <label for="excelFile" class="custom-file-upload"> Select File</label>
+          <input
+            id="excelFile"
+            name="excelFile"
+            type="file"
+            style="display: none"
+            required
+          />
+          <div class="invalid-feedback">Please provide a file.</div>
+          <div class="container">
+            <h4 id="validation">
+              <b
+                >Make sure to upload the same template file which is edited and
+                validated.</b
+              >
+            </h4>
+          </div>
+        </div>
+        <div class="container">
+          <div id="excel_data" class="mt-5">
+
+        </div>
+
+        <button class="btn submit-btn" type="submit">
+          <i class="submit-icon fa-solid fa-file-arrow-up"></i>
+          <span id="submit"> Submit</span>
+        </button>
+      </form>
+    </section>
   </body>
   <script src="../js/onNewLanguage.js"></script>
 </html>

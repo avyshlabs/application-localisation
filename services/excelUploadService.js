@@ -375,13 +375,13 @@ exports.exportTemplate = async () => {
   }
 };
 
-exports.updateTemplate = async (pageId) => {
+exports.updateTemplate = async () => {
   try {
     let workbook = new excel.Workbook();
-    await workbook.xlsx.readFile(`${__dirname}/../uploads/updateLabels.xlsx`);
 
-    let languageSheet = workbook.getWorksheet("Language");
-    let labelSheet = workbook.getWorksheet("Label");
+    // let columns = [
+
+    // ]
 
     //SET COLUMN WIDTH, HEADERS AND KEYS
     languageSheet.columns = [
