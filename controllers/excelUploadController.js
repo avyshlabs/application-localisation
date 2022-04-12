@@ -404,4 +404,11 @@ router.get("/addLabels", async (req, res) => {
     root: `${__dirname}/../public/html`,
   });
 });
+
+router.get('/newLanguage', (req, res)=> {
+  console.log("Enter boss")
+  res.sendFile("onNewLanguage.html", {
+    root: `${__dirname}/../public/html`,
+  });
+})
 module.exports = router;
