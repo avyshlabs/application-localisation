@@ -417,8 +417,9 @@ exports.updateTemplate = async () => {
     for(let i=0; i<array.length; i++){
       for(let j=0; j<array[0].length; j++){
         let attribute = alphabets[j] + row;
-        sheet
+        sheet.getCell(attribute).value = array[i][j];
       }
+      row++;
     }
 
     return workbook.xlsx.writeFile(`${__dirname}/../uploads/writeTemplate.xlsx`);
