@@ -66,7 +66,7 @@ app.use('/language',languageConotroller)
 //   );
 // });
 
-sequelize.sync({force: true}).then((req) => {
+sequelize.sync().then((req) => {
   app.listen(process.env.PORT, () => {
     console.log(
       `server listening in http://${process.env.HOSTNAME}:${process.env.PORT}`

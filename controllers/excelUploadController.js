@@ -408,4 +408,47 @@ router.get("/addLabels", async (req, res) => {
     root: `${__dirname}/../public/html`,
   });
 });
+
+
+router
+  .route("/addLabelsForNewLanguage2")
+  .get(async (req, res) => {
+    res.send('welcome to add labels for new language page')
+    
+  })
+  .post(async (req, res) => {
+    const form = formidable({
+      multiples: false,
+      uploadDir: `${__dirname}/../uploads`,
+      keepExtensions: true,
+    });
+
+    form.parse(req, async (err, fields, files) => {
+      if (err) {
+        next(err);
+        return;
+      }
+      const workbook = xlsx.readFile(files.excelFile.filepath);
+
+      let worksheets = {};
+      let languageId;
+      for (const sheetName of workbook.SheetNames) {
+        languageId = sheetName.substring(0, sheetName.indexOf(" "));
+        worksheets[languageId] = xlsx.utils.sheet_to_json(
+          workbook.Sheets[sheetName]
+        );
+      }
+      let saveResult = await excelUploadService.addLabelsForNewLanguage2(worksheets,languageId)
+      fs.unlink(files.excelFile.filepath, (err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
+      if(saveResult.Success) res.status(200).send('successfully added to database')
+      else res.status(500).send('cannot add labels to database')
+     //res.send('done')
+    });
+  });
+
+
 module.exports = router;

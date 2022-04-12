@@ -4,6 +4,7 @@ const languageService = require("./languageService");
 const pageService = require("./PageService");
 const labelService = require("./LabelService");
 const pageLabelService = require("./PageLabelService");
+const translationService = require('./translationService')
 
 const sequelize = require("../DAO/database");
 
@@ -698,121 +699,117 @@ exports.updateLabelFromExcel = async (worksheets) => {
   }
 };
 
-
-exports.allPages = async()=> {
-  try{
+exports.allPages = async () => {
+  try {
     let workbook = new excel.Workbook();
     let pages = await pageService.getAll();
-    
+
     //ARRAY OF PAGE NUMBERS
-    let pageNos = pages.Page.map((object)=> {
+    let pageNos = pages.Page.map((object) => {
       return object.Page_id;
-    })
+    });
 
     //ARRAY OF PAGENAMES FOR SHEETS
-    let allPages = pages.Page.map((page)=> {
+    let allPages = pages.Page.map((page) => {
       let pageName = page.Page_id + " " + page.Page_name;
       workbook.addWorksheet(pageName);
       return pageName;
     });
 
     //ARRAY OF SHEETS
-    let sheets = allPages.map((page)=> {
-      workbook.getWorksheet(page).state = 'visible';
+    let sheets = allPages.map((page) => {
+      workbook.getWorksheet(page).state = "visible";
       return workbook.getWorksheet(page);
     });
 
     //ARRAY OF LANGUAGES FOR FORMULA
     let languages = await languageService.getAll();
-    let language = languages.Language.map((object)=> {
+    let language = languages.Language.map((object) => {
       return object.Language_id + " " + object.Language_name;
     });
-
 
     //FORMULA SHOULD BE OF THE FORM
     //[‘“One,Two,Three,Four”’]
 
-    let formula = "\"" + language.join(',') + "\"";
+    let formula = '"' + language.join(",") + '"';
 
     //SHEETS INITIAL SETUP INCLUDING STYLING, COLUMNS AND DATA VALIDATIONS
-    sheets.map((sheet)=> {
+    sheets.map((sheet) => {
       sheet.columns = [
-        { header: "Label_name", key: "Label_name", width: 28 , height: 25},
+        { header: "Label_name", key: "Label_name", width: 28, height: 25 },
         { header: "Label_value", key: "Label_value", width: 28, height: 25 },
-        { header: "Language_id", key: "Language_id", width: 28 , height: 25},
+        { header: "Language_id", key: "Language_id", width: 28, height: 25 },
       ];
 
-      sheet.eachRow((row, rowNumber)=> {
-        row.font = {size: 15, family: 4};
-        row.eachCell((col, colNumber)=>{
+      sheet.eachRow((row, rowNumber) => {
+        row.font = { size: 15, family: 4 };
+        row.eachCell((col, colNumber) => {
           col.fill = {
-            type: 'pattern',
-            pattern:'solid',
-            fgColor:{argb:'#B0E0E6'},
+            type: "pattern",
+            pattern: "solid",
+            fgColor: { argb: "#B0E0E6" },
           };
         });
         row.commit();
       });
 
       //ADDING DATA VALIDATIONS
-      for (let i=2; i<=500; i++){
-        let cell = 'C' + i;
+      for (let i = 2; i <= 500; i++) {
+        let cell = "C" + i;
         sheet.getCell(cell).dataValidation = {
-          type: 'list',
+          type: "list",
           allowBlank: true,
-          formulae: [formula]
-        }
+          formulae: [formula],
+        };
       }
     });
 
     return workbook.xlsx.writeFile(`${__dirname}/../uploads/allPages.xlsx`);
-  }catch(err){
+  } catch (err) {
     console.log(err);
-    return {Success: false, Error: err.message};
+    return { Success: false, Error: err.message };
   }
-}
+};
 
-exports.addData = async()=> {
-  try{
+exports.addData = async () => {
+  try {
     let workbook = new excel.Workbook();
     await workbook.xlsx.readFile(`${__dirname}/../uploads/allPages.xlsx`);
 
     let pages = await pageService.getAll();
-    
+
     //ARRAY OF PAGE NUMBERS
-    let pageNos = pages.Page.map((object)=> {
+    let pageNos = pages.Page.map((object) => {
       return object.Page_id;
     });
 
     //ARRAY OF PAGENAMES FOR SHEETS
-    let allPages = pages.Page.map((page)=> {
+    let allPages = pages.Page.map((page) => {
       let pageName = page.Page_id + " " + page.Page_name;
       return pageName;
     });
 
-    let sheets = await allPages.map((page)=> {
+    let sheets = await allPages.map((page) => {
       return workbook.getWorksheet(page);
-    })
-
+    });
 
     console.log(pageNos);
-    sheets.map((sheet)=> console.log(sheet.name));
-
+    sheets.map((sheet) => console.log(sheet.name));
 
     //POPULATE THE EXCEL WITH EXISTING DISTINCT DATA FROM DATABASE
     let row = 2;
 
-    for(let i=0; i<sheets.length; i++){
+    for (let i = 0; i < sheets.length; i++) {
       let pageId = pageNos[i];
       let labels = await pageLabelService.getAllDistinct(pageId);
       let label = labels.Label;
 
-      let result = label.map((object)=> {
+      let result = label.map((object) => {
         return object.Label.Label_name;
       });
 
-      for(let j=0; j<result.length; j++){
-        let attribute = 'A' + row++;
+      for (let j = 0; j < result.length; j++) {
+        let attribute = "A" + row++;
         sheets[i].getCell(attribute).value = result[j];
       }
       console.log(sheets[i].name);
@@ -822,18 +819,17 @@ exports.addData = async()=> {
 
     await workbook.xlsx.writeFile(`${__dirname}/../uploads/allPages.xlsx`);
     return workbook;
-
-  }catch(err){
+  } catch (err) {
     console.log(err);
   }
-}
+};
 
 exports.addLabelsForNewLanguage = async (worksheets) => {
   try {
     console.log("inside excelUploadService- addLabelsForNewLanguage Service");
 
-    for (const property in worksheets) {                                                                                                                 
-      console.log("sheet Name",property)
+    for (const property in worksheets) {
+      console.log("sheet Name", property);
       return sequelize
         .transaction(async (t) => {
           for (const labelObj of worksheets[property]) {
@@ -881,5 +877,28 @@ exports.addLabelsForNewLanguage = async (worksheets) => {
     }
   } catch (err) {
     console.log(err);
+  }
+};
+
+exports.addLabelsForNewLanguage2 = async (worksheet, languageId) => {
+  try {
+    console.log("inside excelUploadService- addLabelsForNewLanguage2 Service");
+    return sequelize
+      .transaction(async (t) => {
+        for (const labelObj of worksheet[languageId]) {
+          let translationSaveResult = await translationService.saveTranslation(labelObj.Label_id,languageId,labelObj.Translation_value,t)
+          if(!translationSaveResult.Success) throw new Error()
+        }
+      })
+      .then((result) => {
+        console.log(`---------------------->adding labels for new language commited`)
+        return {Success: true}
+      })
+      .catch((err) => {
+        console.log(`---------------------->adding labels for new language rolled back`)
+        return {Success: false}
+      });
+  } catch (err) {
+    console.log(err.message);
   }
 };
