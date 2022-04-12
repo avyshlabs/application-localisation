@@ -902,3 +902,85 @@ exports.addLabelsForNewLanguage2 = async (worksheet, languageId) => {
     console.log(err.message);
   }
 };
+exports.onNewPage = async()=> {
+  try{
+    //CREATE INSTANCE OF EXCEL WORKBOOK
+    let workbook = new excel.Workbook();
+
+    //GET ALL LANGUAGES
+    let languages = await languageService.getAll();
+    let language = languages.Language;
+
+    //EXCEL FILE COLUMN HEADER INITIALISATION
+    let columns = [
+      { header: "Label_name", key: "Label_name", width: 28 },
+      { header: "Translation_value", key: "Translation_value", width: 28 }
+    ];
+
+    //ADDING EACH LANGUAGE AS HEADER
+    language.map((object)=> {
+      let heading = object.Language_id + " " + object.Language_code;
+      let record = { header: heading, key: heading, width: 20}
+      columns.push(record);
+    });
+
+    console.log("Columns: ", columns);
+
+    //ADDING SHEET AND COLUMNS
+    workbook.addWorksheet('Add_Labels');
+    let sheet = workbook.getWorksheet('Add_Labels');
+    sheet.columns = columns;
+
+
+    return workbook.xlsx.writeFile(`${__dirname}/../uploads/writeTemplate.xlsx`);
+    
+  }catch(err){
+    console.log("Error in onNewLanguaage service");
+    return {Success: false, Error: err.message};
+  }
+}
+
+exports.onNewLanguage = async(languageId)=> {
+  try{
+    //CREATE INSTANCE OF EXCEL WORKBOOK
+    let workbook = new excel.Workbook();
+
+    //GET THE LANGUAGE
+    let object = await languageService.getLanguageById(languageId);
+    let language = object.Language;
+
+    //GET ALL LABELS
+    let labels = await labelService.getAll();
+    let label = labels.Label;
+
+    //ADDING WORKSHEET
+    let sheetName = language.Language_id + " " + language.Language_code;
+    workbook.addWorksheet(sheetName);
+    let sheet = workbook.getWorksheet(sheetName);
+
+    //EXCEL FILE COLUMN HEADER INITIALISATION
+    let columns = [
+      { header: "Label_id", key: "Label_id", width: 20 },
+      { header: "Label_name", key: "Label_name", width: 28 },
+      { header: "Translation_value", key: "Translation_value", width: 28 }
+    ];
+
+    sheet.columns = columns;
+
+    //ADDING LABEL_NAME's TO EXCEL SHEET
+    let row = 2;
+    label.map((object)=> {
+      let attribute1 = 'A' + row;
+      let attribute2 = 'B' + row;
+      sheet.getCell(attribute1).value = object.Label_id;
+      sheet.getCell(attribute2).value = object.Label_name;
+      row++;
+    });
+
+    return workbook.xlsx.writeFile(`${__dirname}/../uploads/writeTemplate.xlsx`);
+
+  }catch(err){
+    console.log(err);
+    return {Success: false, Error: err.message};
+  }
+}

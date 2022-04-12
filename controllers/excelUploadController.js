@@ -170,15 +170,10 @@ router.get("/download-template", async (req, res) => {
 
 router.get("/download-addLabels", async (req, res) => {
   try {
-    // let result = await excelUploadService.returnTemplate();
-    let pageId = req.query.page_id;
-    console.log("reached here", pageId);
-    console.log(req.query.page_id);
-
-    let result = await excelUploadService.exportTemplate(pageId);
+    let result = await excelUploadService.onNewPage();
 
     let workbook = new excel.Workbook();
-    await workbook.xlsx.readFile(`${__dirname}/../uploads/addLabels.xlsx`);
+    await workbook.xlsx.readFile(`${__dirname}/../uploads/writeTemplate.xlsx`);
     res.setHeader(
       "Content-Type",
       "application/vnd.openxmlformats-officedocument.spreadsheet.sheet"
@@ -253,14 +248,13 @@ router.route("/dashboard").get(async (req, res) => {
   res.sendFile("dashboard.html", { root: `${__dirname}/../public/html` });
 });
 
-router.get("/download-afterLanguage", async (req, res) => {
+router.get("/download-onNewLanguage", async (req, res) => {
   try {
-    // let result = await excelUploadService.returnTemplate();
-
-    let result = await excelUploadService.afterLanguage();
+    let langId = req.query.language_id;
+    let result = await excelUploadService.onNewLanguage(langId);
 
     let workbook = new excel.Workbook();
-    await workbook.xlsx.readFile(`${__dirname}/../uploads/afterLanguage.xlsx`);
+    await workbook.xlsx.readFile(`${__dirname}/../uploads/writeTemplate.xlsx`);
     res.setHeader(
       "Content-Type",
       "application/vnd.openxmlformats-officedocument.spreadsheet.sheet"
@@ -277,6 +271,8 @@ router.get("/download-afterLanguage", async (req, res) => {
     res.status(500).json("Error");
   }
 });
+
+
 router
   .route("/updateLabels")
   .get(async (req, res) => {
@@ -451,4 +447,10 @@ router
   });
 
 
+router.get('/newLanguage', (req, res)=> {
+  console.log("Enter boss")
+  res.sendFile("onNewLanguage.html", {
+    root: `${__dirname}/../public/html`,
+  });
+})
 module.exports = router;

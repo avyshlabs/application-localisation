@@ -43,4 +43,16 @@ router
     }
   });
 
+router.get('/getAll', async(req, res)=> {
+  try{
+    let result = await languageService.getAll();
+    if(result.Success)
+      res.status(200).json(result);
+    else  
+      res.status(500).json(result);
+  }catch(err){
+    res.status(500).json(err.message);
+  }
+})
+
 module.exports = router;
