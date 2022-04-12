@@ -19,6 +19,7 @@ exports.saveTranslation = async (
   }
 };
 
+<<<<<<< HEAD
 exports.updateTranslation = async (translationObj, transaction) => {
   try {
     const updateResult = await translationDAO.updateTranslation(
@@ -36,3 +37,18 @@ exports.updateTranslation = async (translationObj, transaction) => {
     return { Success: false, Error: err.message };
   }
 };
+=======
+
+exports.getTranslations = async()=> {
+  try{
+    let result = await translationDAO.getTranslations();
+    console.log("--------------------------------> Result",result);
+    return result;
+  }catch(err){
+    console.log(err);
+    return {Success: false, Error: err.message};
+  }
+}
+
+this.getTranslations();
+>>>>>>> ad0f30507e357f11cedda00dfb715fc74f865e7a
