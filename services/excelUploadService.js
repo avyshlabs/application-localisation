@@ -604,13 +604,13 @@ exports.afterLanguage = async () => {
 };
 exports.updateLabelFromExcel = async (worksheets) => {
   try {
-    if (worksheets.Update_Label === undefined) {
+    if (worksheets.Update_Labels === undefined) {
       throw new Error("Label sheet is not present in the excel file");
     }
 
     return sequelize
       .transaction(async (t) => {
-        for (const translationObj of worksheets.Update_Label) {
+        for (const translationObj of worksheets.Update_Labels) {
           let updateResult = await translationService.updateTranslation(
             translationObj,
             t

@@ -26,7 +26,7 @@ exports.updateTranslation = async (translationObj, transaction) => {
       {
         Translation_value: translationObj.Translation_value,
         Status: translationObj.Status,
-        Updated_time: new Date(),
+        Updated_date: new Date(),
       },
       transaction
     );
