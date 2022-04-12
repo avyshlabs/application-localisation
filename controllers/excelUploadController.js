@@ -93,7 +93,7 @@ router
         );
       }
 
-      await excelUploadService.addLabelFromExcel(worksheets, fields.page_id);
+      await excelUploadService.addLabelFromExcel2(worksheets, fields.page_id);
       fs.unlink(files.excelFile.filepath, (err) => {
         if (err) {
           console.log(err);
@@ -335,28 +335,28 @@ router.route("/templates").get(async (req, res) => {
   });
 });
 
-router.get('/download-labelsForNewLanguage', async(req, res)=> {
-  try{
+router.get("/download-labelsForNewLanguage", async (req, res) => {
+  try {
     await excelUploadService.allPages();
     await excelUploadService.addData();
     let workbook = new excel.Workbook();
-      await workbook.xlsx.readFile(`${__dirname}/../uploads/allPages.xlsx`);
-      res.setHeader(
-        "Content-Type",
-        "application/vnd.openxmlformats-officedocument.spreadsheet.sheet"
-      );
-      res.setHeader(
-        "Content-Disposition",
-        "attachment; filename=" + "Template-allPages.xlsx"
-      );
-      return workbook.xlsx.write(res).then(() => {
-        res.status(200).end();
-      });
-    }catch(err){
-      console.log(err);
-      return {Success: true, Error: err.message};
-    }
-})
+    await workbook.xlsx.readFile(`${__dirname}/../uploads/allPages.xlsx`);
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheet.sheet"
+    );
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=" + "Template-allPages.xlsx"
+    );
+    return workbook.xlsx.write(res).then(() => {
+      res.status(200).end();
+    });
+  } catch (err) {
+    console.log(err);
+    return { Success: true, Error: err.message };
+  }
+});
 
 router
   .route("/addLabelsForNewLanguage")
@@ -399,7 +399,7 @@ router
       });
       //res.sendFile("preview.html", { root: `${__dirname}/../public/html` });
       //res.redirect(`/user/preview`);
-      res.redirect('/excel/dashboard');
+      res.redirect("/excel/dashboard");
     });
   });
 
