@@ -195,12 +195,11 @@ router.get("/download-updateLabels", async (req, res) => {
   try {
     // let result = await excelUploadService.returnTemplate();
 
-    let pageId = req.query.pageId;
 
-    let result = await excelUploadService.updateTemplate(pageId);
+    let result = await excelUploadService.updateTemplate();
 
     let workbook = new excel.Workbook();
-    await workbook.xlsx.readFile(`${__dirname}/../uploads/updateLabels.xlsx`);
+    await workbook.xlsx.readFile(`${__dirname}/../uploads/writeTemplate.xlsx`);
     res.setHeader(
       "Content-Type",
       "application/vnd.openxmlformats-officedocument.spreadsheet.sheet"

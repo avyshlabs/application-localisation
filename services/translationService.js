@@ -48,4 +48,3 @@ exports.getTranslations = async()=> {
   }
 }
 
-this.getTranslations();

@@ -379,116 +379,53 @@ exports.updateTemplate = async () => {
   try {
     let workbook = new excel.Workbook();
 
-    // let columns = [
+    let columns = [
+        { header: 'Translation_id', key: 'Translation_id', width: 20 },
+        { header: "Label_name", key: "Label_name", width: 28 },
+        { header: "Translation_value", key: "Translation_value", width: 28 },
+        { header: "Language", key: "Language", width: 28 },
+        { header: "Status", key: "Status", width: 20 }
+    ]
 
-    // ]
-
-    //SET COLUMN WIDTH, HEADERS AND KEYS
-    languageSheet.columns = [
-      { header: "Language_id", key: "Language_id", width: 20 },
-      { header: "Language_name", key: "Language_name", width: 28 },
-      { header: "Language_code", key: "Language_code", width: 28 },
-    ];
-
-    labelSheet.columns = [
-      { header: "Label_id", key: "Label_id", width: 18 },
-      { header: "Label_name", key: "Label_name", width: 28 },
-      { header: "Label_value", key: "Label_value", width: 28 },
-      { header: "Language_id", key: "Language_id", width: 28 },
-      { header: "Status", key: "Status", width: 20 },
-    ];
+    workbook.addWorksheet('Update_Labels');
+    let sheet = workbook.getWorksheet('Update_Labels');
+    sheet.columns = columns
 
     //GET EXISTING DATA FROM DATABASE
-    let languages = await languageService.getAll();
-    let labels, label, result2;
+    let translations = await translationService.getTranslations();
 
     //RETRIEVE THE SPECIFIC DATA
-    let language = languages.Language;
+    let translation = translations.Translation;
 
-    let langArr = language.map((lang) => {
-      return lang.Language_id + " " + lang.Language_name;
+    let array = translation.map((object)=> {
+      let language = object.Language;
+      let language_string = language.Language_code + " " + language.Language_name;
+      return [
+        object.Translation_id,
+        object.Label.Label_name,
+        object.Translation_value,
+        language_string,
+        object.Status
+      ]
     });
 
-    if (pageId != undefined) {
-      labels = await pageLabelService.getLabels(pageId);
-      label = labels.Pagelabels;
-      result2 = label.map((object) => {
-        return [
-          object.Label.Label_id,
-          object.Label.Label_name,
-          object.Label.Label_value,
-          langArr[object.Label.Language_id - 1],
-          object.Label.Status,
-        ];
-      });
-    } else {
-      labels = await labelService.getAll();
-      label = labels.Label;
-      result2 = label.map((object) => {
-        return [
-          object.Label_id,
-          object.Label_name,
-          object.Label_value,
-          langArr[object.Language_id - 1],
-          object.Status,
-        ];
-      });
-    }
+    const alphabets = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+    let row = 2;
+    let column = 0;
 
-    console.log(label);
-
-    //CREATE ARRAYS OF ARRAY OF DATA
-
-    let langCodes = language.map((object) => {
-      let str = object.Language_id + " " + object.Language_name;
-      return String(str);
-    });
-
-    let c = 0;
-    let result1 = language.map((object) => {
-      return [object.Language_id, object.Language_name, langCodes[c++]];
-    });
-
-    //DELETE ROWS FROM EXISTING TEMPLATE
-    this.deleteRows(languageSheet);
-    this.deleteRows(labelSheet);
-
-    const alphabets = [
-      "A",
-      "B",
-      "C",
-      "D",
-      "E",
-      "F",
-      "G",
-      "H",
-      "I",
-      "J",
-      "K",
-      "L",
-      "M",
-      "N",
-      "O",
-    ];
-
-    for (let i = 2, k = 0; k < result1.length; i++, k++) {
-      for (let j = 0; j < result1[0].length; j++) {
-        let attribute = alphabets[j] + i;
-        languageSheet.getCell(attribute).value = result1[k][j];
+    //ADDING DATA INTO EXCEL WORKSHEET
+    for(let i=0; i<array.length; i++){
+      for(let j=0; j<array[0].length; j++){
+        let attribute = alphabets[j] + row;
+        sheet
       }
     }
 
-    for (let i = 2, k = 0; k < result2.length; i++, k++) {
-      for (let j = 0; j < result2[0].length; j++) {
-        let attribute = alphabets[j] + i;
-        labelSheet.getCell(attribute).value = result2[k][j];
-      }
-    }
-
-    return workbook.xlsx.writeFile(`${__dirname}/../uploads/updateLabels.xlsx`);
+    return workbook.xlsx.writeFile(`${__dirname}/../uploads/writeTemplate.xlsx`);
+  
   } catch (err) {
     console.log("Error in services: ", err);
-    return { Success: false, Error: err };
+    return { Success: false, Error: err.message };
   }
 };
 
@@ -906,7 +843,7 @@ exports.addLabelsForNewLanguage2 = async (worksheet, languageId) => {
   }
 };
 exports.onNewPage = async () => {
-  try {
+  try{
     //CREATE INSTANCE OF EXCEL WORKBOOK
     let workbook = new excel.Workbook();
 
@@ -915,27 +852,30 @@ exports.onNewPage = async () => {
     let language = languages.Language;
 
     //EXCEL FILE COLUMN HEADER INITIALISATION
-    let columns = [{ header: "Label_name", key: "Label_name", width: 28 }];
+    let columns = [
+      { header: "Label_name", key: "Label_name", width: 28 },
+    ];
 
     //ADDING EACH LANGUAGE AS HEADER
-    language.map((object) => {
+    language.map((object)=> {
       let heading = object.Language_id + " " + object.Language_code;
-      let record = { header: heading, key: heading, width: 20 };
+      let record = { header: heading, key: heading, width: 20}
       columns.push(record);
     });
 
-    console.log("Columns: ", columns);
 
     //ADDING SHEET AND COLUMNS
-    workbook.addWorksheet("Add_Labels");
-    let sheet = workbook.getWorksheet("Add_Labels");
+    workbook.addWorksheet('Add_Labels');
+    let sheet = workbook.getWorksheet('Add_Labels');
     sheet.columns = columns;
 
-    return workbook.xlsx.writeFile(
-      `${__dirname}/../uploads/writeTemplate.xlsx`
-    );
+    console.log("Columns: ", columns);
+
+
+    return workbook.xlsx.writeFile(`${__dirname}/../uploads/writeTemplate.xlsx`);
+
   } catch (err) {
-    console.log("Error in onNewLanguaage service");
+    console.log("Error in on-new-page service", err.message);
     return { Success: false, Error: err.message };
   }
 };
