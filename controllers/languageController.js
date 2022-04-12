@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const languageService = require("../services/languageService");
-const userLanguageService = require('../services/userLanguageService')
+const userLanguageService = require("../services/userLanguageService");
 
 router
   .route("/addLanguage")
@@ -30,8 +30,9 @@ router
   .post(async (req, res) => {
     try {
       console.log(req.body);
-      let details = req.body.Language_name;
-      let result = await languageService.saveOneLangauage(details);
+      let lang_name = req.body.Language_name;
+      let lang_code = req.body.Language_code;
+      let result = await languageService.saveOneLangauage(lang_name, lang_code);
       if (result.Success) {
         res.redirect(`/excel/dashboard`);
         //res.status(200).json(result);

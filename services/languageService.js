@@ -1,5 +1,5 @@
 const languageDAO = require("../DAO/languageDAO");
-const sequelize = require('../DAO/database')
+const sequelize = require("../DAO/database");
 
 // exports.saveLangauage = async (languageName) => {
 //   try {
@@ -19,13 +19,14 @@ const sequelize = require('../DAO/database')
 //   }
 // };
 
-exports.saveOneLangauage = async (languageName) => {
+exports.saveOneLangauage = async (languageName, languageCode) => {
   try {
     return sequelize
       .transaction(async (t) => {
         let language = await languageDAO.saveLangauage(
           {
             Language_name: languageName,
+            Language_code: languageCode,
             Created_date: new Date(),
             Updated_date: new Date(),
           },
@@ -33,8 +34,7 @@ exports.saveOneLangauage = async (languageName) => {
         );
         if (language.Success)
           return { Success: true, language: language.Language };
-        else 
-          throw new Error()
+        else throw new Error();
       })
       .then((result) => {
         return result;
@@ -88,15 +88,15 @@ exports.getLanguageById = async (id) => {
     console.log(err);
   }
 };
-exports.update = async (languageId, details,transaction) => {
+exports.update = async (languageId, details, transaction) => {
   try {
     let toUpdate = {
       Language_name: details.Language_name,
       Status: details.Status,
       Updated_date: new Date(),
     };
-    let language = await languageDAO.update(languageId, toUpdate,transaction);
-    console.log("............................",language.Language)
+    let language = await languageDAO.update(languageId, toUpdate, transaction);
+    console.log("............................", language.Language);
     return language;
   } catch (err) {
     return { Success: false, Error: err };
