@@ -66,7 +66,7 @@
         font-family: "Noto Sans", sans-serif;
       }
     </style>
-    <title>Upload file</title>
+    <title>Add Language</title>
   </head>
   <body>
     <div id="navbar">
@@ -121,7 +121,7 @@
       <form action="/language/addLanguage" method="post">
         <div class="mb-3 text-center">
           <label for="Language_name" id="addLanguageLabel" class="form-label"
-            >New Language</label
+            >Language Name</label
           >
           <br />
           <input
@@ -129,6 +129,22 @@
             class="form-control-sm"
             id="Language_name"
             name="Language_name"
+            placeholder="Language Name"
+            autocomplete="off"
+          />
+        </div>
+        <div class="mb-3 text-center">
+          <label for="Language_code" id="addLanguageLabel" class="form-label"
+            >Language Code</label
+          >
+          <br />
+          <input
+            type="text"
+            class="form-control-sm"
+            id="Language_code"
+            name="Language_code"
+            placeholder="Language Code"
+            autocomplete="off"
           />
         </div>
         <button class="btn submit-btn" type="submit">
