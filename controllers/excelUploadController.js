@@ -410,5 +410,6 @@ router.get('/newLanguage', (req, res)=> {
   res.sendFile("onNewLanguage.html", {
     root: `${__dirname}/../public/html`,
   });
-})
+});
+
 module.exports = router;

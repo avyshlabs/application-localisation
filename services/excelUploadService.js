@@ -896,7 +896,6 @@ exports.onNewPage = async()=> {
     //EXCEL FILE COLUMN HEADER INITIALISATION
     let columns = [
       { header: "Label_name", key: "Label_name", width: 28 },
-      { header: "Translation_value", key: "Translation_value", width: 28 }
     ];
 
     //ADDING EACH LANGUAGE AS HEADER
