@@ -21,3 +21,27 @@ exports.saveTranslation = async (translationDetails, transaction) => {
     return { Success: false, Error: err.message };
   }
 };
+
+exports.getTranslations = async()=> {
+  try{
+    let result = await models.translation.findAll({
+      include: [{
+        model: models.label,
+        as: "Label",
+        attributes: ['Label_name']
+      }, {
+        model: models.language,
+        as: "Language",
+        attributes: ['Language_id', 'Language_name', 'Language_code']
+      }]
+    });
+
+    result = JSON.stringify(result);
+    result = JSON.parse(result);
+
+    return {Success: true, Translation: result};
+
+  }catch(err){
+    return {Success: false, Error: err.message};
+  }
+}

@@ -18,3 +18,17 @@ exports.saveTranslation = async (
     return { Success: false, Error: err.message };
   }
 };
+
+
+exports.getTranslations = async()=> {
+  try{
+    let result = await translationDAO.getTranslations();
+    console.log("--------------------------------> Result",result);
+    return result;
+  }catch(err){
+    console.log(err);
+    return {Success: false, Error: err.message};
+  }
+}
+
+this.getTranslations();
