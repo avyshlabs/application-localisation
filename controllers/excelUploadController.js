@@ -296,13 +296,12 @@ router
 
       let worksheets = {};
       for (const sheetName of workbook.SheetNames) {
-        console.log(`---->${sheetName}`);
         worksheets[sheetName] = xlsx.utils.sheet_to_json(
           workbook.Sheets[sheetName]
         );
       }
 
-      await excelUploadService.updateLabelFromExcel(worksheets);
+      let updateResult = await excelUploadService.updateLabelFromExcel(worksheets);
       fs.unlink(files.excelFile.filepath, (err) => {
         if (err) {
           console.log(err);

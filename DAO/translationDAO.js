@@ -21,3 +21,20 @@ exports.saveTranslation = async (translationDetails, transaction) => {
     return { Success: false, Error: err.message };
   }
 };
+
+exports.updateTranslation = async (translationId, translationDetails,transaction) => {
+  try {
+    console.log(translationDetails);
+    const updateResult = await models.translation.update(translationDetails, {
+      where: {
+        Translation_id: parseInt(translationId),
+      },
+    },
+    {transaction: transaction}
+    );
+    return { Success: true, result: updateResult };
+  } catch (err) {
+    console.log(err);
+    return { Success: false, Error: err.message };
+  }
+};

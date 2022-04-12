@@ -4,7 +4,7 @@ const languageService = require("./languageService");
 const pageService = require("./PageService");
 const labelService = require("./LabelService");
 const pageLabelService = require("./PageLabelService");
-const translationService = require('./translationService')
+const translationService = require("./translationService");
 
 const sequelize = require("../DAO/database");
 
@@ -667,24 +667,18 @@ exports.afterLanguage = async () => {
 };
 exports.updateLabelFromExcel = async (worksheets) => {
   try {
-    if (worksheets.Label === undefined) {
+    if (worksheets.Update_Label === undefined) {
       throw new Error("Label sheet is not present in the excel file");
     }
 
     return sequelize
       .transaction(async (t) => {
-        for (const labelObj of worksheets.Label) {
-          let result = await labelService.getLabelById(labelObj.Label_id);
-          if (result.Success) {
-            let updateResult = await labelService.update(
-              labelObj.Label_id,
-              labelObj,
-              t
-            );
-            if (!updateResult.Success) throw new Error();
-          } else {
-            //throw new Error('Wrong label id detected')
-          }
+        for (const translationObj of worksheets.Update_Label) {
+          let updateResult = await translationService.updateTranslation(
+            translationObj,
+            t
+          );
+          if (!updateResult.Success) throw new Error();
         }
       })
       .then(async (result) => {
@@ -886,24 +880,33 @@ exports.addLabelsForNewLanguage2 = async (worksheet, languageId) => {
     return sequelize
       .transaction(async (t) => {
         for (const labelObj of worksheet[languageId]) {
-          let translationSaveResult = await translationService.saveTranslation(labelObj.Label_id,languageId,labelObj.Translation_value,t)
-          if(!translationSaveResult.Success) throw new Error()
+          let translationSaveResult = await translationService.saveTranslation(
+            labelObj.Label_id,
+            languageId,
+            labelObj.Translation_value,
+            t
+          );
+          if (!translationSaveResult.Success) throw new Error();
         }
       })
       .then((result) => {
-        console.log(`---------------------->adding labels for new language commited`)
-        return {Success: true}
+        console.log(
+          `---------------------->adding labels for new language commited`
+        );
+        return { Success: true };
       })
       .catch((err) => {
-        console.log(`---------------------->adding labels for new language rolled back`)
-        return {Success: false}
+        console.log(
+          `---------------------->adding labels for new language rolled back`
+        );
+        return { Success: false };
       });
   } catch (err) {
     console.log(err.message);
   }
 };
-exports.onNewPage = async()=> {
-  try{
+exports.onNewPage = async () => {
+  try {
     //CREATE INSTANCE OF EXCEL WORKBOOK
     let workbook = new excel.Workbook();
 
@@ -912,35 +915,33 @@ exports.onNewPage = async()=> {
     let language = languages.Language;
 
     //EXCEL FILE COLUMN HEADER INITIALISATION
-    let columns = [
-      { header: "Label_name", key: "Label_name", width: 28 },
-    ];
+    let columns = [{ header: "Label_name", key: "Label_name", width: 28 }];
 
     //ADDING EACH LANGUAGE AS HEADER
-    language.map((object)=> {
+    language.map((object) => {
       let heading = object.Language_id + " " + object.Language_code;
-      let record = { header: heading, key: heading, width: 20}
+      let record = { header: heading, key: heading, width: 20 };
       columns.push(record);
     });
 
     console.log("Columns: ", columns);
 
     //ADDING SHEET AND COLUMNS
-    workbook.addWorksheet('Add_Labels');
-    let sheet = workbook.getWorksheet('Add_Labels');
+    workbook.addWorksheet("Add_Labels");
+    let sheet = workbook.getWorksheet("Add_Labels");
     sheet.columns = columns;
 
-
-    return workbook.xlsx.writeFile(`${__dirname}/../uploads/writeTemplate.xlsx`);
-    
-  }catch(err){
+    return workbook.xlsx.writeFile(
+      `${__dirname}/../uploads/writeTemplate.xlsx`
+    );
+  } catch (err) {
     console.log("Error in onNewLanguaage service");
-    return {Success: false, Error: err.message};
+    return { Success: false, Error: err.message };
   }
-}
+};
 
-exports.onNewLanguage = async(languageId)=> {
-  try{
+exports.onNewLanguage = async (languageId) => {
+  try {
     //CREATE INSTANCE OF EXCEL WORKBOOK
     let workbook = new excel.Workbook();
 
@@ -961,25 +962,26 @@ exports.onNewLanguage = async(languageId)=> {
     let columns = [
       { header: "Label_id", key: "Label_id", width: 20 },
       { header: "Label_name", key: "Label_name", width: 28 },
-      { header: "Translation_value", key: "Translation_value", width: 28 }
+      { header: "Translation_value", key: "Translation_value", width: 28 },
     ];
 
     sheet.columns = columns;
 
     //ADDING LABEL_NAME's TO EXCEL SHEET
     let row = 2;
-    label.map((object)=> {
-      let attribute1 = 'A' + row;
-      let attribute2 = 'B' + row;
+    label.map((object) => {
+      let attribute1 = "A" + row;
+      let attribute2 = "B" + row;
       sheet.getCell(attribute1).value = object.Label_id;
       sheet.getCell(attribute2).value = object.Label_name;
       row++;
     });
 
-    return workbook.xlsx.writeFile(`${__dirname}/../uploads/writeTemplate.xlsx`);
-
-  }catch(err){
+    return workbook.xlsx.writeFile(
+      `${__dirname}/../uploads/writeTemplate.xlsx`
+    );
+  } catch (err) {
     console.log(err);
-    return {Success: false, Error: err.message};
+    return { Success: false, Error: err.message };
   }
-}
+};
