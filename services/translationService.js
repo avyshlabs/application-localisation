@@ -4,12 +4,12 @@ const sequelize = require("../DAO/database");
 exports.saveTranslation = async (
   labelId,
   languageId,
-  transactionValue,
+  translationValue,
   transaction
 ) => {
   try {
     const saveResult = await translationDAO.saveTranslation(
-      { labelId, languageId, transactionValue },
+      { labelId, languageId, translationValue },
       transaction
     );
     return saveResult;
