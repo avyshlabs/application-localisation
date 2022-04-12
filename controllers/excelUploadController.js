@@ -94,6 +94,10 @@ router
       }
 
       await excelUploadService.addLabelFromExcel2(worksheets, fields.page_id);
+      console.log(
+        "----------------------------------------------------------excel2"
+      );
+      console.log(worksheets);
       fs.unlink(files.excelFile.filepath, (err) => {
         if (err) {
           console.log(err);
@@ -272,7 +276,6 @@ router.get("/download-onNewLanguage", async (req, res) => {
   }
 });
 
-
 router
   .route("/updateLabels")
   .get(async (req, res) => {
@@ -405,12 +408,10 @@ router.get("/addLabels", async (req, res) => {
   });
 });
 
-
 router
   .route("/addLabelsForNewLanguage2")
   .get(async (req, res) => {
-    res.send('welcome to add labels for new language page')
-    
+    res.send("welcome to add labels for new language page");
   })
   .post(async (req, res) => {
     const form = formidable({
@@ -434,21 +435,24 @@ router
           workbook.Sheets[sheetName]
         );
       }
-      let saveResult = await excelUploadService.addLabelsForNewLanguage2(worksheets,languageId)
+      let saveResult = await excelUploadService.addLabelsForNewLanguage2(
+        worksheets,
+        languageId
+      );
       fs.unlink(files.excelFile.filepath, (err) => {
         if (err) {
           console.log(err);
         }
       });
-      if(saveResult.Success) res.status(200).send('successfully added to database')
-      else res.status(500).send('cannot add labels to database')
-     //res.send('done')
+      if (saveResult.Success)
+        res.status(200).send("successfully added to database");
+      else res.status(500).send("cannot add labels to database");
+      //res.send('done')
     });
   });
 
-
-router.get('/newLanguage', (req, res)=> {
-  console.log("Enter boss")
+router.get("/newLanguage", (req, res) => {
+  console.log("Enter boss");
   res.sendFile("onNewLanguage.html", {
     root: `${__dirname}/../public/html`,
   });
