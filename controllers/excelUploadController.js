@@ -442,10 +442,10 @@ router
           console.log(err);
         }
       });
-      if (saveResult.Success)
-        res.status(200).send("successfully added to database");
-      else res.status(500).send("cannot add labels to database");
-      //res.send('done')
+      // if (saveResult.Success)
+      //   res.status(200).send("successfully added to database");
+      // else res.status(500).send("cannot add labels to database");
+      res.redirect("/excel/dashboard");
     });
   });
 

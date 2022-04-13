@@ -1,6 +1,9 @@
 const sequelize = require("./database");
 const initModels = require("../models/init-models");
 const models = initModels(sequelize);
+const { QueryTypes } = require('sequelize');
+
+
 
 exports.saveTranslation = async (translationDetails, transaction) => {
   try {
@@ -59,5 +62,18 @@ exports.getTranslations = async()=> {
 
   }catch(err){
     return {Success: false, Error: err.message};
+  }
+}
+
+exports.getTranslationsForPage = async (pageId,languageId) => {
+  try {
+    console.log('reached here')
+    const translations = await sequelize.query(`SELECT  Translation_value, label.Label_name FROM translation INNER JOIN label ON translation.Label_id = label.Label_id WHERE translation.Language_id =${languageId} AND translation.Label_id IN (SELECT Label_id FROM page_map WHERE page_map.Page_id =${pageId})`, { type: QueryTypes.SELECT });
+
+    return {Success: true, Translations: translations}
+  }
+  catch(err) {
+    console.log(err.message)
+    return {Success: false, Error: err.message}
   }
 }
