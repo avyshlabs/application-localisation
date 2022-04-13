@@ -110,44 +110,6 @@ router
     });
   });
 
-// router.get('/download', async (req,res) => {
-//   try {
-
-//     const workbook = xlsx.readFile("./template.xlsx");
-//     let worksheets = {};
-//     for (const sheetName of workbook.SheetNames) {
-//       console.log(`---->${sheetName}`);
-//       worksheets[sheetName] = xlsx.utils.sheet_to_json(
-//         workbook.Sheets[sheetName]
-//     );
-//   }
-
-//     let languages = await languageDAO.getLanguages();
-
-//     worksheets.Language.push(
-//       languages.language[0]
-
-//     )
-
-//     await xlsx.utils.sheet_add_json(workbook.Sheets['Language'],worksheets.Language)
-//     await xlsx.writeFile(workbook, "./template.xlsx")
-
-//     const wb = new excel.Workbook();
-
-//     await wb.xlsx.readFile("./template.xlsx")
-
-//     res.setHeader('Content-Type',"application/vnd.openxmlformats-officedocument.spreadsheet.sheet");
-//     res.setHeader('Content-Disposition', 'attachment; filename='+'Template.xlsx')
-
-//     return wb.xlsx.write(res);
-
-//   }
-//   catch(err) {
-//     console.log(err);
-//     res.send(err)
-//   }
-// })
-
 router.get("/download-template", async (req, res) => {
   try {
     let result = await excelUploadService.returnTemplate();
@@ -222,27 +184,7 @@ router.get("/download-updateLabels", async (req, res) => {
 });
 
 router.route("/dashboard").get(async (req, res) => {
-  //C:\Users\HP\Desktop\Avysh\excel_import_export\controllers\Book1.xlsx
-  // const workbook = xlsx.readFile("C:/Users/HP/Desktop/Avysh/excel_import_export/controllers/Book1.xlsx");
-  // let worksheets = {};
-  // for (const sheetName of workbook.SheetNames) {
-  //   console.log(`---->${sheetName}`);
-  //   worksheets[sheetName] = xlsx.utils.sheet_to_json(
-  //     workbook.Sheets[sheetName]
-  //   );
-  // }
-  // res.send(worksheets);
   if (req.query.lang_id !== undefined) {
-    if (req.cookies.user !== undefined) {
-      let userId = req.cookies.user;
-      let result = await userLanguageService.updateUserLanguage(
-        userId,
-        req.query.lang_id
-      );
-      if (result.Success) {
-        console.log("language changed successfully");
-      }
-    }
     res.cookie("language", req.query.lang_id, {
       httpOnly: true,
       expire: new Date() + 9999,
