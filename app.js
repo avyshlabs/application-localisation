@@ -11,8 +11,6 @@ const CookieParser = require("cookie-parser");
 //ROUTERS
 const LocaleController = require("./controllers/localeController");
 const PageController = require("./controllers/pageController");
-const LabelController = require("./controllers/LabelController");
-const PageLabelController = require("./controllers/PageLabel");
 const excelUploadController = require("./controllers/excelUploadController");
 const languageConotroller = require("./controllers/languageController");
 
@@ -36,8 +34,6 @@ app.get("/", (req, res) => {
 //ROUTES
 app.use("/locale", LocaleController);
 app.use("/page", PageController);
-app.use("/label", LabelController);
-app.use("/pagelabel", PageLabelController);
 app.use("/excel", excelUploadController);
 app.use("/language", languageConotroller);
 
