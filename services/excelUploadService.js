@@ -575,14 +575,27 @@ exports.addLabelFromExcel2 = async (worksheets, Page_id) => {
     return sequelize
       .transaction(async (t) => {
         for (const labelObj of worksheets.Add_Labels) {
-          console.log("---------------------------service");
+          console.log("---------------------------service", labelObj);
           let result = await labelService.getLabelByName(labelObj.Label_name);
           if (result.Success) {
-            let pageLabelSaveResult = await pageLabelService.createPageLabel(
-              { page: Page_id, label: result.Label.Label_id },
-              t
+            console.log("services-------------------", result.Label.Label_id);
+            let Label_id = result.Label.Label_id;
+            let labelInPage = await pageLabelService.LabelInPage(
+              Page_id,
+              Label_id
             );
-            if (!pageLabelSaveResult.Success) throw new Error();
+            console.log(
+              "this is PageMap --------------------- ",
+              labelInPage.Pagelabels
+            );
+            if (!labelInPage.Pagelabels) {
+              console.log("Label doesnt exist in PageMap");
+              let pageLabelSaveResult = await pageLabelService.createPageLabel(
+                { page: Page_id, label: result.Label.Label_id },
+                t
+              );
+              if (!pageLabelSaveResult.Success) throw new Error();
+            }
           } else {
             let saveLabelResult = await labelService.createLabel(
               {
@@ -597,22 +610,32 @@ exports.addLabelFromExcel2 = async (worksheets, Page_id) => {
             );
             if (!pageLabelSaveResult.Success) throw new Error();
             console.log("--------------------------------excel service");
-            let keysArr = Object.keys(worksheets.Add_Labels[0]);
-            let valuesArr = Object.values(worksheets.Add_Labels[0]);
+            let keysArr = Object.keys(worksheets.Add_Labels);
+            let valuesArr = Object.values(worksheets.Add_Labels);
             // console.log(keysArr);
-            let languagesArr = keysArr.shift();
-            let translationsArr = valuesArr.shift();
+            // let languagesArr = keysArr.shift();
+            // let translationsArr = valuesArr.shift();
             // console.log(keysArr);
             // console.log(labelObj);
             let labelArr = Object.keys(labelObj);
-            // console.log(labelArr.length);
-
-            for (let i = 0; i < labelArr.length - 1; i++) {
-              console.log("translationsARR", valuesArr[i]);
+            console.log(
+              "labelARR--------------------->",
+              worksheets.Add_Labels
+            );
+            console.log("valuesARR--------------------->", valuesArr);
+            let lenArr = Object.keys(worksheets.Add_Labels[0]);
+            let newArr = Object.keys(worksheets.Add_Labels[0]);
+            newArr.shift();
+            console.log("keysARR--------------------->", newArr);
+            for (let langId of newArr) {
+              console.log("labelobj----------", labelObj);
+              console.log("worksheet----------", worksheets.Add_Labels);
+              console.log("langId----------", langId);
+              console.log("labelobj-langID----------", labelObj[langId]);
               let translationResult = await translationService.saveTranslation(
                 saveLabelResult.Content.Label_id,
-                keysArr[i].substring(0, keysArr[i].indexOf(" ")),
-                valuesArr[i],
+                langId.substring(0, langId.indexOf(" ")),
+                labelObj[langId],
                 t
               );
               if (!translationResult.Success) throw new Error();

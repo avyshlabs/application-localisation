@@ -101,6 +101,7 @@ exports.getLabelByName = async (labelName) => {
         Label_name: labelName,
       },
     });
+    // console.log("//////////////////////////", label);
     if (label.length > 0) return { Success: true, Label: label[0] };
     else return { Success: false };
   } catch (err) {

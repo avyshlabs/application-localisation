@@ -93,6 +93,15 @@ exports.getLabels = async (pageId) => {
     return { Success: false, Error: err };
   }
 };
+exports.LabelInPage = async (Page_id, Label_id) => {
+  try {
+    let labels = await PageLabel.getLabelInPage(Page_id, Label_id);
+    return labels;
+  } catch (err) {
+    console.log(err);
+    return { Success: false, Error: err };
+  }
+};
 
 exports.getAllDistinct = async (pageId) => {
   try {

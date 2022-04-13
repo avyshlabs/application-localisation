@@ -90,6 +90,57 @@ exports.getLabels = async () => {
     return { Success: false, Error: err };
   }
 };
+exports.getLabelInPage = async (Page_id, Label_id) => {
+  try {
+    let pageLabels = await models.page_map.findAll({
+      where: {
+        Page_id: Page_id,
+        Label_id: Label_id,
+      },
+    });
+    console.log("yoooooooooooooooooooo", pageLabels[0]);
+    return { Success: true, Pagelabels: pageLabels[0] };
+  } catch (err) {
+    console.log(err);
+    return { Success: false, Error: err };
+  }
+};
+
+exports.getLabelsById = async () => {
+  try {
+    let pageLabels = await models.page_map.findAll({
+      where: {
+        Page_id: pageId,
+      },
+      include: [
+        {
+          model: models.label,
+          as: "Label",
+          attributes: [
+            "Label_id",
+            "Label_name",
+            "Label_value",
+            "Language_id",
+            "Status",
+          ],
+          include: [
+            {
+              model: models.language,
+              as: "Language",
+              attributes: ["Language_id", "Language_name"],
+            },
+          ],
+        },
+      ],
+    });
+    pageLabels = JSON.stringify(pageLabels);
+    pageLabels = JSON.parse(pageLabels);
+    return { Success: true, Pagelabels: pageLabels };
+  } catch (err) {
+    console.log(err);
+    return { Success: false, Error: err };
+  }
+};
 
 exports.getPageLabel = async (id) => {
   try {
