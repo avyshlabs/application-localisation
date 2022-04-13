@@ -1,14 +1,11 @@
 const excel = require("exceljs");
 
 const languageService = require("./languageService");
-const pageService = require("./PageService");
 const labelService = require("./LabelService");
 const pageLabelService = require("./PageLabelService");
 const translationService = require("./translationService");
 
 const sequelize = require("../DAO/database");
-const translation = require("../models/translation");
-const label = require("../models/label");
 
 //ADD LABELS TO DATABASE FROM EXCEL ON NEW PAGE
 exports.addLabelFromExcel2 = async (worksheets, Page_id) => {
@@ -131,18 +128,6 @@ exports.updateLabelFromExcel = async (worksheets) => {
     console.log(err);
   }
 };
-
-// sheet.eachRow((row, rowNumber) => {
-//   row.font = { size: 15, family: 4 };
-//   row.eachCell((col, colNumber) => {
-//     col.fill = {
-//       type: "pattern",
-//       pattern: "solid",
-//       fgColor: { argb: "#B0E0E6" },
-//     };
-//   });
-//   row.commit();
-// });
 
 //ADD LABELS TO DATABASE FROM EXCEL ON NEW LANGUAGE
 exports.addLabelsForNewLanguage2 = async (worksheet, languageId) => {
