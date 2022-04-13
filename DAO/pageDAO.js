@@ -1,5 +1,3 @@
-// const Pages = require('../models/Pages');
-
 const sequelize = require("./database");
 const initModels = require("../models/init-models");
 const models = initModels(sequelize);
@@ -17,8 +15,7 @@ exports.createPage = async (details, transaction) => {
     );
     return { Success: true, Page: page };
   } catch (err) {
-    console.log(err);
-    return { Success: false, Error: err };
+    return { Success: false, Error: err.message };
   }
 };
 
@@ -31,7 +28,7 @@ exports.getPage = async (pageName) => {
     });
     return { Success: true, Page: page };
   } catch (err) {
-    return { Success: false, Error: err };
+    return { Success: false, Error: err.message  };
   }
 };
 
@@ -41,7 +38,9 @@ exports.getPages = async () => {
       attributes: ["Page_name", "Page_id"],
     });
     return { pages };
-  } catch (err) {}
+  } catch (err) {
+    return { Success: false, Error: err.message  };
+  }
 };
 
 exports.getAll = async () => {
@@ -51,7 +50,7 @@ exports.getAll = async () => {
     page = JSON.parse(page);
     return { Success: true, Page: page };
   } catch (err) {
-    return { Success: false, Error: err };
+    return { Success: false, Error: err.message };
   }
 };
 
@@ -65,7 +64,7 @@ exports.getPageById = async (id) => {
     if (pages.length > 0) return { Success: true, Page: pages[0] };
     else return { Success: false };
   } catch (err) {
-    console.log(err);
+    return { Success: false, Error: err.message };
   }
 };
 exports.update = async (pageId, details, transaction) => {
@@ -81,7 +80,6 @@ exports.update = async (pageId, details, transaction) => {
     );
     return { Success: true, Page: page };
   } catch (err) {
-    console.log("DAO page error: ", err);
-    return { Success: false, Error: err };
+    return { Success: false, Error: err.message };
   }
 };

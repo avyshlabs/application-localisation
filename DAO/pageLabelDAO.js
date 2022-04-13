@@ -2,22 +2,6 @@ const sequelize = require("./database");
 const initModels = require("../models/init-models");
 const models = initModels(sequelize);
 
-// exports.createPageLabel = async (details) => {
-//   try {
-//     let date = new Date();
-//     let pageLabel = await models.page_map.create({
-//       Page_id: details.page,
-//       Label_id: details.label,
-//       Created_date: date,
-//       Updated_date: date,
-//     });
-//     return { Success: true, PageLabel: pageLabel };
-//   } catch (err) {
-//     console.log(err);
-//     return { Success: false, Error: err };
-//   }
-// };
-
 exports.createPageLabel = async (details, transaction) => {
   try {
     let date = new Date();
@@ -32,8 +16,7 @@ exports.createPageLabel = async (details, transaction) => {
     );
     return { Success: true, PageLabel: pageLabel };
   } catch (err) {
-    console.log(err);
-    return { Success: false, Error: err };
+    return { Success: false, Error: err.message };
   }
 };
 
@@ -51,45 +34,10 @@ exports.getPageLabel = async (id) => {
     return { Success: true, Pagelabel: pageLabel };
   } catch (err) {
     console.log(err);
-    return { Success: false, Error: err };
+    return { Success: false, Error: err.message };
   }
 };
-
-exports.getLabels = async () => {
-  try {
-    let pageLabels = await models.page_map.findAll({
-      where: {
-        Page_id: pageId,
-      },
-      include: [
-        {
-          model: models.label,
-          as: "Label",
-          attributes: [
-            "Label_id",
-            "Label_name",
-            "Label_value",
-            "Language_id",
-            "Status",
-          ],
-          include: [
-            {
-              model: models.language,
-              as: "Language",
-              attributes: ["Language_id", "Language_name"],
-            },
-          ],
-        },
-      ],
-    });
-    pageLabels = JSON.stringify(pageLabels);
-    pageLabels = JSON.parse(pageLabels);
-    return { Success: true, Pagelabels: pageLabels };
-  } catch (err) {
-    console.log(err);
-    return { Success: false, Error: err };
-  }
-};
+   
 exports.getLabelInPage = async (Page_id, Label_id) => {
   try {
     let pageLabels = await models.page_map.findAll({
@@ -98,47 +46,9 @@ exports.getLabelInPage = async (Page_id, Label_id) => {
         Label_id: Label_id,
       },
     });
-    console.log("yoooooooooooooooooooo", pageLabels[0]);
     return { Success: true, Pagelabels: pageLabels[0] };
   } catch (err) {
-    console.log(err);
-    return { Success: false, Error: err };
-  }
-};
-
-exports.getLabelsById = async () => {
-  try {
-    let pageLabels = await models.page_map.findAll({
-      where: {
-        Page_id: pageId,
-      },
-      include: [
-        {
-          model: models.label,
-          as: "Label",
-          attributes: [
-            "Label_id",
-            "Label_name",
-            "Label_value",
-            "Language_id",
-            "Status",
-          ],
-          include: [
-            {
-              model: models.language,
-              as: "Language",
-              attributes: ["Language_id", "Language_name"],
-            },
-          ],
-        },
-      ],
-    });
-    pageLabels = JSON.stringify(pageLabels);
-    pageLabels = JSON.parse(pageLabels);
-    return { Success: true, Pagelabels: pageLabels };
-  } catch (err) {
-    console.log(err);
-    return { Success: false, Error: err };
+    return { Success: false, Error: err.message };
   }
 };
 
@@ -155,8 +65,7 @@ exports.getPageLabel = async (id) => {
     });
     return { Success: true, Pagelabel: pageLabel };
   } catch (err) {
-    console.log(err);
-    return { Success: false, Error: err };
+    return { Success: false, Error: err.message };
   }
 };
 
@@ -172,7 +81,6 @@ exports.getPageLabels = async (pageId, langId) => {
           as: "Label",
           where: {
             Language_id: langId,
-            //TODO : If label inactive add a constraint here
           },
           attributes: ["Label_name", "Label_value"],
         },
@@ -180,8 +88,7 @@ exports.getPageLabels = async (pageId, langId) => {
     });
     return { Success: true, Pagelabels: pageLabels };
   } catch (err) {
-    console.log(err);
-    return { Success: false, Error: err };
+    return { Success: false, Error: err.message };
   }
 };
 
@@ -192,7 +99,7 @@ exports.getAll = async () => {
     pagemap = JSON.parse(pagemap);
     return { Success: true, Pagemap: pagemap };
   } catch (err) {
-    return { Success: false, Error: err };
+    return { Success: false, Error: err.message };
   }
 };
 
@@ -206,10 +113,10 @@ exports.getPageLabelById = async (id) => {
     if (pageLabel.length > 0) return { Success: true, Pagelabel: pageLabel };
     else return { Success: false };
   } catch (err) {
-    console.log(err);
-    return { Success: false, Error: err };
+    return { Success: false, Error: err.message };
   }
 };
+
 exports.update = async (pagemapId, details, transaction) => {
   try {
     let pagemap = await models.page_map.update(
@@ -223,8 +130,7 @@ exports.update = async (pagemapId, details, transaction) => {
     );
     return { Success: true, Pagemap: pagemap };
   } catch (err) {
-    console.log("DAO pagemap error: ", err);
-    return { Success: false, Error: err };
+    return { Success: false, Error: err.message };
   }
 };
 
@@ -247,7 +153,6 @@ exports.getAllDistinct = async (pageId) => {
     result = JSON.parse(result);
     return { Success: true, Label: result };
   } catch (err) {
-    console.log(err);
-    return { Success: false, Error: err };
+    return { Success: false, Error: err.message };
   }
 };

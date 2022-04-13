@@ -20,7 +20,6 @@ exports.saveTranslation = async (translationDetails, transaction) => {
     );
     return { Success: true, result: result };
   } catch (err) {
-    console.log(err);
     return { Success: false, Error: err.message };
   }
 };
@@ -37,10 +36,10 @@ exports.updateTranslation = async (translationId, translationDetails,transaction
     );
     return { Success: true, result: updateResult };
   } catch (err) {
-    console.log(err);
     return { Success: false, Error: err.message };
   }
 };
+
 exports.getTranslations = async()=> {
   try{
     let result = await models.translation.findAll({
@@ -73,7 +72,6 @@ exports.getTranslationsForPage = async (pageId,languageId) => {
     return {Success: true, Translations: translations}
   }
   catch(err) {
-    console.log(err.message)
     return {Success: false, Error: err.message}
   }
 }

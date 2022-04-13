@@ -84,15 +84,6 @@ exports.update = async (pagelabelId, details, transaction) => {
   }
 };
 
-exports.getLabels = async (pageId) => {
-  try {
-    let labels = await PageLabel.getLabels(pageId);
-    return labels;
-  } catch (err) {
-    console.log(err);
-    return { Success: false, Error: err };
-  }
-};
 exports.LabelInPage = async (Page_id, Label_id) => {
   try {
     let labels = await PageLabel.getLabelInPage(Page_id, Label_id);
