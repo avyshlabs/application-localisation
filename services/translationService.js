@@ -14,7 +14,6 @@ exports.saveTranslation = async (
     );
     return saveResult;
   } catch (err) {
-    console.log(err);
     return { Success: false, Error: err.message };
   }
 };
@@ -32,7 +31,6 @@ exports.updateTranslation = async (translationObj, transaction) => {
     );
     return updateResult;
   } catch (err) {
-    console.log(err);
     return { Success: false, Error: err.message };
   }
 };
@@ -40,10 +38,8 @@ exports.updateTranslation = async (translationObj, transaction) => {
 exports.getTranslations = async()=> {
   try{
     let result = await translationDAO.getTranslations();
-    console.log("--------------------------------> Result",result);
     return result;
   }catch(err){
-    console.log(err);
     return {Success: false, Error: err.message};
   }
 }
@@ -59,9 +55,7 @@ exports.getTranslationsForPage = async (pageId,languageId) => {
     return {Success: true, PageLabels:labelTranslationObj}
   }
   catch(err) {
-    console.log(err.message)
     return {Success: false, Error: err.message}
   }
 }
 
-//this.getTranslationsForPage(1,1)
