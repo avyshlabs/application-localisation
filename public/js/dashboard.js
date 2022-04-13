@@ -27,28 +27,28 @@
 //   });
 // });
 
-fetch("http://localhost:3000/locale/getTranslations?page_id=1").then((res) => {
-  res.json().then((data) => {
-    let translations = data.PageLabels;
-    console.log(translations);
-    let translationsArr = Object.values(translations);
-    if (translationsArr !== undefined) {
-      document.querySelector("#userDatabase").innerHTML =
-        data.PageLabels.userDatabase;
-      document.querySelector("#logout").innerHTML = data.PageLabels.logout;
-      document.querySelector("#message").innerHTML = data.PageLabels.message;
-      document.querySelector("#newLanguage").innerHTML =
-        data.PageLabels.newLanguage;
-      document.querySelector("#newPage").innerHTML = data.PageLabels.newPage;
-      document.querySelector("#newLabel").innerHTML = data.PageLabels.newLabel;
-      document.querySelector("#updateLabel").innerHTML =
-        data.PageLabels.updateLabel;
-      document.querySelector("#fullTemplate").innerHTML =
-        data.PageLabels.fullTemplate;
-      document.querySelector("#downloadTemplates").innerHTML =
-        data.PageLabels.downloadTemplates;
-      document.querySelector("#completeUpload").innerHTML =
-        data.PageLabels.completeUpload;
-    }
-  });
-});
+// fetch("http://localhost:3000/locale/getTranslations?page_id=1").then((res) => {
+//   res.json().then((data) => {
+//     let translations = data.PageLabels;
+//     console.log(translations);
+//     let translationsArr = Object.values(translations);
+//     if (translationsArr !== undefined) {
+//       document.querySelector("#userDatabase").innerHTML =
+//         data.PageLabels.userDatabase;
+//       document.querySelector("#logout").innerHTML = data.PageLabels.logout;
+//       document.querySelector("#message").innerHTML = data.PageLabels.message;
+//       document.querySelector("#newLanguage").innerHTML =
+//         data.PageLabels.newLanguage;
+//       document.querySelector("#newPage").innerHTML = data.PageLabels.newPage;
+//       document.querySelector("#newLabel").innerHTML = data.PageLabels.newLabel;
+//       document.querySelector("#updateLabel").innerHTML =
+//         data.PageLabels.updateLabel;
+//       document.querySelector("#fullTemplate").innerHTML =
+//         data.PageLabels.fullTemplate;
+//       document.querySelector("#downloadTemplates").innerHTML =
+//         data.PageLabels.downloadTemplates;
+//       document.querySelector("#completeUpload").innerHTML =
+//         data.PageLabels.completeUpload;
+//     }
+//   });
+// });

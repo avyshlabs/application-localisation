@@ -58,9 +58,9 @@ exports.update = async (labelId, details, transaction) => {
   }
 };
 
-exports.getLabelByValue = async (labelValue) => {
+exports.getLabelByName = async (labelName) => {
   try {
-    let label = await Label.getLabelByValue(labelValue);
+    let label = await Label.getLabelByName(labelName);
     return label;
   } catch (err) {
     console.log(err);

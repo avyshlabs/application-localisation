@@ -69,7 +69,7 @@ exports.getPageLabelById = async (id) => {
     return { Success: false, Error: err };
   }
 };
-exports.update = async (pagelabelId, details,transaction) => {
+exports.update = async (pagelabelId, details, transaction) => {
   try {
     let toUpdate = {
       Page_id: details.Page_id,
@@ -77,30 +77,29 @@ exports.update = async (pagelabelId, details,transaction) => {
       Status: details.Status,
       Updated_date: new Date(),
     };
-    let pagemap = await PageLabel.update(pagelabelId, toUpdate,transaction);
+    let pagemap = await PageLabel.update(pagelabelId, toUpdate, transaction);
     return pagemap;
   } catch (err) {
     return { Success: false, Error: err };
   }
 };
 
-
-exports.getLabels = async(pageId)=> {
-  try{
+exports.getLabels = async (pageId) => {
+  try {
     let labels = await PageLabel.getLabels(pageId);
     return labels;
-  }catch(err){
+  } catch (err) {
     console.log(err);
-    return {Success: false, Error: err};
+    return { Success: false, Error: err };
   }
-}
+};
 
-exports.getAllDistinct = async(pageId)=> {
-  try{
+exports.getAllDistinct = async (pageId) => {
+  try {
     let result = await PageLabel.getAllDistinct(pageId);
     return result;
-  }catch(err){
+  } catch (err) {
     console.log(err);
-    return {Success: false, Error: err};
+    return { Success: false, Error: err };
   }
-}
+};
