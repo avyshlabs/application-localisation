@@ -56,7 +56,6 @@ exports.getTranslationsForPage = async (pageId,languageId) => {
     for(const translationObj of result.Translations) {
       labelTranslationObj[translationObj.Label_name] = translationObj.Translation_value
     }
-    console.log("results---->",labelTranslationObj)
     return {Success: true, PageLabels:labelTranslationObj}
   }
   catch(err) {

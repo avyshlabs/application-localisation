@@ -891,6 +891,7 @@ exports.addLabelsForNewLanguage2 = async (worksheet, languageId) => {
     return sequelize
       .transaction(async (t) => {
         for (const labelObj of worksheet[languageId]) {
+          if(labelObj.Label_id === undefined || labelObj.Translation_value === undefined) continue
           let translationSaveResult = await translationService.saveTranslation(
             labelObj.Label_id,
             languageId,
