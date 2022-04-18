@@ -1,8 +1,8 @@
 const excel = require("exceljs");
 
 const languageService = require("./languageService");
-const labelService = require("./LabelService");
-const pageLabelService = require("./PageLabelService");
+const labelService = require("./labelService");
+const pageLabelService = require("./pageLabelService");
 const translationService = require("./translationService");
 
 const sequelize = require("../DAO/database");
