@@ -5,19 +5,9 @@ exports.getLabelById = async (id) => {
     let label = await Label.getLabelById(id);
     return label;
   } catch (err) {
-    console.log(err);
-    return { Success: false, Error: err };
+    return { Success: false, Error: err.message };
   }
 };
-
-// exports.createLabel = async(content)=> {
-//     try{
-//         let label = await Label.createLabel(content);
-//         return label;
-//     }catch(err){
-//         return {Success: false, Error: err};
-//     }
-// }
 
 //updated with transaction
 exports.createLabel = async (content, transaction) => {
@@ -25,7 +15,7 @@ exports.createLabel = async (content, transaction) => {
     let label = await Label.createLabel(content, transaction);
     return label;
   } catch (err) {
-    return { Success: false, Error: err };
+    return { Success: false, Error: err.message };
   }
 };
 
@@ -35,7 +25,7 @@ exports.getAll = async () => {
     if (label.Success) return label;
     else return { Success: false, Error: "Error in services" };
   } catch (err) {
-    return { Success: false, Error: err };
+    return { Success: false, Error: err.message };
   }
 };
 
@@ -54,16 +44,15 @@ exports.update = async (labelId, details, transaction) => {
     let label = await Label.update(labelId, toUpdate, transaction);
     return label;
   } catch (err) {
-    return { Success: false, Error: err };
+    return { Success: false, Error: err.message };
   }
 };
 
-exports.getLabelByValue = async (labelValue) => {
+exports.getLabelByName = async (labelName) => {
   try {
-    let label = await Label.getLabelByValue(labelValue);
+    let label = await Label.getLabelByName(labelName);
     return label;
   } catch (err) {
-    console.log(err);
-    return { Success: false, Error: err };
+    return { Success: false, Error: err.message };
   }
 };

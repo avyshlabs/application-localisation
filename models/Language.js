@@ -11,18 +11,24 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(255),
       allowNull: false
     },
+    Language_code: {
+      type: DataTypes.STRING(255),
+      allowNull: false
+    },
     Created_date: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: false,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
     },
     Updated_date: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: false,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
     },
     Status: {
       type: DataTypes.STRING(255),
-      defaultValue: "active",
-      allowNull: false
+      allowNull: true,
+      defaultValue: "active"
     }
   }, {
     sequelize,

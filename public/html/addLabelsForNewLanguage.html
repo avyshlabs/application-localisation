@@ -51,7 +51,7 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
     />
-    <link rel="stylesheet" href="../css/upload.css" />
+    <link rel="stylesheet" href="../css/addLabelsForNewLanguage.css" />
     <script
       type="text/javascript"
       src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.js"
@@ -66,7 +66,7 @@
         font-family: "Noto Sans", sans-serif;
       }
     </style>
-    <title>Add Language</title>
+    <title>Upload file</title>
   </head>
   <body>
     <div id="navbar">
@@ -99,6 +99,7 @@
                   >Dashboard</a
                 >
               </li>
+              
             </ul>
             <!-- Left links -->
           </div>
@@ -109,49 +110,71 @@
     </div>
 
     <header>
+      <h1>ADD LABELS FOR NEW LANGUAGE</h1>
       <h2 id="instruction">
-        <b> Fill in the form to add new Language </b>
+        <b>
+          Please download the template and make changes to the same file before
+          uploading it.
+        </b>
       </h2>
       <br />
+      <div>
+        <form method="get" action="/excel/download-labelsForNewLanguage">
+          <button class="btn">
+            <i class="fa fa-download"></i> <span id="download">download</span>
+          </button>
+        </form>
+      </div>
     </header>
     <section>
-      <form action="/language/addLanguage" method="post">
-        <div class="mb-3 text-center">
-          <label for="Language_name" id="addLanguageLabel" class="form-label"
-            >Language Name</label
-          >
-          <br />
+      <form
+        action="/excel/addLabelsForNewLanguage"
+        method="post"
+        enctype="multipart/form-data"
+      >
+        <div class="card">
+          <!-- <i class="fa fa-download fileicon" style="width: 100%"></i> -->
+          <h2 id="uploadExcelFile">
+            <b> Upload Excel File </b>
+          </h2>
+          <i class="fa-solid fa-file-lines fileicon" style="width: 100%"></i>
+          <label for="excelFile" class="custom-file-upload"> Select File</label>
           <input
-            type="text"
-            class="form-control-sm"
-            id="Language_name"
-            name="Language_name"
-            placeholder="Language Name"
-            autocomplete="off"
+            id="excelFile"
+            name="excelFile"
+            type="file"
+            style="display: none"
             required
           />
+          <div class="invalid-feedback">Please provide a file.</div>
+          <div class="container">
+            <h4 id="validation">
+              <b
+                >Make sure to upload the same template file which is edited and
+                validated.</b
+              >
+            </h4>
+          </div>
         </div>
-        <div class="mb-3 text-center">
-          <label for="Language_code" id="addLanguageLabel" class="form-label"
-            >Language Code</label
-          >
-          <br />
-          <input
-            type="text"
-            class="form-control-sm"
-            id="Language_code"
-            name="Language_code"
-            placeholder="Language Code"
-            autocomplete="off"
-            required
-          />
+        <div class="container">
+          <div id="excel_data" class="mt-5">
+
         </div>
+
         <button class="btn submit-btn" type="submit">
           <i class="submit-icon fa-solid fa-file-arrow-up"></i>
           <span id="submit"> Submit</span>
         </button>
       </form>
     </section>
+    <div class="modal-wrapper" id="modal">
+      <div class="modal">
+        <div class="modal-body">
+          <h4>Modal Body</h4>
+          <p>pls wait, thanks.</p>
+        </div>
+      </div>
+    </div>
   </body>
-  <script src="../js/addLanguage.js"></script>
+  <script src="../js/addLabelsForNewLanguage.js"></script>
 </html>

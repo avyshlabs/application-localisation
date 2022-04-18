@@ -1,18 +1,7 @@
-//const Language = require('../models/Language');
-
 const sequelize = require("./database");
 const initModels = require("../models/init-models");
 const models = initModels(sequelize);
 
-// exports.saveLangauage = async(languageDetails)=> {
-//     try{
-//         let language = await models.language.create(languageDetails);
-//         return {Success: true, Language: language};
-//     }
-//     catch(err){
-//         return {Success: false, Error: err};
-//     }
-// }
 
 exports.saveLangauage = async (languageDetails, transaction) => {
   try {
@@ -49,9 +38,9 @@ exports.getLanguageById = async (id) => {
     console.log(err);
   }
 };
+
 exports.update = async (languageId, details,transaction) => {
   try {
-    console.log(`------------------------------------------------->${details.Language_name}`)
     let language = await models.language.update(details, {
       where: {
         Language_id: languageId,

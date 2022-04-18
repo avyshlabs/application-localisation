@@ -1,18 +1,18 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('user_language', {
-    User_Lang_id: {
+  return sequelize.define('translation', {
+    Translation_id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    User_id: {
+    Label_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'user',
-        key: 'User_id'
+        model: 'label',
+        key: 'Label_id'
       }
     },
     Language_id: {
@@ -23,17 +23,28 @@ module.exports = function(sequelize, DataTypes) {
         key: 'Language_id'
       }
     },
+    Translation_value: {
+      type: DataTypes.STRING(255),
+      allowNull: false
+    },
     Created_date: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: false,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
     },
     Updated_date: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: false,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+    },
+    Status: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: "active"
     }
   }, {
     sequelize,
-    tableName: 'user_language',
+    tableName: 'translation',
     timestamps: false,
     indexes: [
       {
@@ -41,14 +52,14 @@ module.exports = function(sequelize, DataTypes) {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "User_Lang_id" },
+          { name: "Translation_id" },
         ]
       },
       {
-        name: "User_id",
+        name: "Label_id",
         using: "BTREE",
         fields: [
-          { name: "User_id" },
+          { name: "Label_id" },
         ]
       },
       {

@@ -15,27 +15,16 @@ exports.getPages = async () => {
     let pages = await Page.getPages();
     return pages;
   } catch (err) {
-    return { Success: false, Error: err };
+    return { Success: false, Error: err.message };
   }
 };
-
-// exports.createPage = async(details)=> {
-//     try{
-//         let page = await Page.createPage(details);
-//         return page;
-//     }catch(err){
-//         console.log(err);
-//         return {Success: false, Error: err};
-//     }
-// }
 
 exports.createPage = async (details, transaction) => {
   try {
     let page = await Page.createPage(details, transaction);
     return page;
   } catch (err) {
-    console.log(err);
-    return { Success: false, Error: err };
+    return { Success: false, Error: err.message };
   }
 };
 exports.getAll = async () => {
@@ -44,7 +33,7 @@ exports.getAll = async () => {
     if (page.Success) return page;
     else return { Success: false, Error: "Error in services" };
   } catch (err) {
-    return { Success: false, Error: err };
+    return { Success: false, Error: err.message };
   }
 };
 
@@ -53,8 +42,7 @@ exports.getPageById = async (id) => {
     let page = await Page.getPageById(id);
     return page;
   } catch (err) {
-    console.log(err);
-    return { Success: false, Error: err };
+    return { Success: false, Error: err.message };
   }
 };
 exports.update = async (pageId, details, transaction) => {
@@ -67,7 +55,7 @@ exports.update = async (pageId, details, transaction) => {
     let page = await Page.update(pageId, toUpdate, transaction);
     return page;
   } catch (err) {
-    return { Success: false, Error: err };
+    return { Success: false, Error: err.message };
   }
 };
 
@@ -88,9 +76,9 @@ exports.saveOnePage = async (pageName) => {
         return result;
       })
       .catch((err) => {
-        return { Success: false, Error: err };
+        return { Success: false, Error: err.message };
       });
   } catch (err) {
-    return { Success: false, Error: err };
+    return { Success: false, Error: err.message };
   }
 };

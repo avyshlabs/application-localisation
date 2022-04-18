@@ -7,32 +7,33 @@ const formidable = require("formidable");
 const excel = require("exceljs");
 
 const excelUploadService = require("../services/excelUploadService");
-const userLanguageService = require("../services/userLanguageService");
 
-const languageDAO = require("../DAO/languageDAO");
-
-router.route("/preview").get(async (req, res) => {
-  res.sendFile("preview.html", { root: `${__dirname}/../public/html` });
-  // fs.unlink(req.query.path, (err) => {
-  //   if (err) {
-  //     console.log(err);
-  //   }
-  // });
+router.get("/newLanguage", (req, res) => {
+console.log("Enter boss");
+res.sendFile("onNewLanguage.html", {
+    root: `${__dirname}/../public/html`,
 });
+});
+
+router.route("/dashboard").get(async (req, res) => {
+    if (req.query.lang_id !== undefined) {
+        res.cookie("language", req.query.lang_id, {
+        httpOnly: true,
+        expire: new Date() + 9999,
+    });
+}
+res.sendFile("dashboard.html", { root: `${__dirname}/../public/html` });
+});
+
+router.route("/templates").get(async (req, res) => {
+    res.sendFile("downloadTemplates.html", {
+      root: `${__dirname}/../public/html`,
+    });
+  });
 
 router
   .route("/uploadFile")
   .get(async (req, res) => {
-    //C:\Users\HP\Desktop\Avysh\excel_import_export\controllers\Book1.xlsx
-    // const workbook = xlsx.readFile("C:/Users/HP/Desktop/Avysh/excel_import_export/controllers/Book1.xlsx");
-    // let worksheets = {};
-    // for (const sheetName of workbook.SheetNames) {
-    //   console.log(`---->${sheetName}`);
-    //   worksheets[sheetName] = xlsx.utils.sheet_to_json(
-    //     workbook.Sheets[sheetName]
-    //   );
-    // }
-    // res.send(worksheets);
     res.sendFile("upload.html", { root: `${__dirname}/../public/html` });
   })
   .post(async (req, res) => {
@@ -47,8 +48,6 @@ router
         next(err);
         return;
       }
-      //console.log(req.file);
-      // console.log(files.excelFile.filepath);
       console.log(files);
 
       const workbook = xlsx.readFile(files.excelFile.filepath);
@@ -67,18 +66,16 @@ router
           console.log(err);
         }
       });
-      //res.sendFile("preview.html", { root: `${__dirname}/../public/html` });
       res.redirect(`/user/preview`);
-
-      //res.json({ fields, files });
     });
   });
 
 router
-  .route("/addLabels")
+  .route("/addLabelsForPage")
   .get(async (req, res) => {
-    // res.send('add labels through excel')
-    res.sendFile("addLabel.html", { root: `${__dirname}/../public/html` });
+    res.sendFile("addLabelsForPage.html", {
+      root: `${__dirname}/../public/html`,
+    });
   })
   .post(async (req, res) => {
     const form = formidable({
@@ -93,106 +90,33 @@ router
         next(err);
         return;
       }
-      //console.log(req.file);
-      // console.log(files.excelFile.filepath);
-      console.log(files);
-
       const workbook = xlsx.readFile(files.excelFile.filepath);
 
       let worksheets = {};
       for (const sheetName of workbook.SheetNames) {
-        console.log(`---->${sheetName}`);
         worksheets[sheetName] = xlsx.utils.sheet_to_json(
           workbook.Sheets[sheetName]
         );
       }
 
-      await excelUploadService.addLabelFromExcel(worksheets, fields.page_id);
+      await excelUploadService.addLabelFromExcel2(worksheets, fields.page_id);
+      console.log(worksheets);
       fs.unlink(files.excelFile.filepath, (err) => {
         if (err) {
           console.log(err);
         }
       });
-      //res.sendFile("preview.html", { root: `${__dirname}/../public/html` });
       res.redirect(`/excel/dashboard`);
-
-      //res.json({ fields, files });
     });
   });
 
-// router.get('/download', async (req,res) => {
-//   try {
-
-//     const workbook = xlsx.readFile("./template.xlsx");
-//     let worksheets = {};
-//     for (const sheetName of workbook.SheetNames) {
-//       console.log(`---->${sheetName}`);
-//       worksheets[sheetName] = xlsx.utils.sheet_to_json(
-//         workbook.Sheets[sheetName]
-//     );
-//   }
-
-//     let languages = await languageDAO.getLanguages();
-
-//     worksheets.Language.push(
-//       languages.language[0]
-
-//     )
-
-//     await xlsx.utils.sheet_add_json(workbook.Sheets['Language'],worksheets.Language)
-//     await xlsx.writeFile(workbook, "./template.xlsx")
-
-//     const wb = new excel.Workbook();
-
-//     await wb.xlsx.readFile("./template.xlsx")
-
-//     res.setHeader('Content-Type',"application/vnd.openxmlformats-officedocument.spreadsheet.sheet");
-//     res.setHeader('Content-Disposition', 'attachment; filename='+'Template.xlsx')
-
-//     return wb.xlsx.write(res);
-
-//   }
-//   catch(err) {
-//     console.log(err);
-//     res.send(err)
-//   }
-// })
-
-router.get("/download-template", async (req, res) => {
-  try {
-    let result = await excelUploadService.returnTemplate();
-    // let result = await excelUploadService.exportTemplate();
-
-    let workbook = new excel.Workbook();
-    await workbook.xlsx.readFile(`${__dirname}/../uploads/template.xlsx`);
-    res.setHeader(
-      "Content-Type",
-      "application/vnd.openxmlformats-officedocument.spreadsheet.sheet"
-    );
-    res.setHeader(
-      "Content-Disposition",
-      "attachment; filename=" + "Template-download.xlsx"
-    );
-    return workbook.xlsx.write(res).then(() => {
-      res.status(200).end();
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json("Error");
-  }
-});
-
+//TEMPLATE TO ADD LABLELS ON NEW PAGE
 router.get("/download-addLabels", async (req, res) => {
   try {
-    // let result = await excelUploadService.returnTemplate();
-    let pageId = req.query.page_id;
-    console.log("reached here", pageId);
-    console.log(req.query.page_id);
-
-    let result = await excelUploadService.exportTemplate(pageId);
+    let result = await excelUploadService.onNewPage();
 
     let workbook = new excel.Workbook();
-    await workbook.xlsx.readFile(`${__dirname}/../uploads/addLabels.xlsx`);
+    await workbook.xlsx.readFile(`${__dirname}/../uploads/writeTemplate.xlsx`);
     res.setHeader(
       "Content-Type",
       "application/vnd.openxmlformats-officedocument.spreadsheet.sheet"
@@ -210,16 +134,13 @@ router.get("/download-addLabels", async (req, res) => {
   }
 });
 
+//TEMPLATE TO UPDATE LABELS 
 router.get("/download-updateLabels", async (req, res) => {
   try {
-    // let result = await excelUploadService.returnTemplate();
-
-    let pageId = req.query.pageId;
-
-    let result = await excelUploadService.updateTemplate(pageId);
+    let result = await excelUploadService.updateTemplate();
 
     let workbook = new excel.Workbook();
-    await workbook.xlsx.readFile(`${__dirname}/../uploads/updateLabels.xlsx`);
+    await workbook.xlsx.readFile(`${__dirname}/../uploads/writeTemplate.xlsx`);
     res.setHeader(
       "Content-Type",
       "application/vnd.openxmlformats-officedocument.spreadsheet.sheet"
@@ -237,44 +158,14 @@ router.get("/download-updateLabels", async (req, res) => {
   }
 });
 
-router.route("/dashboard").get(async (req, res) => {
-  //C:\Users\HP\Desktop\Avysh\excel_import_export\controllers\Book1.xlsx
-  // const workbook = xlsx.readFile("C:/Users/HP/Desktop/Avysh/excel_import_export/controllers/Book1.xlsx");
-  // let worksheets = {};
-  // for (const sheetName of workbook.SheetNames) {
-  //   console.log(`---->${sheetName}`);
-  //   worksheets[sheetName] = xlsx.utils.sheet_to_json(
-  //     workbook.Sheets[sheetName]
-  //   );
-  // }
-  // res.send(worksheets);
-  if (req.query.lang_id !== undefined) {
-    if (req.cookies.user !== undefined) {
-      let userId = req.cookies.user;
-      let result = await userLanguageService.updateUserLanguage(
-        userId,
-        req.query.lang_id
-      );
-      if (result.Success) {
-        console.log("language changed successfully");
-      }
-    }
-    res.cookie("language", req.query.lang_id, {
-      httpOnly: true,
-      expire: new Date() + 9999,
-    });
-  }
-  res.sendFile("dashboard.html", { root: `${__dirname}/../public/html` });
-});
-
-router.get("/download-afterLanguage", async (req, res) => {
+//TEMPLATE TO ADD LABELS ON NEW LANGUAGE
+router.get("/download-onNewLanguage", async (req, res) => {
   try {
-    // let result = await excelUploadService.returnTemplate();
-
-    let result = await excelUploadService.afterLanguage();
+    let langId = req.query.language_id;
+    let result = await excelUploadService.onNewLanguage(langId);
 
     let workbook = new excel.Workbook();
-    await workbook.xlsx.readFile(`${__dirname}/../uploads/afterLanguage.xlsx`);
+    await workbook.xlsx.readFile(`${__dirname}/../uploads/writeTemplate.xlsx`);
     res.setHeader(
       "Content-Type",
       "application/vnd.openxmlformats-officedocument.spreadsheet.sheet"
@@ -291,10 +182,10 @@ router.get("/download-afterLanguage", async (req, res) => {
     res.status(500).json("Error");
   }
 });
+
 router
   .route("/updateLabels")
   .get(async (req, res) => {
-    // res.send("update labels through excel");
     res.sendFile("updateLabel.html", { root: `${__dirname}/../public/html` });
   })
   .post(async (req, res) => {
@@ -314,39 +205,132 @@ router
 
       let worksheets = {};
       for (const sheetName of workbook.SheetNames) {
-        console.log(`---->${sheetName}`);
         worksheets[sheetName] = xlsx.utils.sheet_to_json(
           workbook.Sheets[sheetName]
         );
       }
 
-      await excelUploadService.updateLabelFromExcel(worksheets);
+      let updateResult = await excelUploadService.updateLabelFromExcel(worksheets);
       fs.unlink(files.excelFile.filepath, (err) => {
         if (err) {
           console.log(err);
         }
       });
-      //res.sendFile("preview.html", { root: `${__dirname}/../public/html` });
       res.redirect(`/excel/dashboard`);
-
-      //res.json({ fields, files });
     });
   });
 
-router.route("/templates").get(async (req, res) => {
-  //C:\Users\HP\Desktop\Avysh\excel_import_export\controllers\Book1.xlsx
-  // const workbook = xlsx.readFile("C:/Users/HP/Desktop/Avysh/excel_import_export/controllers/Book1.xlsx");
-  // let worksheets = {};
-  // for (const sheetName of workbook.SheetNames) {
-  //   console.log(`---->${sheetName}`);
-  //   worksheets[sheetName] = xlsx.utils.sheet_to_json(
-  //     workbook.Sheets[sheetName]
-  //   );
-  // }
-  // res.send(worksheets);
-  res.sendFile("downloadTemplates.html", {
+router.get("/download-labelsForNewLanguage", async (req, res) => {
+  try {
+    await excelUploadService.allPages();
+    await excelUploadService.addData();
+    let workbook = new excel.Workbook();
+    await workbook.xlsx.readFile(`${__dirname}/../uploads/allPages.xlsx`);
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheet.sheet"
+    );
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=" + "Template-allPages.xlsx"
+    );
+    return workbook.xlsx.write(res).then(() => {
+      res.status(200).end();
+    });
+  } catch (err) {
+    console.log(err);
+    return { Success: true, Error: err.message };
+  }
+});
+
+router
+  .route("/addLabelsForNewLanguage")
+  .get(async (req, res) => {
+    res.sendFile("addLabelsForNewLanguage.html", {
+      root: `${__dirname}/../public/html`,
+    });
+  })
+  .post(async (req, res) => {
+    const form = formidable({
+      multiples: false,
+      uploadDir: `${__dirname}/../uploads`,
+      keepExtensions: true,
+    });
+
+    form.parse(req, async (err, fields, files) => {
+      if (err) {
+        next(err);
+        return;
+      }
+      console.log(files);
+
+      const workbook = xlsx.readFile(files.excelFile.filepath);
+
+      let worksheets = {};
+      for (const sheetName of workbook.SheetNames) {
+        console.log(`---->${sheetName}`);
+        let pageId = sheetName.substring(0, sheetName.indexOf(" "));
+        console.log("sheetName = ", pageId);
+        worksheets[pageId] = xlsx.utils.sheet_to_json(
+          workbook.Sheets[sheetName]
+        );
+      }
+      await excelUploadService.addLabelsForNewLanguage(worksheets);
+      fs.unlink(files.excelFile.filepath, (err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
+      res.redirect("/excel/dashboard");
+    });
+  });
+
+router.get("/addLabels", async (req, res) => {
+  res.sendFile("addLabel.html", {
     root: `${__dirname}/../public/html`,
   });
 });
+
+router
+  .route("/addLabelsForNewLanguage2")
+  .get(async (req, res) => {
+    res.send("welcome to add labels for new language page");
+  })
+  .post(async (req, res) => {
+    const form = formidable({
+      multiples: false,
+      uploadDir: `${__dirname}/../uploads`,
+      keepExtensions: true,
+    });
+
+    form.parse(req, async (err, fields, files) => {
+      if (err) {
+        next(err);
+        return;
+      }
+      const workbook = xlsx.readFile(files.excelFile.filepath);
+
+      let worksheets = {};
+      let languageId;
+      for (const sheetName of workbook.SheetNames) {
+        languageId = sheetName.substring(0, sheetName.indexOf(" "));
+        worksheets[languageId] = xlsx.utils.sheet_to_json(
+          workbook.Sheets[sheetName]
+        );
+      }
+      let saveResult = await excelUploadService.addLabelsForNewLanguage2(
+        worksheets,
+        languageId
+      );
+      fs.unlink(files.excelFile.filepath, (err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
+      res.redirect("/excel/dashboard");
+    });
+  });
+
+
 
 module.exports = router;

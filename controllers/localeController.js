@@ -1,31 +1,13 @@
 const express = require("express");
 const router = express.Router();
 
-const pageLabelService = require("../services/PageLabelService");
-const userLanguageService = require("../services/userLanguageService");
+const translationService = require('../services/translationService')
 
-//pageId
 router.get("/getTranslations", async (req, res) => {
   try {
-    // let userLangObj;
-    // let languageId;
-    // if (req.cookies.user !== undefined) {
-    //   userLangObj = await userLanguageService.getUserLanguage(req.cookies.user);
-    //   languageId = userLangObj.userLanguage.languageId;
-    // }
-    // else if(req.cookies.language !== undefined) {
-    //   languageId = req.cookies.language
-    // }
-    // else if(req.query.lang_id !== undefined) {
-    //   languageId = req.query.lang_id;
-    // }
-    // else {
-    //   languageId = 1;
-    // }
-
     let languageId = await detectLanguage(req)
     
-    const result = await pageLabelService.getPageLabels(
+    const result = await translationService.getTranslationsForPage(
       req.query.page_id,
       languageId
     );
@@ -43,12 +25,8 @@ router.get("/getTranslations", async (req, res) => {
 });
 
 let detectLanguage = async (req) =>{
-  let userLangObj, languageId;
-  if (req.cookies.user !== undefined) {
-    userLangObj = await userLanguageService.getUserLanguage(req.cookies.user);
-    languageId = userLangObj.userLanguage.languageId;
-  }
-  else if(req.cookies.language !== undefined) {
+  let languageId;
+  if(req.cookies.language !== undefined) {
     languageId = req.cookies.language
   }
   else if(req.query.lang_id !== undefined) {

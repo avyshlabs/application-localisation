@@ -5,28 +5,16 @@ exports.getPageLabel = async (id) => {
     let pageLabel = await PageLabel.getPageLabel(id);
     return pageLabel;
   } catch (err) {
-    console.log(err);
-    return { Success: false, Error: err };
+    return { Success: false, Error: err.message };
   }
 };
-
-// exports.createPageLabel = async(details)=> {
-//     try{
-//         let pageLabel = await PageLabel.createPageLabel(details);
-//         return pageLabel;
-//     }catch(err){
-//         console.log(err);
-//         return {Success: false, Error: err};
-//     }
-// }
 
 exports.createPageLabel = async (details, transaction) => {
   try {
     let pageLabel = await PageLabel.createPageLabel(details, transaction);
     return pageLabel;
   } catch (err) {
-    console.log(err);
-    return { Success: false, Error: err };
+    return { Success: false, Error: err.message };
   }
 };
 
@@ -37,7 +25,6 @@ exports.getPageLabels = async (pageId, langId) => {
     pageLabels.Pagelabels.map((pageLabel) => {
       labelObject[pageLabel.Label.Label_name] = pageLabel.Label.Label_value;
     });
-    console.log(labelObject);
     if (pageLabels.Success) return { Success: true, PageLabels: labelObject };
     else
       return {
@@ -45,8 +32,7 @@ exports.getPageLabels = async (pageId, langId) => {
         Error: "cannot get labels --- pageLabelService",
       };
   } catch (err) {
-    console.log(err);
-    return { Success: false, Error: err };
+    return { Success: false, Error: err.message };
   }
 };
 
@@ -56,7 +42,7 @@ exports.getAll = async () => {
     if (pageLabel.Success) return pageLabel;
     else return { Success: false, Error: "Error in services" };
   } catch (err) {
-    return { Success: false, Error: err };
+    return { Success: false, Error: err.message };
   }
 };
 
@@ -65,11 +51,10 @@ exports.getPageLabelById = async (id) => {
     let pageLabel = await PageLabel.getPageLabelById(id);
     return pageLabel;
   } catch (err) {
-    console.log(err);
-    return { Success: false, Error: err };
+    return { Success: false, Error: err.message };
   }
 };
-exports.update = async (pagelabelId, details,transaction) => {
+exports.update = async (pagelabelId, details, transaction) => {
   try {
     let toUpdate = {
       Page_id: details.Page_id,
@@ -77,30 +62,27 @@ exports.update = async (pagelabelId, details,transaction) => {
       Status: details.Status,
       Updated_date: new Date(),
     };
-    let pagemap = await PageLabel.update(pagelabelId, toUpdate,transaction);
+    let pagemap = await PageLabel.update(pagelabelId, toUpdate, transaction);
     return pagemap;
   } catch (err) {
-    return { Success: false, Error: err };
+    return { Success: false, Error: err.message };
   }
 };
 
-
-exports.getLabels = async(pageId)=> {
-  try{
-    let labels = await PageLabel.getLabels(pageId);
+exports.LabelInPage = async (Page_id, Label_id) => {
+  try {
+    let labels = await PageLabel.getLabelInPage(Page_id, Label_id);
     return labels;
-  }catch(err){
-    console.log(err);
-    return {Success: false, Error: err};
+  } catch (err) {
+    return { Success: false, Error: err.message };
   }
-}
+};
 
-exports.getAllDistinct = async(pageId)=> {
-  try{
+exports.getAllDistinct = async (pageId) => {
+  try {
     let result = await PageLabel.getAllDistinct(pageId);
     return result;
-  }catch(err){
-    console.log(err);
-    return {Success: false, Error: err};
+  } catch (err) {
+    return { Success: false, Error: err.message };
   }
-}
+};

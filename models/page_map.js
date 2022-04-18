@@ -25,16 +25,18 @@ module.exports = function(sequelize, DataTypes) {
     },
     Created_date: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: false,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
     },
     Updated_date: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: false,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
     },
     Status: {
       type: DataTypes.STRING(255),
-      defaultValue: "active",
-      allowNull: false
+      allowNull: true,
+      defaultValue: "active"
     }
   }, {
     sequelize,
@@ -50,17 +52,17 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
-        name: "Page_id",
-        using: "BTREE",
-        fields: [
-          { name: "Page_id" },
-        ]
-      },
-      {
         name: "Label_id",
         using: "BTREE",
         fields: [
           { name: "Label_id" },
+        ]
+      },
+      {
+        name: "Page_id",
+        using: "BTREE",
+        fields: [
+          { name: "Page_id" },
         ]
       },
     ]
