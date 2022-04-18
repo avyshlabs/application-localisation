@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const PageService = require("../services/PageService");
+const PageService = require("../services/pageService");
 
 router
   .route("/addPage")

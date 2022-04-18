@@ -1,5 +1,5 @@
-const Page = require("../DAO/PageDAO");
-const sequelize = require('../DAO/database')
+const Page = require("../DAO/pageDAO");
+const sequelize = require("../DAO/database");
 
 exports.getPage = async (pageName) => {
   try {

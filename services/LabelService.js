@@ -1,4 +1,4 @@
-const Label = require("../DAO/LabelDAO");
+const Label = require("../DAO/labelDAO");
 
 exports.getLabelById = async (id) => {
   try {
