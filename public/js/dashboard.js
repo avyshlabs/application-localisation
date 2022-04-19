@@ -34,7 +34,7 @@ fetch(
 ).then((res) => {
   res.json().then((data) => {
     let translations = data.PageLabels;
-    console.log(translations);
+    // console.log(translations);
     let translationsArr = Object.values(translations);
     if (translationsArr !== undefined) {
       document.querySelector("#userDatabase").innerHTML =
@@ -56,4 +56,3 @@ fetch(
     }
   });
 });
-console.log(window.location.hostname);
