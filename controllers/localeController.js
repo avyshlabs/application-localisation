@@ -25,7 +25,7 @@ router.get("/getTranslations", async (req, res) => {
 });
 
 let detectLanguage = async (req) =>{
-  let languageId;
+  let languageId = 1;
   if(req.cookies.language !== undefined) {
     languageId = req.cookies.language
   }

@@ -64,9 +64,9 @@
                   >User Database</a
                 >
               </li>
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <a class="nav-link" id="logout" href="/user/logout">Logout</a>
-              </li>
+              </li> -->
               <!-- Navbar dropdown -->
               <li class="nav-item dropdown">
                 <a
@@ -96,6 +96,12 @@
                       >हिन्दी</a
                     >
                   </li>
+                  <li>
+                    <a class="dropdown-item" href="/excel/dashboard?lang_id=4"
+                      >français</a
+                    >
+                  </li>
+                  
                 </ul>
               </li>
             </ul>
@@ -117,28 +123,28 @@
         <div class="cards">
           <a class="card1" href="/language/addLanguage">
             <h3><span id="newLanguage">Add New Language</span></h3>
-            <p class="small">Click to add a new language.</p>
+            <p id="clicknewlang" class="small">Click to add a new language.</p>
             <div class="go-corner" href="/language/addLanguage">
               <div class="go-arrow">→</div>
             </div>
           </a>
           <a class="card1" href="/page/addPage">
             <h3><span id="newPage">Add New Page</span></h3>
-            <p class="small">Click here to add a new page.</p>
+            <p id="clicknewpage" class="small">Click here to add a new page.</p>
             <div class="go-corner" href="/page/addPage">
               <div class="go-arrow">→</div>
             </div>
           </a>
           <a class="card1" href="/excel/addLabels">
             <h3><span id="newLabel"> Add New Labels</span></h3>
-            <p class="small">Click here to add new labels.</p>
+            <p id="clicknewlabel" class="small">Click here to add new labels.</p>
             <div class="go-corner" href="/excel/addLabels">
               <div class="go-arrow">→</div>
             </div>
           </a>
           <a class="card1" href="/excel/updateLabels">
             <h3><span id="updateLabel">Update Existing Labels </span></h3>
-            <p class="small">Click here to update existing labels.</p>
+            <p id="clickupdate" class="small">Click here to update existing labels.</p>
             <div class="go-corner" href="/excel/updateLabels">
               <div class="go-arrow">→</div>
             </div>

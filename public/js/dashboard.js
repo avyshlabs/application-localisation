@@ -33,9 +33,59 @@ fetch("http://localhost:3000/locale/getTranslations?page_id=1").then((res) => {
     console.log(translations);
     let translationsArr = Object.values(translations);
     if (translationsArr !== undefined) {
-      document.querySelector("#userDatabase").innerHTML =
-        data.PageLabels.userDatabase;
-    //   document.querySelector("#logout").innerHTML = data.PageLabels.logout;
+
+      if(data.PageLabels.userDatabase !== undefined)
+        document.querySelector("#userDatabase").innerHTML =
+          data.PageLabels.userDatabase;
+      
+      if(data.PageLabels.dropdown !== undefined)
+        document.querySelector("#navbarDropdown").innerHTML =
+          data.PageLabels.dropdown;
+
+        if(data.PageLabels.message !== undefined)
+          document.querySelector("#message").innerHTML =
+            data.PageLabels.message;
+
+        if(data.PageLabels.newLanguage !== undefined)
+          document.querySelector("#newLanguage").innerHTML =
+            data.PageLabels.newLanguage;
+
+        if(data.PageLabels.clicknewlang !== undefined)
+          document.querySelector("#clicknewlang").innerHTML =
+            data.PageLabels.clicknewlang;
+
+        if(data.PageLabels.newPage !== undefined)
+          document.querySelector("#newPage").innerHTML =
+            data.PageLabels.newPage;
+
+        if(data.PageLabels.clicknewpage !== undefined)
+          document.querySelector("#clicknewpage").innerHTML =
+            data.PageLabels.clicknewpage;
+
+        if(data.PageLabels.newLabel !== undefined)
+          document.querySelector("#newLabel").innerHTML =
+            data.PageLabels.newLabel;
+
+        if(data.PageLabels.clicknewlabel !== undefined)
+        document.querySelector("#clicknewlabel").innerHTML =
+          data.PageLabels.clicknewlabel;
+
+        if(data.PageLabels.updateLabel !== undefined)
+          document.querySelector("#updateLabel").innerHTML =
+            data.PageLabels.updateLabel;
+
+        if(data.PageLabels.clickupdate !== undefined)
+          document.querySelector("#clickupdate").innerHTML =
+            data.PageLabels.clickupdate;
+                                                                        
+
+      // if(data.PageLabels.dropdown !== undefined)
+      //   document.querySelector("#navbarDropdown").innerHTML =
+      //     data.PageLabels.dropdown;
+      
+      // if(data.PageLabels.logout !== undefined)
+      //   document.querySelector("#logout").innerHTML = data.PageLabels.logout;
+
     //   document.querySelector("#message").innerHTML = data.PageLabels.message;
     //   document.querySelector("#newLanguage").innerHTML =
     //     data.PageLabels.newLanguage;

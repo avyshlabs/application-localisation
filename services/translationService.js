@@ -46,12 +46,18 @@ exports.getTranslations = async()=> {
 
 exports.getTranslationsForPage = async (pageId,languageId) => {
   try {
+    console.log("----------------------------------------------->");
+    console.log(pageId + "  " + languageId);
     let result = await translationDAO.getTranslationsForPage(pageId,languageId)
     if(!result.Success) throw new Error('cannot fetch translations')
+
+    console.log(result.Translations);
     let labelTranslationObj ={}
     for(const translationObj of result.Translations) {
       labelTranslationObj[translationObj.Label_name] = translationObj.Translation_value
     }
+    console.log("----------------------------------------------->");
+    console.log(labelTranslationObj);
     return {Success: true, PageLabels:labelTranslationObj}
   }
   catch(err) {
